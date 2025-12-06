@@ -4,83 +4,76 @@ import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
 
-
 // Register User
-export const registerUser = asyncHandler(async(req,res) => {
-    console.log("Incoming Body:" , req.body);
+export const registerUser = asyncHandler(async (req, res) => {
+  console.log("Incoming Body:", req.body);
 
-    const {fullName, email, password, role} = req.body
+  const { fullName, email, password, role } = req.body;
 
-    const existingUser = await User.findOne({
-        $or: [{email}]
-    });
+  const existingUser = await User.findOne({
+    $or: [{ email }],
+  });
 
-    if(existingUser) {
-        throw new ApiError(400, "User Already Exists!")
-    };
+  if (existingUser) {
+    throw new ApiError(400, "User Already Exists!");
+  }
 
-    //Creating User and saving it in DB
-    const user = await User.create({
-        fullName,
-        email: email.toLowerCase(),
-        password,
-        role
-    });
+  //Creating User and saving it in DB
+  const user = new User({
+    fullName,
+    email: email.toLowerCase(),
+    password,
+    role,
+  });
 
-    const createdUser = await User.findById(user._id).select("-password");
-    if(!createdUser){
-        throw new ApiError(500, "Something went wrong while Registering the user!")
-    }
+  await user.save(); // pre('save') hook runs correctly
 
-    const token = genAccessToken(user._id, user.role);
+  const createdUser = await User.findById(user._id).select("-password");
+  if (!createdUser) {
+    throw new ApiError(500, "Something went wrong while Registering the user!");
+  }
 
-    res.cookie("accessToken", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
-    })
-    
-    return res.status(201).json(
-        new ApiResponse(201,createdUser, "User Registered Successfully" )
-    )
+  const token = genAccessToken(user._id, user.role);
 
-}) 
+  res.cookie("accessToken", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
+  return res
+    .status(201)
+    .json(new ApiResponse(201, createdUser, "User Registered Successfully"));
+});
 
 // Login User
-export const loginUser = asyncHandler(async(req,res) => {
-    const {email, password} = req.body;
+export const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-    //finding user by email
-    const user = await User.findOne({email});
-    if(!user){
-        throw new ApiError(404, "User Not Found")
-    };
+  //finding user by email
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User Not Found");
+  }
 
-    //Checking password
-    const isPasswordValid = await user.isPasswordCorrect(password);
-    if(!isPasswordValid){
-        throw new ApiError(401, "Invalid Credentials")
-    };
+  //Checking password
+  const isPasswordValid = await user.isPasswordCorrect(password);
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Invalid Credentials");
+  }
 
-    const token = genAccessToken(user._id, user.role);
+  const token = genAccessToken(user._id, user.role);
 
-    const loggedInUser = await User.findById(user._id).select("-password");
+  const loggedInUser = await User.findById(user._id).select("-password");
 
-    const options = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production" ,
-        sameSite:"strict"
-    };
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  };
 
-    return res.status(200)
+  return res
+    .status(200)
     .cookie("accessToken", token, options)
-    .json(new ApiResponse(
-        200,
-        loggedInUser,
-        "User LoggedIn Successfully"
-    ))
-
-})
- 
-
-      
+    .json(new ApiResponse(200, loggedInUser, "User LoggedIn Successfully"));
+});

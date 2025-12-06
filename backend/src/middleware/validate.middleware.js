@@ -2,13 +2,14 @@ import {ApiError} from "../utils/ApiError.js"
 
 const validate = (schema) => {
     return (req,res,next) => {
-        const {error,value} = schema.validate (req.body)
+        const parsed = schema.safeParse(req.body)
 
-        if(error) {
-            throw new ApiError(400, "Validation Error Zod")
+        if(!parsed.success) {
+            const errorMessage = parsed.error.errors[0].message || "Invalid data";
+            throw new ApiError(400, errorMessage);
         };
 
-        req.body = value;
+        req.body = parsed.data; 
         next();
     };
 };

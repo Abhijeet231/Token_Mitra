@@ -7,10 +7,17 @@ import { registerSchema, loginSchema } from "../validations/user.validation.js";
 const router = Router();
 
 // Register a new user
-router.post("/register", validate(registerSchema), registerUser);
+router.post("/auth/register", validate(registerSchema), registerUser);
 
 // Login User
-router.post("/login", validate(loginSchema), loginUser);
+router.post("/auth/login", validate(loginSchema), loginUser);
 
 
 export default router;
+
+
+// app.use("/api/v1/auth", authRouter);
+// app.use("/api/v1/users", userRouter);
+// app.use("/api/v1/doctors", doctorRouter);
+// app.use("/api/v1/appointments", appointmentRouter);
+// app.use("/api/v1/messages", messageRouter);
