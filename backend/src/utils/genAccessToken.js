@@ -1,8 +1,7 @@
-import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
-const genAccessToken = (userId, role) => {
-    const payload = {userId, role};
+const genAccessToken = (_id, role) => {
+    const payload = {_id, role};
 
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn:"1d",

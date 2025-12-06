@@ -5,14 +5,14 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
 
 
-//Register User
-const registerUser = asyncHandler(async(req,res) => {
+// Register User
+export const registerUser = asyncHandler(async(req,res) => {
     console.log("Incoming Body:" , req.body);
 
     const {fullName, email, password, role} = req.body
 
     const existingUser = await User.findOne({
-        $or: [{fullName}, {email}]
+        $or: [{email}]
     });
 
     if(existingUser) {
@@ -45,3 +45,42 @@ const registerUser = asyncHandler(async(req,res) => {
     )
 
 }) 
+
+// Login User
+export const loginUser = asyncHandler(async(req,res) => {
+    const {email, password} = req.body;
+
+    //finding user by email
+    const user = await User.findOne({email});
+    if(!user){
+        throw new ApiError(404, "User Not Found")
+    };
+
+    //Checking password
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    if(!isPasswordValid){
+        throw new ApiError(401, "Invalid Credentials")
+    };
+
+    const token = genAccessToken(user._id, user.role);
+
+    const loggedInUser = await User.findById(user._id).select("-password");
+
+    const options = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production" ,
+        sameSite:"strict"
+    };
+
+    return res.status(200)
+    .cookie("accessToken", token, options)
+    .json(new ApiResponse(
+        200,
+        loggedInUser,
+        "User LoggedIn Successfully"
+    ))
+
+})
+ 
+
+      
