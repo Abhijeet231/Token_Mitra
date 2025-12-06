@@ -20,6 +20,6 @@ const docAvailabilitySchema = new Schema({
     }
 }, {timestamps: true})
 
-const DocAvailability = mongoose.Model("DocAvailability", docAvailabilitySchema);
+const DocAvailability = mongoose.model("DocAvailability", docAvailabilitySchema);
 
 export default DocAvailability;

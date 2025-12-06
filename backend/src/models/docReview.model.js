@@ -19,6 +19,6 @@ const docReviewSchema = new Schema ({
     },
 }, {timestamps: true});
 
-const DocReview = mongoose.Model("DocReview", docReviewSchema);
+const DocReview = mongoose.model("DocReview", docReviewSchema);
 
 export default DocReview;

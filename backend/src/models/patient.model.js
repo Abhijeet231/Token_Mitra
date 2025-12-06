@@ -17,6 +17,6 @@ const PatientSchema = new Schema ({
 
 })
 
-const Patient = mongoose.Model("Patient", PatientSchema);
+const Patient = mongoose.model("Patient", PatientSchema);
 
 export default Patient;

@@ -1,8 +1,8 @@
 import mongoose, {Schema} from "mongoose";
-
+import bcrypt from "bcrypt"
 
 const userSchema = new Schema ({
-    full_name: {
+    fullName: {
         type: String,
         required: [true, "FullName is required!"],
         trim: true,
@@ -19,11 +19,26 @@ const userSchema = new Schema ({
     },
     role: {
         type: String,
-        enum: ["patient", "doctor"]
+        enum: ["patient", "doctor"],
+        required: true,
+        default: "patient",
     },
 }, {timestamps: true});
 
+//  Password Hashing 
+userSchema.pre('save', async function (next) {
+    if(!this.isModified ("password")) return next();
 
-const UserModel = mongoose.Model("User", userSchema);
+    this.password = await bcrypt.hash(this.password, 8)
+    next();
+})
 
-export default UserModel;
+// Checking password 
+userSchema.method.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password)
+};
+
+
+const User = mongoose.model("User", userSchema);
+
+export default User;
