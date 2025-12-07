@@ -49,6 +49,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  
 
   //finding user by email
   const user = await User.findOne({ email });
@@ -72,8 +73,51 @@ export const loginUser = asyncHandler(async (req, res) => {
     sameSite: "strict",
   };
 
+
   return res
     .status(200)
     .cookie("accessToken", token, options)
     .json(new ApiResponse(200, loggedInUser, "User LoggedIn Successfully"));
 });
+
+// Logout User
+export const logoutUser = asyncHandler(async(req,res) => {
+  if(!req.user?._id) {
+    throw new ApiError(401, "Unauthorised Request!");
+  }
+
+  console.log("LOGGED IN USER:", req.user);
+
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: "strict"
+  }
+
+  return res
+         .status(200)
+         .clearCookie("accessToken", cookieOptions)
+         .json(new ApiResponse(200, null, "Logged Out Successfully!"))
+
+});
+
+// Sending User Details 
+export const getCurrentUser = asyncHandler(async(req,res) => {
+  
+    if (!req.user?._id) {
+    throw new ApiError(401, "Unauthorized request");
+  }
+
+  const currUser = await User.findById(req.user._id).select("-password");
+
+  if(!currUser) {
+    throw new ApiError(404, "User not found!");
+  }
+  
+  return res
+.status(200)
+.json(new ApiResponse(200, currUser, "Current User fetched Successfully"))
+             
+
+})
+
