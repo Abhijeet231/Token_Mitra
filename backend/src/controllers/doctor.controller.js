@@ -1,0 +1,108 @@
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import Doctor from "../models/doctor.model.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import genAccessToken from "../utils/genAccessToken.js";
+
+// Get all Doctors
+export const getAllDoctors = asyncHandler(async(req,res) => {
+    const allDocs = await Doctor.find();
+    if(!allDocs){
+        throw new ApiError(404, "No Doctors Found");
+    }
+
+    if(allDocs.length < 1 ) {
+        throw new ApiError(404, "No Doctors found !!! yet")
+    }
+
+    return res.status(200)
+    .json(new ApiResponse(
+        200, 
+        allDocs,
+        "All Doctors fetched Successfully.."
+    ));
+});
+
+
+// Get Specific Doctor
+export const getDoctor = asyncHandler(async(req,res) => {
+    const {id} = req.params;
+
+    const doctor = await Doctor.findById(id);
+    if(!doctor) throw new ApiError(404, "Doctor Not Found!");
+
+    return res.status(200)
+    .json(new ApiResponse(
+        200, doctor, "Doctor details fetched successfully."
+    ))
+
+});
+
+
+// Get LoggedIn Doctor
+export const getLoggedInDoctor = asyncHandler(async(req,res) => {
+
+    const doctor = await Doctor.findOne({userId: req.user._id});
+    if(!doctor) {
+        return res.status(200).json({
+            message: "Doctor Profile Incomplete!",
+            needsProfile: true
+        });
+    }
+
+    return res.status(200)
+    .json(new ApiResponse(
+        200, doctor, "Doctor Profile fetched"
+    ));
+});
+
+
+// Update Doctor Profile
+export const updateDoctorProfile = asyncHandler(async(req,res) => {
+  const {specialization, qualification, experience, clinicAddress, slotDuration } = req.body;
+
+  // Validating required fields
+  if(!specialization || !qualification || !experience || !clinicAddress || !slotDuration) {
+    throw new ApiError(400, "All required doctor fileds must be provided!")
+  };
+
+  let doctor = await Doctor.findOne({userId: req.user._id});
+  if(!doctor) {
+    //Create Profile for the first time 
+    doctor = await Doctor.create({
+        userId: req.user._id,
+        specialization,
+        qualification,
+        experience,
+        clinicAddress,
+        slotDuration,
+    });
+
+    return res.status(201).json(new ApiResponse(
+        201, doctor, "Doctor Profile Created Successfully"
+    ))
+};
+
+// Upate existing profile 
+doctor.specialization = specialization;
+doctor.qualification = qualification;
+doctor.experience = experience;
+doctor.clinicAddress = clinicAddress;
+doctor.slotDuration = slotDuration; // review this part??
+
+await doctor.save();
+
+return res.status(200).json(new ApiResponse(200, doctor, "Doctor Profile Updated Successfully"))
+
+});
+
+
+
+
+
+
+
+
+
+
+

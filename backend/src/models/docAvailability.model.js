@@ -4,6 +4,7 @@ const docAvailabilitySchema = new Schema({
     doctorId: {
         type: Schema.Types.ObjectId,
         ref: "User",
+        required: true
     },
     date: Date,
     startTime: {
