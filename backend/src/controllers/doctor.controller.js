@@ -59,36 +59,29 @@ export const getLoggedInDoctor = asyncHandler(async(req,res) => {
 
 // Update Doctor Profile
 export const updateDoctorProfile = asyncHandler(async(req,res) => {
-  const {specialization, qualification, experience, clinicAddress, slotDuration } = req.body;
-
-  // Validating required fields
-  if(!specialization || !qualification || !experience || !clinicAddress || !slotDuration) {
-    throw new ApiError(400, "All required doctor fileds must be provided!")
-  };
 
   let doctor = await Doctor.findOne({userId: req.user._id});
   if(!doctor) {
     //Create Profile for the first time 
-    doctor = await Doctor.create({
+   const  newDoctorprofile = await Doctor.create({
         userId: req.user._id,
-        specialization,
-        qualification,
-        experience,
-        clinicAddress,
-        slotDuration,
+        ...req.body,
     });
 
     return res.status(201).json(new ApiResponse(
-        201, doctor, "Doctor Profile Created Successfully"
+        201, newDoctorprofile, "Doctor Profile Created Successfully"
     ))
 };
 
 // Upate existing profile 
-doctor.specialization = specialization;
-doctor.qualification = qualification;
-doctor.experience = experience;
-doctor.clinicAddress = clinicAddress;
-doctor.slotDuration = slotDuration; // review this part??
+const { specialization, qualification, experience, clinicAddress, slotDuration } = req.body;
+
+if (specialization) doctor.specialization = specialization;
+if (qualification) doctor.qualification = qualification;
+if (experience !== undefined) doctor.experience = experience;
+if (clinicAddress) doctor.clinicAddress = clinicAddress;
+if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
+// review this part??
 
 await doctor.save();
 

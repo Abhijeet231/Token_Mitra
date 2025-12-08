@@ -24,5 +24,9 @@ app.use("/api/v1/users", userRouter);
 import doctorRouter from "./routes/doctor.route.js"
 app.use("/api/v1/doctors", doctorRouter);
 
+// Doctor Availability Routes
+import docAvailabilityRouter from "./routes/docAvailability.route.js"
+app.use("/api/v1/doctors", docAvailabilityRouter);
+
 
 export default app;

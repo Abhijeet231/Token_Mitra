@@ -12,13 +12,13 @@ const router = Router();
 router.get("/all", getAllDoctors); // public route 
 
 // Get loggedIn doctor
-router.get("/me", verifyJWT,doctorOnly, getLoggedInDoctor);
+router.get("/me", verifyJWT, doctorOnly, getLoggedInDoctor);
 
 // Get specific doctor
 router.get("/:id", getDoctor); // public route
 
 //Update doctor
-router.patch("/me", verifyJWT,doctorOnly, validate(updateDocProfileSchema), updateDoctorProfile);
+router.patch("/me", verifyJWT, doctorOnly, validate(updateDocProfileSchema), updateDoctorProfile);
 
 
 export default router;
