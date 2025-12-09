@@ -4,7 +4,7 @@ import Doctor from "../models/doctor.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
 
-// Get all Doctors
+// Get all Doctors (public)
 export const getAllDoctors = asyncHandler(async(req,res) => {
     const allDocs = await Doctor.find();
     if(!allDocs){
@@ -24,7 +24,7 @@ export const getAllDoctors = asyncHandler(async(req,res) => {
 });
 
 
-// Get Specific Doctor
+// Get Specific Doctor (public)
 export const getDoctor = asyncHandler(async(req,res) => {
     const {id} = req.params;
 
@@ -39,7 +39,7 @@ export const getDoctor = asyncHandler(async(req,res) => {
 });
 
 
-// Get LoggedIn Doctor
+// Get LoggedIn Doctor (protected- only accessible by doc himself)
 export const getLoggedInDoctor = asyncHandler(async(req,res) => {
 
     const doctor = await Doctor.findOne({userId: req.user._id});

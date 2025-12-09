@@ -11,13 +11,13 @@ const router = Router();
 // Get all doctors
 router.get("/all", getAllDoctors); // public route 
 
-// Get loggedIn doctor
+// Get loggedIn doctor (private route)
 router.get("/me", verifyJWT, doctorOnly, getLoggedInDoctor);
 
 // Get specific doctor
 router.get("/:id", getDoctor); // public route
 
-//Update doctor
+//Update doctor (private route)
 router.patch("/me", verifyJWT, doctorOnly, validate(updateDocProfileSchema), updateDoctorProfile);
 
 
