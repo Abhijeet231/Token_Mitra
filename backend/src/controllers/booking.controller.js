@@ -3,10 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import Booking from "../models/booking.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import DocAvailability from "../models/docAvailability.model.js";
-import User from "../models/user.model.js";
-import Doctor from "../models/doctor.model.js";
 import DocAvailability from "../models/docAvailability.model.js";
-import Patient from "../models/patient.model.js";
+
 
 
 // Creating a new appointment booking
