@@ -16,6 +16,12 @@ const docAvailabilitySchema = new Schema({
         required: [true, "End time is required!"],
     },
     maxPatients: Number,
+
+    bookedPatientCount: {
+        type: Number,
+        default: 0
+    },
+    
     isActive: {
         type: Boolean,
     }
