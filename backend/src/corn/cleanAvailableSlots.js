@@ -1,7 +1,7 @@
-import corn from "node-cron";
+import cron from "node-cron";
 import DocAvailability from "../models/docAvailability.model.js";
 
-corn.schedule("0 * * * *", async() => {
+cron.schedule("0 * * * *", async() => {
     //runs every hour
     console.log("Running availability cleanup jobs..")
 
