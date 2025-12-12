@@ -3,6 +3,9 @@ import { ApiError } from "../utils/ApiError.js";
 import Booking from "../models/booking.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import DocAvailability from "../models/docAvailability.model.js";
+import BookingConfirmationEmail from "../emails/BookingConfirmation.jsx";
+import { sendEmail } from "../utils/sendEmail.js";
+import User from "../models/user.model.js";
 
 
 // Creating a new appointment booking (api/v1/bookings)
@@ -67,6 +70,25 @@ export const createBookings = asyncHandler(async (req, res) => {
   }
 
   await slot.save();
+
+  // fetching extra data for sending in email
+  const patient = await User.findById(req.user._id);
+  const doctor = await User.findById(slot.doctorId); 
+
+  // Sending token via email
+  await sendEmail({
+    to: patient.email,
+    subject: "Your Apointment is Confirmed",
+    react: (
+      <BookingConfirmationEmail
+        patientName={patient.fullName}
+        doctorName={doctor.fullName}
+        slotTime = {slot.startTime}
+        tokenNumber
+        appointmentDate={slot.date.toDateString()}
+      />
+    )
+  })
 
   return res
     .status(201)
