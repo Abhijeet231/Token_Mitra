@@ -1,5 +1,6 @@
 import app from "./app.js";
 import connectDB from "./db/index.js";
+import "./corn/cleanAvailableSlots.js"; 
 
 connectDB()
 .then(

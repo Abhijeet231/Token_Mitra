@@ -24,6 +24,12 @@ const bookingSchema = new Schema({
     tokenNumber: {
         type: Number
     },
+    issue: {
+        type: String,
+        required: [true, "Issue description is required!"],
+        minlength: [3, "Issue description must be at least 3 characters"],
+        maxlength: [200, "Issue description must be under 200 characters"]
+    },
     status: {
         type: String,
         enum: ['pending', 'cancelled', 'completed'],

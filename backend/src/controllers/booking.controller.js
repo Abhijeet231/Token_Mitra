@@ -7,7 +7,7 @@ import DocAvailability from "../models/docAvailability.model.js";
 
 // Creating a new appointment booking (api/v1/bookings)
 export const createBookings = asyncHandler(async (req, res) => {
-  const { availabilityId } = req.body;
+  const { availabilityId, issue } = req.body;
 
   if (!availabilityId) {
     throw new ApiError(400, "Availability ID is required");
@@ -52,6 +52,7 @@ export const createBookings = asyncHandler(async (req, res) => {
     patientId: req.user._id,
     doctorId: slot.doctorId,
     availabilityId: availabilityId,
+    issue,
     appointmentDate: slot.date,
     slotTime: slot.startTime,
     tokenNumber,
