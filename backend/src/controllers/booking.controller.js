@@ -3,13 +3,21 @@ import { ApiError } from "../utils/ApiError.js";
 import Booking from "../models/booking.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import DocAvailability from "../models/docAvailability.model.js";
-import BookingConfirmationEmail from "../emails/BookingConfirmation.jsx";
+import BookingConfirmationEmail from "../emails/BookingConfirmation.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import User from "../models/user.model.js";
+import React from "react";
+import Patient from "../models/patient.model.js";
 
 
 // Creating a new appointment booking (api/v1/bookings)
 export const createBookings = asyncHandler(async (req, res) => {
+  
+  const patient = await Patient.findOne({userId: req.user._id});
+  if(!patient) {
+    return res.status(404).json( new ApiResponse(404, null, "Patient profile not found. Please complete your profile first"))
+  }
+
   const { availabilityId, issue } = req.body;
 
   if (!availabilityId) {
@@ -30,6 +38,14 @@ export const createBookings = asyncHandler(async (req, res) => {
   if (new Date(slot.date) < new Date()) {
     throw new ApiError(400, "Cannot book a past date!");
   }
+
+  // FUll date + time check
+  const slotDateTime = new Date(`${slot.date.toISOString().split("T")[0]} ${slot.startTime}`);
+
+  if(slotDateTime < new Date()) {
+    throw new ApiError(400, "Cannot book a past time slot!")
+  }
+
 
   // Check full slot
   if (slot.bookedPatientCount >= slot.maxPatients) {
@@ -54,7 +70,7 @@ export const createBookings = asyncHandler(async (req, res) => {
   const newBooking = await Booking.create({
     patientId: req.user._id,
     doctorId: slot.doctorId,
-    availabilityId: availabilityId,
+    availabilityId,
     issue,
     appointmentDate: slot.date,
     slotTime: slot.startTime,
@@ -72,22 +88,24 @@ export const createBookings = asyncHandler(async (req, res) => {
   await slot.save();
 
   // fetching extra data for sending in email
-  const patient = await User.findById(req.user._id);
-  const doctor = await User.findById(slot.doctorId); 
+  const patientForEmailReq = await User.findById(req.user._id);
+  const doctorForEmailReq = await User.findById(slot.doctorId); 
+  if(!doctor) {
+    throw new ApiError(404, "Doctor not found. Please contact support.");
+  }
 
   // Sending token via email
   await sendEmail({
     to: patient.email,
-    subject: "Your Apointment is Confirmed",
-    react: (
-      <BookingConfirmationEmail
-        patientName={patient.fullName}
-        doctorName={doctor.fullName}
-        slotTime = {slot.startTime}
-        tokenNumber
-        appointmentDate={slot.date.toDateString()}
-      />
-    )
+    subject: "Your Appointment is Confirmed",
+    react: React.createElement(BookingConfirmationEmail, {
+      patientName: patientForEmailReq.fullName ,
+      doctorName: doctorForEmailReq.fullName,
+      slotTime: slot.startTime,
+      tokenNumber: tokenNumber,
+      appointmentDate: slot.date.toDateString()
+    })
+ 
   })
 
   return res

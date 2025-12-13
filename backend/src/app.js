@@ -28,6 +28,10 @@ app.use("/api/v1/doctors", doctorRouter);
 import docAvailabilityRouter from "./routes/docAvailability.route.js"
 app.use("/api/v1/doctors", docAvailabilityRouter);
 
+// Patient Routes
+import patientRouter from "./routes/patient.route.js"
+app.use("/api/v1/patients", patientRouter);
+
 // Booking Routes
 import bookingRoutes from "./routes/bookiing.route.js";
 app.use("/api/v1/bookings", bookingRoutes);

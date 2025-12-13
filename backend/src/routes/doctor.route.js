@@ -17,7 +17,7 @@ router.get("/me", verifyJWT, doctorOnly, getLoggedInDoctor);
 // Get specific doctor
 router.get("/:id", getDoctor); // public route
 
-//Update doctor (private route)
+// Update/Create doctor (private route)
 router.patch("/me", verifyJWT, doctorOnly, validate(updateDocProfileSchema), updateDoctorProfile);
 
 

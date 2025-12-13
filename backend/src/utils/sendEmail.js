@@ -8,7 +8,8 @@ export const sendEmail = async({to, subject, react}) => {
             const html = render(react);
 
             await resend.emails.send({
-                from: "onboarding@resend.dev",
+                from: "Token_Mitra <onboarding@resend.dev>"
+,
                 to,
                 subject,
                 html,
@@ -22,4 +23,5 @@ export const sendEmail = async({to, subject, react}) => {
 
 
     }
+
 

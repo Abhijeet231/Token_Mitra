@@ -2,7 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import Doctor from "../models/doctor.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import genAccessToken from "../utils/genAccessToken.js";
+
 
 // Get all Doctors (public)
 export const getAllDoctors = asyncHandler(async(req,res) => {
@@ -57,7 +57,7 @@ export const getLoggedInDoctor = asyncHandler(async(req,res) => {
 });
 
 
-// Update Doctor Profile
+// Update / Create  Doctor Profile 
 export const updateDoctorProfile = asyncHandler(async(req,res) => {
 
   let doctor = await Doctor.findOne({userId: req.user._id});
