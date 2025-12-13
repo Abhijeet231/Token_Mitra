@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async({to, subject, react}) => {
          try{
-            const html = render(react);
+            const html = await render(react);
 
             await resend.emails.send({
                 from: "Token_Mitra <onboarding@resend.dev>"

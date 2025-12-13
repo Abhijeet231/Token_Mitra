@@ -34,10 +34,6 @@ export const createBookings = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Slot is not active");
   }
 
-  // Date should not be in the past
-  if (new Date(slot.date) < new Date()) {
-    throw new ApiError(400, "Cannot book a past date!");
-  }
 
   // FUll date + time check
   const slotDateTime = new Date(`${slot.date.toISOString().split("T")[0]} ${slot.startTime}`);
@@ -89,14 +85,18 @@ export const createBookings = asyncHandler(async (req, res) => {
 
   // fetching extra data for sending in email
   const patientForEmailReq = await User.findById(req.user._id);
+  if(!patientForEmailReq) {
+    throw new ApiError(404, "Patient not found!")
+  };
+  
   const doctorForEmailReq = await User.findById(slot.doctorId); 
-  if(!doctor) {
+  if(!doctorForEmailReq) {
     throw new ApiError(404, "Doctor not found. Please contact support.");
   }
 
   // Sending token via email
   await sendEmail({
-    to: patient.email,
+    to: patientForEmailReq.email,
     subject: "Your Appointment is Confirmed",
     react: React.createElement(BookingConfirmationEmail, {
       patientName: patientForEmailReq.fullName ,
