@@ -101,7 +101,7 @@ export const logoutUser = asyncHandler(async(req,res) => {
 
 });
 
-// Sending User Details 
+// Current User
 export const getCurrentUser = asyncHandler(async(req,res) => {
   
     if (!req.user?._id) {
