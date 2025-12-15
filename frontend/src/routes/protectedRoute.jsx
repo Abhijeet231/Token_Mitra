@@ -9,7 +9,7 @@ export default function ProtectedRoute (){
     return <div>Loading...</div>
   }
 
-  if(status === "unauthenticated") {
+  if(status !== "authenticated") {
     return <Navigate to='/login' replace />
   }
 
