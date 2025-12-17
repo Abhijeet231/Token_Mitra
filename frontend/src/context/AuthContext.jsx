@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import {login as loginService, logout as logoutService, getMe} from '@/services/auth.service.js'
+import {loginUser as loginService, logout as logoutService, getMe} from '@/services/auth.service.js'
+import { toast } from "react-toastify";
 
 const AuthContext = createContext(null);
 
@@ -13,7 +14,8 @@ export const AuthProvider = ({children}) => {
         try {
             setStatus("loading");
             const res = await getMe();
-            setUser(res.data.currUser);
+            setUser(res.data.data);
+            setStatus("authenticated")
             console.log("Response:", res.data)
         } catch (error) {
             setUser(null);
@@ -28,7 +30,7 @@ export const AuthProvider = ({children}) => {
     // LOGIN
     const login = useCallback(async(Credential) => {
         const res = await loginService(Credential);
-        setUser(res.data.loggedInUser);
+        setUser(res.data.data);
         setStatus("authenticated");
         return res;
     }, []);
@@ -38,6 +40,7 @@ export const AuthProvider = ({children}) => {
         await logoutService();
         setUser(null);
         setStatus("unauthenticated");
+        toast.success("LOgged Out successfully!")
     }, []);
 
     

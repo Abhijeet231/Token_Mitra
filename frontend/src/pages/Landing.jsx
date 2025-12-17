@@ -1,12 +1,29 @@
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const LandingPage = () => {
+  const {status} = useAuth();
+  const navigate = useNavigate()
+
+  const handleBtnClick = (path) => {
+    if(status === "authenticated"){
+      toast.info("You are already logged In !!")
+      return;
+    }
+
+    navigate(path)
+  }
+  
+  
   return (
+
     <div className="w-full">
 
       {/* ================= HERO SECTION ================= */}
-      <section className="bg-gradient-to-b from-emerald-50 to-white">
+      <section className="bg-linear-to-b from-emerald-50 to-white">
         <div className="max-w-7xl mx-auto px-6 py-28 text-center">
           <div className="inline-block px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
             ✨ Trusted by 1000+ patients
@@ -23,19 +40,19 @@ const LandingPage = () => {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              to="/register"
-              className="bg-emerald-600 text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-emerald-700 transition"
+            <button
+              onClick={() => handleBtnClick("/register")}
+              className="bg-emerald-600 text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-emerald-700 transition cursor-pointer "
             >
               Get Started Free
-            </Link>
+            </button>
 
-            <Link
-              to="/login"
-              className="border-2 border-slate-300 px-10 py-4 rounded-lg text-base font-semibold text-slate-700 hover:border-emerald-600 hover:text-emerald-600 transition"
+            <button
+              onClick={() => handleBtnClick("/login")}
+              className="border-2 border-slate-300 px-10 py-4 rounded-lg text-base font-semibold text-slate-700 hover:border-emerald-600 hover:text-emerald-600 transition cursor-pointer"
             >
               Login
-            </Link>
+            </button>
           </div>
 
           <p className="mt-6 text-sm text-slate-500">
@@ -251,7 +268,7 @@ const LandingPage = () => {
       </section>
 
       {/* ================= CTA ================= */}
-      <section className="bg-gradient-to-br from-emerald-600 to-emerald-700">
+      <section className="bg-linear-to-br from-emerald-600 to-emerald-700">
         <div className="max-w-7xl mx-auto px-6 py-24 text-center">
           <h2 className="text-4xl font-bold text-white">
             Ready to Transform Your Healthcare Experience?
@@ -262,12 +279,12 @@ const LandingPage = () => {
             appointment booking and quality healthcare access.
           </p>
 
-          <Link
-            to="/register"
-            className="inline-block mt-10 bg-white text-emerald-600 px-10 py-4 rounded-lg text-base font-bold hover:bg-slate-50 transition"
+          <button
+            onClick={() => handleBtnClick('/register')}
+            className="inline-block mt-10 bg-white text-emerald-600 px-10 py-4 rounded-lg text-base font-bold hover:bg-slate-50 transition cursor-pointer"
           >
             Create Your Free Account
-          </Link>
+          </button>
 
           <p className="mt-4 text-sm text-emerald-100">
             Get started in less than 2 minutes

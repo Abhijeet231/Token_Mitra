@@ -6,7 +6,7 @@ export const registerUser = (credentials) => {
 };
 
 // LOGIN
-export const login = (credentials) => {
+export const loginUser = (credentials) => {
     return api.post("/users/auth/login", credentials);
 };
 

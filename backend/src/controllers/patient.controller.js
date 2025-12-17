@@ -6,13 +6,15 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 // Get loggedIn patient (patient only)
 export const getPatient = asyncHandler(async(req,res) => {
        
-    const patient = await Patient.findOne({userId: req.user._id});
+    const patient = await Patient.findOne({userId: req.user._id}).populate("userId", "fullName email");
     if(!patient) {
         return res.status(200).json({
             message: "Patient Profile Incomplete!",
             needsProfile: true
         });
     };
+
+    
 
     return res.status(200).json(new ApiResponse(200, patient, "Patient Profile fetched"));
 });
@@ -30,13 +32,13 @@ export const updatePatientProfile = asyncHandler(async(req,res) => {
             ...req.body,
         });
 
-        return res.status(200).json(new ApiResponse(201, newPatientProfile, "Patient profile created successfully."))
+        return res.status(200).json(new ApiResponse(200, newPatientProfile, "Patient profile created successfully."))
     }
     
     // Update existing profile
     const {age, gender} = req.body;
-    if(age) patient.age = age;
-    if(gender) patient.gender = gender;
+    if(age && age !== undefined) patient.age = age;
+    if(gender && gender !== undefined) patient.gender = gender;
 
     await patient.save();
 

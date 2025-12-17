@@ -11,7 +11,7 @@ const router = Router();
 router.get('/me', verifyJWT, patientOnly, getPatient);
 
 // Update/Create Patient 
-router.patch('/me', verifyJWT, patientOnly, validate(updatePatientProfileSchema), updatePatientProfile);
+router.put('/me', verifyJWT, patientOnly, validate(updatePatientProfileSchema), updatePatientProfile);
 
 
 export default router;

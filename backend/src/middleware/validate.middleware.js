@@ -5,7 +5,7 @@ const validate = (schema) => {
         const parsed = schema.safeParse(req.body)
 
         if(!parsed.success) {
-            const errorMessage = parsed.error.errors[0].message || "Invalid data";
+            const errorMessage = parsed.error?.errors?.[0]?.message || "Invalid data";
             throw new ApiError(400, errorMessage);
         };
 
