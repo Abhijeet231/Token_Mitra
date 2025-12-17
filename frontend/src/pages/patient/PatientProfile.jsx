@@ -1,61 +1,93 @@
-import React from 'react'
-import { getPatientDetails } from '@/services/patient.service'
-import { useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
-
-
+import React, { useEffect, useState } from "react";
+import { getPatientDetails } from "@/services/patient.service";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { CalendarDays, UserCircle } from "lucide-react";
 
 const PatientProfile = () => {
-
   const navigate = useNavigate();
 
   const [patient, setPatient] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-useEffect(() => {
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const res = await getPatientDetails();
 
-  const fetchPatient = async () => {
-    try {
-      const res = await getPatientDetails();
-
-      console.log("Response of PatientProfile:", res)
-
-      if (res.data.needsProfile) {
-         navigate("/patient/profile/complete", {replace: true});
-         return;
-      }
+        if (res.data.needsProfile) {
+          navigate("/patient/profile/complete", { replace: true });
+          return;
+        }
 
         setPatient(res.data.data);
-      
-    } catch{
-      console.log("Error wile fetching Patient details")
-    }
-  };
+      } catch (error) {
+        toast.error("Failed to load profile");
+        console.error("Patient profile error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchPatient();
-}, []);
+    fetchPatient();
+  }, [navigate]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading profile...
+      </div>
+    );
+  }
 
   return (
-    <div className='flex  justify-center w-full border border-red-600 mt-8'>
-      
-      <div className='flex flex-col justify-center mt-9 border border-r-black p-3
-       w-[80%] text-center '>
-        <h2>Patient Profile rounded
-        </h2>
+    <div className="min-h-screen bg-linear-to-br from-green-50 via-emerald-50 to-lime-50 px-4 py-10">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Profile Card */}
+        <div className="bg-white rounded-2xl shadow-lg border border-green-100 p-8 flex flex-col items-center text-center">
+          <UserCircle className="w-20 h-20 text-emerald-600 mb-4" />
 
-        <div className='text-xl font-semibold'>
-          <p>FullName: {patient?.userId.fullName} </p>
-          <p>Email: {patient?.userId.email} </p>
-          <p>Age: {patient?.age} </p>
-          <p>Gender: {patient?.gender}</p>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {patient.userId.fullName}
+          </h2>
+          <p className="text-gray-600">{patient.userId.email}</p>
 
+          <div className="mt-6 grid grid-cols-2 gap-6 text-sm text-gray-700">
+            <div>
+              <p className="font-medium">Age</p>
+              <p>{patient.age}</p>
+            </div>
+            <div>
+              <p className="font-medium">Gender</p>
+              <p className="capitalize">{patient.gender}</p>
+            </div>
+          </div>
         </div>
 
+        {/* Bookings Section */}
+        <div className="bg-white rounded-2xl shadow-lg border border-green-100 p-8">
+          <div className="flex items-center gap-2 mb-4">
+            <CalendarDays className="w-5 h-5 text-emerald-600" />
+            <h3 className="text-lg font-semibold text-gray-900">
+              My Bookings
+            </h3>
+          </div>
 
+          {/* Empty state for now */}
+          <div className="text-center text-gray-600 py-8">
+            <p>You don’t have any bookings yet.</p>
+            <button
+              onClick={() => navigate("/doctors")}
+              className="mt-4 px-6 py-2 rounded-lg bg-emerald-600 text-white font-medium
+                         hover:bg-emerald-700 transition"
+            >
+              Book an Appointment
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PatientProfile
+export default PatientProfile;
