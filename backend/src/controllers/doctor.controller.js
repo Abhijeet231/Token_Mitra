@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import Doctor from "../models/doctor.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
 
 
 // Get all Doctors (public)
@@ -61,11 +62,33 @@ export const getLoggedInDoctor = asyncHandler(async(req,res) => {
 export const updateDoctorProfile = asyncHandler(async(req,res) => {
 
   let doctor = await Doctor.findOne({userId: req.user._id});
+
   if(!doctor) {
     //Create Profile for the first time 
+    let profileImageData = {};
+
+    if(req.file?.path) {
+        const uploadedImage = await uploadOnCloudinary(req.file.path);
+
+        if(!uploadedImage) {
+            throw new ApiError(500, "Profile image upload failed!")
+        }
+
+        profileImageData = {
+            profileImage: {
+                url: uploadedImage.secure_url,
+                public_id: uploadedImage.public_id,
+            },
+        };
+
+    }
+
+
+
    const  newDoctorprofile = await Doctor.create({
         userId: req.user._id,
         ...req.body,
+        ...profileImageData
     });
 
     return res.status(201).json(new ApiResponse(
@@ -81,7 +104,29 @@ if (qualification) doctor.qualification = qualification;
 if (experience !== undefined) doctor.experience = experience;
 if (clinicAddress) doctor.clinicAddress = clinicAddress;
 if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
-// review this part??
+
+// Handle Profile Image (optional)
+if(req.file?.path) {
+    //delete old image if exists
+    if(doctor.profileImage?.public_id) {
+        try {
+            await deleteFromCloudinary(doctor.profileImage.public_id);
+        } catch (error) {
+            console.log("Cloudinary Delete failed:", error)
+        }
+    }
+
+    const uploadedImage = await uploadOnCloudinary(req.file.path);
+    if(!uploadedImage) {
+        throw new ApiError(500, "Profile Image upload failed");
+    }
+
+    doctor.profileImage = {
+        url: uploadedImage.secure_url,
+        public_id: uploadedImage.public_id,
+    };
+
+}
 
 await doctor.save();
 
