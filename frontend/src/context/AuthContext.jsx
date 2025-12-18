@@ -16,7 +16,7 @@ export const AuthProvider = ({children}) => {
             const res = await getMe();
             setUser(res.data.data);
             setStatus("authenticated")
-            console.log("Response:", res.data)
+            console.log("Response:", res.data.data)
         } catch (error) {
             setUser(null);
             setStatus("unauthenticated")

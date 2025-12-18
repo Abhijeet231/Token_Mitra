@@ -17,7 +17,7 @@ const PatientProfileComplete = () => {
     try {
       await updatePatientDetails(data);
       toast.success("Profile completed successfully");
-      navigate("/patient", { replace: true });
+      navigate("/patient/profile", { replace: true });
     } catch (error) {
       toast.error("Error while updating profile");
       console.error("Profile Update Error:", error);

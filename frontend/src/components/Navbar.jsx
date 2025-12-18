@@ -33,31 +33,43 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Brand - Left */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">TM</span>
             </div>
-            <span className="text-xl font-semibold text-slate-800">
-              <span className="text-emerald-600">Token</span>Mitra
+            <span className="text-xl font-semibold text-stone-800">
+              <span className="text-amber-600">Token</span>Mitra
             </span>
           </Link>
 
           {/* Navigation Links - Center (Desktop) */}
           <div className="hidden md:flex items-center space-x-1">
-            <Link
-              to="/"
-              className="px-4 py-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+            {
+              user?.role === "patient" ? 
+                
+              <Link
+              to="/patient"
+              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
             >
               Home
             </Link>
+
+              : 
+              <Link
+              to="/"
+              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+            >
+              Home
+            </Link>
+            }
             <Link
               to="/about"
-              className="px-4 py-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
             >
               About
             </Link>
             <Link
               to="/contact"
-              className="px-4 py-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
             >
               Contact
             </Link>
@@ -77,8 +89,8 @@ const Navbar = () => {
               <button
                 onClick={handleProfileVisit}
                 className="flex items-center gap-1 px-4 py-2 rounded-lg
-             bg-emerald-600 text-white font-semibold
-             hover:bg-emerald-700 transition
+             bg-amber-600 text-white font-semibold
+             hover:bg-amber-700 transition
              shadow-sm hover:shadow-md"
               >
                 <UserCircleIcon className="w-5 h-5" />
@@ -89,14 +101,14 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-4">
               <Link
                 to="/login"
-                className="flex items-center space-x-1 px-4 py-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+                className="flex items-center space-x-1 px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               >
                 <User className="w-4 h-4" />
                 <span>Login</span>
               </Link>
               <Link
                 to="/register"
-                className="px-4 py-2 bg-emerald-600 text-white font-medium text-sm rounded-lg hover:bg-emerald-700 transition shadow-sm"
+                className="px-4 py-2 bg-amber-600 text-white font-medium text-sm rounded-lg hover:bg-amber-700 transition shadow-sm"
               >
                 Get Started
               </Link>
@@ -106,7 +118,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-slate-600 hover:text-emerald-600"
+            className="md:hidden text-stone-600 hover:text-amber-600"
           >
             {isMenuOpen ? (
               <X className="w-6 h-6" />
@@ -123,21 +135,21 @@ const Navbar = () => {
           <div className="px-6 py-4 space-y-2">
             <Link
               to="/"
-              className="block px-4 py-3 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               to="/about"
-              className="block px-4 py-3 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <Link
               to="/contact"
-              className="block px-4 py-3 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
@@ -156,8 +168,8 @@ const Navbar = () => {
                 <button
                   onClick={handleProfileVisit}
                   className="flex items-center justify-center space-x-2 w-full  px-4 py-2 mt-4 rounded-lg
-             bg-emerald-600 text-white font-semibold
-             hover:bg-emerald-700 transition
+             bg-amber-600 text-white font-semibold
+             hover:bg-amber-700 transition
              shadow-sm hover:shadow-md"
                 >
                   <UserCircleIcon className="w-5 h-5" />
@@ -168,7 +180,7 @@ const Navbar = () => {
               <div className="pt-3 space-y-2 border-t border-gray-200">
                 <Link
                   to="/login"
-                  className="flex items-center justify-center space-x-1 w-full px-4 py-3 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 font-medium text-sm rounded-lg transition"
+                  className="flex items-center justify-center space-x-1 w-full px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <User className="w-4 h-4" />
@@ -176,7 +188,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="block w-full px-4 py-3 bg-emerald-600 text-white text-center font-medium text-sm rounded-lg hover:bg-emerald-700 transition shadow-sm"
+                  className="block w-full px-4 py-3 bg-amber-600 text-white text-center font-medium text-sm rounded-lg hover:bg-amber-700 transition shadow-sm"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get Started
