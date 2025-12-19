@@ -13,9 +13,9 @@ const Footer = () => {
                 <div className="w-10 h-10 bg-linear-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
                   <span className="text-white font-bold text-xl">TM</span>
                 </div>
-                <span className="text-xl font-bold bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                  TOKENMITRA
-                </span>
+                <span className="text-xl font-semibold text-stone-800">
+              <span className="text-amber-600">Token</span>Mitra
+            </span>
               </div>
               <p className="text-gray-600">Your trusted healthcare companion</p>
             </div>
