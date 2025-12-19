@@ -26,7 +26,7 @@ const Login = () => {
       toast.success("User Logged In")
       console.log("Logged In USer:", result.data)
 
-     navigate('/patient')
+      result.data.data.role === 'patient'? navigate('/patient') : navigate("/doctors/profile")
 
     } catch (error) {
       toast.error("Error while Logging in User!")

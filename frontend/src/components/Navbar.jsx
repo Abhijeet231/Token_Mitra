@@ -27,6 +27,26 @@ const Navbar = () => {
     }
   };
 
+  // Navigation routes based on user role 
+  let navItem = null;
+
+  if(user?.role === "patient") {
+    navItem = {
+      label: "Home",
+      path: "/patient",
+    };
+  }else if (user?.role === "doctor") {
+    navItem = {
+      label: "Dashboard",
+      path: "/doctors/dashboard"
+    };
+  }else {
+    navItem = {
+      label: "Home",
+      path: "/"
+    };
+  }
+
   return (
     <nav className="bg-white w-full border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -43,24 +63,14 @@ const Navbar = () => {
 
           {/* Navigation Links - Center (Desktop) */}
           <div className="hidden md:flex items-center space-x-1">
-            {
-              user?.role === "patient" ? 
-                
-              <Link
-              to="/patient"
-              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-            >
-              Home
-            </Link>
-
-              : 
-              <Link
-              to="/"
-              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-            >
-              Home
-            </Link>
-            }
+            { navItem && (
+              <Link 
+                to={navItem.path}
+                className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+              >
+               {navItem.label}
+              </Link>
+            )}
             <Link
               to="/about"
               className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
