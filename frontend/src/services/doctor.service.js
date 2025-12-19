@@ -11,8 +11,8 @@ export const getLoggedInDoctor = () => {
 }
 
 // Update/Create Doctor Profile
-export const updateDoctorProfile = () => {
-    return api.patch("/doctors/me");
+export const updateDoctorProfile = (data) => {
+    return api.patch("/doctors/me", data);
 }
 
 // Get Specific Doctor
