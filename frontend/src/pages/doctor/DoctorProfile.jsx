@@ -49,7 +49,7 @@ const DoctorProfile = () => {
       <div className="bg-purple-50 rounded-2xl shadow-lg p-8 text-center border border-gray-200">
         {/* Profile Image*/}
         <div className="flex justify-center mb-6">
-          <div className="w-28 h-28 rounded-full bg-gradient-to-r from-blue-400 to bg-purple-500 flex items-center justify-center text-4xl text-white shadow-md">
+          <div className="w-28 h-28 rounded-full bg-linear-to-r from-blue-400 to bg-purple-500 flex items-center justify-center text-4xl text-white shadow-md">
                 {
                   doctor?.profileImage?.url ? <img src= {doctor?.profileImage?.url} alt="ProfileImgae" className="w-full h-full object-cover rounded-full"/> : doctor?.userId?.fullName.charAt(0) || "U"
                 }
