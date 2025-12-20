@@ -13,11 +13,10 @@ export const editDoctorProfileSchema = z.object({
     .min(2, "Qualification must be at least 2 characters")
     .optional(),
 
-  experience: z
-    .union([
-      z.string().trim().length(0),
-      z.coerce.number().min(0, "Experience cannot be negative"),
-    ])
+  experience: z.coerce
+    .number()
+    .min(0, "Experience cannot be negative")
+
     .optional(),
 
   clinicAddress: z
@@ -26,11 +25,10 @@ export const editDoctorProfileSchema = z.object({
     .min(5, "Clinic address must be at least 5 characters")
     .optional(),
 
-  slotDuration: z
-    .union([
-      z.string().trim().length(0),
-      z.coerce.number().min(5, "Slot duration must be at least 5 minutes"),
-    ])
+  slotDuration: z.coerce
+    .number()
+    .min(5, "Slot duration must be at least 5 minutes")
+
     .optional(),
 
   profileImage: z.any().optional(),

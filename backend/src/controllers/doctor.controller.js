@@ -43,7 +43,8 @@ export const getDoctor = asyncHandler(async(req,res) => {
 // Get LoggedIn Doctor (protected- only accessible by doc himself)
 export const getLoggedInDoctor = asyncHandler(async(req,res) => {
 
-    const doctor = await Doctor.findOne({userId: req.user._id});
+    const doctor = await Doctor.findOne({userId: req.user._id}).populate("userId", "fullName email");
+
     if(!doctor) {
         return res.status(200).json({
             message: "Doctor Profile Incomplete!",
