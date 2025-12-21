@@ -1,6 +1,7 @@
 import React from 'react'
 import DocDashProfile from './DocDashProfile'
 import AvailabilityForm from './AvailabilityForm'
+import AvailableSlots from './AvailableSlots'
 
 const DoctorDashboard = () => {
   return (
@@ -22,6 +23,7 @@ const DoctorDashboard = () => {
       {/* Appointment List */}
       <div className="mt-8">
         {/* Upcoming appointments */}
+        <AvailableSlots/>
       </div>
 
     </div>

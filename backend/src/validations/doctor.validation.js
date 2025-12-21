@@ -1,17 +1,19 @@
 import {z} from "zod";
 
-const optionalNumber = z.preprocess(
-  (val) => (val === "" ? undefined : Number(val)),
-  z.number().min(0)
-);
-
 export const updateDocProfileSchema = z.object({
   specialization: z.string().min(2).optional(),
   qualification: z.string().min(2).optional(),
-  experience: optionalNumber.optional(),
+  experience: z.coerce.number().min(0).optional(),
   clinicAddress: z.string().min(5).optional(),
-  slotDuration: z.preprocess(
-    (val) => (val === "" ? undefined : Number(val)),
-    z.number().min(5)
-  ).optional(),
+  slotDuration: z.coerce.number().min(5).optional(),
 });
+
+
+
+export const createDoctorProfileSchema = z.object({
+  specialization: z.string().min(2),
+  qualification: z.string().min(2),
+  experience: z.coerce.number().min(0),
+  clinicAddress: z.string().min(5),
+  slotDuration: z.coerce.number().min(10)
+})

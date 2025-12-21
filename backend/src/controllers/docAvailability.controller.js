@@ -31,9 +31,15 @@ export const addAvailability = asyncHandler(async (req, res) => {
 
 // View availability slots (doctor only)
 export const getMyAvailability = asyncHandler(async (req, res) => {
+  
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  
   // find doctor related availability slot
   const doctorAvailability = await DocAvailability.find({
     doctorId: req.user._id,
+    date: {$gte: today},
+    
   }).sort({ date: 1 }); // show nearest dates first
 
   if (!doctorAvailability || doctorAvailability.length === 0) {
