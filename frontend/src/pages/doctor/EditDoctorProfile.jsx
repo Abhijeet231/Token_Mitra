@@ -2,18 +2,37 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { updateDoctorProfile } from '@/services/doctor.service'
+import { updateDoctorProfile, getLoggedInDoctor } from '@/services/doctor.service'
 import { editDoctorProfileSchema,  } from '@/validations/editDoctor.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState, useEffect } from 'react'
 
 
 const EditDoctorProfile = () => {
   const navigate = useNavigate();
+  const [doctor, setDoctor] = useState(null);
+
+  useEffect(() => {
+    const getDoctor = async() => {
+      try {
+        let res = await getLoggedInDoctor();
+        setDoctor(res.data.data);
+        console.log("LOgged IN DOctor who is Editing profile: ", res.data.data)
+      } catch (error) {
+        toast("Error While Fetching LoggedIn Doctors Data!");
+        console.log("Error While Fetching LoggedIn DOctors Data:", error);
+      }
+    }
+    getDoctor();
+  },[])
+
+
   
   const {
     register,
     handleSubmit,
     formState: {errors, isSubmitting},
+    reset
   } = useForm(
     {
       resolver: zodResolver(editDoctorProfileSchema)
@@ -22,7 +41,21 @@ const EditDoctorProfile = () => {
 
   const onSubmit = async(data) => {
     try {
-        await updateDoctorProfile(data);
+      const formData = new FormData();
+
+      formData.append("specialization", data.specialization);
+      formData.append("qualification", data.qualification);
+      formData.append("experience", data.experience);
+      formData.append("clinicAddress", data.clinicAddress);
+      formData.append("slotDuration", data.slotDuration);
+
+      // Extracting File
+      if(data.profileImage && data.profileImage.length >0) {
+        formData.append("profileImage", data.profileImage[0]);
+      }
+
+      await updateDoctorProfile(formData);
+
         toast.success("Profile Updated Successfully!");
         navigate("/doctors/profile")
     } catch (error) {
@@ -30,6 +63,20 @@ const EditDoctorProfile = () => {
         console.log("DOc Profile Update Error:", error);
     }
   }
+
+    useEffect(() => {
+    if(doctor) {
+       reset({
+      specialization: doctor.specialization || "",
+      qualification: doctor.qualification || "",
+      experience: doctor.experience || "",
+      clinicAddress: doctor.clinicAddress || "",
+      slotDuration: doctor.slotDuration || "",
+      
+    });
+  
+    }
+  }, [doctor, reset])
   
 return (
   <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-amber-50 flex items-center justify-center px-4">
@@ -106,6 +153,12 @@ return (
                      {errors.profileImage.message}
             </p>
           ) }
+          {doctor?.profileImage?.url && (
+            <img src={doctor.profileImage.url}
+            className='h-24 w-24 rounded-full object-cover mb-2'
+            alt="Current Image"/>
+            
+          )}
         </div>
 
         {/* Slot Duration */}

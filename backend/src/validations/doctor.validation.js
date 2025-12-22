@@ -6,10 +6,7 @@ export const updateDocProfileSchema = z.object({
   experience: z.coerce.number().min(0).optional(),
   clinicAddress: z.string().min(5).optional(),
   slotDuration: z.coerce.number().min(5).optional(),
-}).refine(
-  (data) => Object.keys(data).length > 0,
-  {message: "At least one filed is required to updated profile"}
-)
+})
 
 
 
