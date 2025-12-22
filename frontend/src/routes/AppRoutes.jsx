@@ -23,6 +23,7 @@ import DoctorDetails from "@/pages/doctor/DoctorDetails";
 import Unauthorized from "@/pages/Unauthorized ";
 import NotFound from "@/pages/NotFound";
 import EditDoctorProfile from "@/pages/doctor/EditDoctorProfile";
+import CreateDoctorProfile from "@/pages/doctor/CreateDoctorProfile";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,8 @@ const router = createBrowserRouter([
           { path: "patient/booking", element: <PatientBookings /> },
           { path: "doctors/dashboard", element: <DoctorDashboard /> },
           { path: "doctors/profile", element: <DoctorProfile /> },
-          {path:"doctor/profile/edit", element: <EditDoctorProfile/>},
+          { path: "doctors/profile/create", element: <CreateDoctorProfile /> },
+          {path:"doctors/profile/edit", element: <EditDoctorProfile/>},
           {
             path: "patient/profile/complete",
             element: <PatientProfileComplete />,

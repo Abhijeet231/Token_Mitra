@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { updateDoctorProfile } from '@/services/doctor.service'
-import { editDoctorProfileSchema } from '@/validations/editDoctor.schema'
+import { editDoctorProfileSchema,  } from '@/validations/editDoctor.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+
 
 const EditDoctorProfile = () => {
   const navigate = useNavigate();

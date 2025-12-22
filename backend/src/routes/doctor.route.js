@@ -2,7 +2,7 @@ import {Router} from "express";
 import { getAllDoctors, getDoctor, getLoggedInDoctor, updateDoctorProfile, createDoctorProfile } from "../controllers/doctor.controller.js";
 import verifyJWT from "../middleware/auth.middleware.js";
 import validate from "../middleware/validate.middleware.js";
-import { updateDocProfileSchema } from "../validations/doctor.validation.js";
+import { updateDocProfileSchema, createDoctorProfileSchema } from "../validations/doctor.validation.js";
 import doctorOnly from "../middleware/doctorOnly.js";
 import {upload} from "../middleware/multer.middleware.js" 
 
@@ -20,7 +20,7 @@ router.get("/me", verifyJWT, getLoggedInDoctor);
 router.get("/:id", getDoctor); // public route
 
 // Create Doctor Profile
-router.post("/me", verifyJWT, upload.single("profileImage"), createDoctorProfile)
+router.post("/me", verifyJWT, upload.single("profileImage"), validate(createDoctorProfileSchema), createDoctorProfile)
 
 // Update doctor (private route)
 router.patch("/me", verifyJWT, upload.single("profileImage"),validate(updateDocProfileSchema), updateDoctorProfile);

@@ -18,7 +18,7 @@ const DoctorProfile = () => {
       try {
         const res = await getLoggedInDoctor();
         if (res.data.needsProfile) {
-          navigate("/doctor/profile/edit", { replace: true });
+          navigate("/doctors/profile/create", { replace: true });
           toast.info("Complete Your Profile!")
           return;
         }
@@ -102,7 +102,7 @@ const DoctorProfile = () => {
 
  {/* Buttons*/}
  <div className="flex justify-center gap-4 mt-8">
- <Link to='/doctor/profile/edit' className="flex items-center gap-2 px-5 py-2 rounded-lg bg-green-500 text-white font-medium shadow-md hover:bg-green-600 transition cursor-pointer"> 
+ <Link to='/doctors/profile/edit' className="flex items-center gap-2 px-5 py-2 rounded-lg bg-green-500 text-white font-medium shadow-md hover:bg-green-600 transition cursor-pointer"> 
  Edit Profile
  </Link>
 

@@ -150,9 +150,16 @@ if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
         } catch (error) {
             console.log("cloudinary cleanup failed:", error);
         }
+     }
     }
+    
+    // Save doctor when no image is uploaded 
+        await doctor.save({validateBeforeSave: true});
+    
 
   return res
     .status(200)
-    .json(new ApiResponse(200, doctor, "Doctor Profile Updated Successfully"));
+    .json(new ApiResponse(200, doctor, "Doctor Profile Updated Successfully"))
+
 });
+  

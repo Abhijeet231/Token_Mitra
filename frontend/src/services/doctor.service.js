@@ -10,7 +10,12 @@ export const getLoggedInDoctor = () => {
     return api.get("/doctors/me");
 }
 
-// Update/Create Doctor Profile
+// Create Doctor Profile
+export const createDocProfile = (data) => {
+    return api.post("/doctors/me", data);
+}
+
+// Update Doctor Profile
 export const updateDoctorProfile = (data) => {
     return api.patch("/doctors/me", data);
 }
