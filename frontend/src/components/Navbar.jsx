@@ -38,7 +38,7 @@ const Navbar = () => {
   }else if (user?.role === "doctor") {
     navItem = {
       label: "Dashboard",
-      path: "/doctors/dashboard"
+      path: "/doctors/profile"
     };
   }else {
     navItem = {

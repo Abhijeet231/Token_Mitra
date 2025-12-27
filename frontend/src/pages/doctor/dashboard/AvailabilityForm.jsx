@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Calendar from './Calendar'
+import Calendar from '../../../components/doctor/Calendar'
 import { toast } from 'react-toastify'
 import { createAvailability } from '@/services/docAvailability'
 
@@ -9,6 +9,15 @@ const AvailabilityForm = () => {
   const [endTime, setEndTime] = useState('')
   const [maxPatients, setMaxPatients] = useState('')
   const [loading, setLoading] = useState(false)
+
+
+  // Reset form function
+  const resetForm = () => {
+    setSelectedDate(null)
+    setStartTime("")
+    setEndTime("")
+    setMaxPatients("")
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,11 +45,14 @@ const AvailabilityForm = () => {
       setLoading(true)
       await createAvailability(payload)
       toast.success('Availability added successfully')
+      resetForm()
     } catch (error) {
       toast.error('Failed to add availability')
     } finally {
       setLoading(false)
+      
     }
+    
   }
 
   return (
