@@ -22,16 +22,12 @@ useEffect(() => {
 }, [])
 
   return (
-    <div><h2>MY SLots:</h2>
+    <div>
+      <h2 className="mb-2 text-2xl font-semibold text-gray-800">My Slots</h2>
      {slots.map ((el) => 
         
-
-
-
-// ... in your component
-
 <div key={el._id} className="mb-4"> 
-  <div className="border-2 border-amber-400 p-4 rounded-xl shadow-md hover:shadow-xl transition-all duration-200 hover:border-amber-500  hover:scale-[1.03] hover:border-3">
+  <div className="border-2 border-amber-400 p-4 rounded-xl shadow-md hover:shadow-xl transition-all duration-200 hover:border-amber-500  hover:scale-[1.03] ">
     
     {/* Date */}
     <div className="flex items-center gap-3 mb-3 pb-3 border-b border-amber-200">

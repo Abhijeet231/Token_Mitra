@@ -56,7 +56,7 @@ const AvailabilityForm = () => {
   }
 
   return (
-    <div className="w-full rounded-xl border border-amber-200  p-5 sm:p-6 lg:p-8 shadow-lg">
+    <div className="w-full rounded-xl border border-amber-200  p-5 sm:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-amber-400 ">
       <h3 className="text-lg sm:text-xl font-bold text-stone-900 mb-4 sm:mb-6">
         Create Availability
       </h3>

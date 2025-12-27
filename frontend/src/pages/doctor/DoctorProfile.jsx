@@ -46,7 +46,7 @@ const DoctorProfile = () => {
   return (
     <div className="max-w-5xl mx-auto p-6">
       {/* Profile Card*/}
-      <div className="border border-amber-200  rounded-2xl shadow-lg p-8 text-center  ">
+      <div className="border border-amber-200 rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 hover:border-amber-500 hover:scale-105">
         {/* Profile Image*/}
         <div className="flex justify-center mb-6">
           <div className="w-28 h-28 rounded-full bg-linear-to-r from-blue-400 to bg-purple-500 flex items-center justify-center text-4xl text-white shadow-md">

@@ -3,7 +3,9 @@ import DoctorSidebar from "./dashboard/DoctorSidebar"
 
 const DoctorDashboard = () => {
   return (
-     <div className="min-h-screen flex flex-row ">
+     <div className=" flex flex-row 
+    
+     ">
       {/* Sidebar - 30% */}
       <aside className="w-[30%] max-w-xs bg-white border-r">
         <DoctorSidebar />
