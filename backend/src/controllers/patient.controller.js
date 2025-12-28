@@ -19,31 +19,40 @@ export const getPatient = asyncHandler(async(req,res) => {
     return res.status(200).json(new ApiResponse(200, patient, "Patient Profile fetched"));
 });
 
-
-
-// Update / Create  Patient profile (create patient model)
-export const updatePatientProfile = asyncHandler(async(req,res) => {
+// Create  Patient profile (create patient model)
+export const createPatientProfile = asyncHandler(async(req,res) => {
        
     let patient = await Patient.findOne({userId: req.user._id});
-    if(!patient) {
+    if(patient) {
+        throw new ApiError(400, "Patient profile already exists.");
+    }
+
+  
         // Create patient profile 
         const newPatientProfile = await Patient.create({
-            userId: req.user._id,
             ...req.body,
+            userId: req.user._id,
         });
 
-        return res.status(200).json(new ApiResponse(200, newPatientProfile, "Patient profile created successfully."))
-    }
+        return res.status(201).json(new ApiResponse(201, newPatientProfile, "Patient profile created successfully."))
     
+});
+
+
+// Update Patient Profile
+export const updatePatientProfile = asyncHandler(async(req,res) => {
+    
+   let patient = await Patient.findOne({userId: req.user._id});
+   if(!patient) {
+    throw new ApiError(404, "Patient Not found!")
+   }
+        
     // Update existing profile
-    const {age, gender} = req.body;
-    if(age && age !== undefined) patient.age = age;
-    if(gender && gender !== undefined) patient.gender = gender;
+    Object.assign(patient, req.body); 
 
     await patient.save();
 
     return res.status(200).json(new ApiResponse(200, patient, "Patient profile updated successfully."))
-
-});
+})
 
 

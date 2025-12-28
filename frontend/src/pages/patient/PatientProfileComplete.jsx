@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { updatePatientDetails } from "@/services/patient.service";
+import { createPatientProfile } from "@/services/patient.service";
 
 const PatientProfileComplete = () => {
   const navigate = useNavigate();
@@ -15,12 +15,12 @@ const PatientProfileComplete = () => {
 
   const onSubmit = async (data) => {
     try {
-      await updatePatientDetails(data);
-      toast.success("Profile Updated successfully");
+      await createPatientProfile(data);
+      toast.success("Profile Created successfully");
       navigate("/patient/profile", { replace: true });
     } catch (error) {
-      toast.error("Error while updating profile");
-      console.error("Profile Update Error:", error);
+      toast.error("Error while creating new profile");
+      console.error("Patient Profile CReaion Error:", error);
     }
   };
 

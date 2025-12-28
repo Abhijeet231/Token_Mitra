@@ -67,7 +67,7 @@ const PatientProfile = () => {
             <button
               className="mt-3 px-6 py-2.5 font-semibold rounded-lg bg-linear-to-r from-amber-500 to-orange-500 text-white cursor-pointer m-3
   hover:from-amber-600 hover:to-orange-600 transition-all shadow-md hover:shadow-lg transform hover:scale-105"
-              onClick={() => navigate("/patient/profile/complete")}
+              onClick={() => navigate("/patient/profile/edit")}
             >
               Edit
             </button>

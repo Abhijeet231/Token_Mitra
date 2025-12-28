@@ -27,6 +27,7 @@ import CreateDoctorProfile from "@/pages/doctor/CreateDoctorProfile";
 import AvailabilityForm from "@/pages/doctor/dashboard/AvailabilityForm";
 import ScheduledAppointments from "@/pages/doctor/ScheduledAppointments";
 import AvailableSlots from "@/pages/doctor/AvailableSlots";
+import EditPatientProfile from "@/pages/patient/EditPatientProfile";
 
 const router = createBrowserRouter([
   {
@@ -46,33 +47,28 @@ const router = createBrowserRouter([
           { path: "patient", element: <PatientHome /> },
           { path: "patient/profile", element: <PatientProfile /> },
           { path: "patient/booking", element: <PatientBookings /> },
-           {
-            path: "patient/profile/complete",
-            element: <PatientProfileComplete />,
-          },
+          { path: "patient/profile/complete", element: <PatientProfileComplete />},
+          { path: "patient/profile/edit", element: <EditPatientProfile />},
 
           // Doctor Dashboard with nested routes
-           {
+          {
             path: "doctors",
             element: <DoctorDashboard />,
             children: [
               { path: "profile", element: <DoctorProfile /> },
               { path: "open-bookings", element: <AvailabilityForm /> },
-              { path: "scheduled-apppointments", element: <ScheduledAppointments /> },
+              {
+                path: "scheduled-apppointments",
+                element: <ScheduledAppointments />,
+              },
               { path: "mySlots", element: <AvailableSlots /> },
             ],
           },
 
-
-         // Separate doctor routes (outside dashboard)
+          // Separate doctor routes (outside dashboard)
           { path: "doctors/profile/create", element: <CreateDoctorProfile /> },
-        
+
           { path: "doctors/profile/edit", element: <EditDoctorProfile /> },
-
-          
-
-
-         
         ],
       },
 

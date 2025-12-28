@@ -36,10 +36,10 @@ const Register = () => {
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center  px-4 py-12'>
+    <div className='min-h-screen flex items-center justify-center  px-4 py-2'>
       <div className='w-full max-w-md'>
-        <div className='text-center mb-8'>
-          <h2 className='font-bold text-4xl bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-3'>Create Account</h2>
+        <div className='text-center mb-4'>
+          <h2 className='font-bold text-4xl bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-2'>Create Account</h2>
           <p className='text-gray-600 text-lg'>Join us today</p>
         </div>
 

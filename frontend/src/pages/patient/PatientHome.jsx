@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, Star, MapPin, Clock, Award, ChevronDown, ChevronUp } from 'lucide-react';
 import Footer from '@/components/Footer';
 
+
 const doctors = [
   {
     id: 1,
@@ -213,6 +214,7 @@ const PatientHomePage = () => {
             )}
           </button>
         </div>
+      
       </div>
 
       {/* Footer */}
