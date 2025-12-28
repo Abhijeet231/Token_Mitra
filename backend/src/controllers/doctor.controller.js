@@ -9,7 +9,7 @@ import {
 
 // Get all Doctors (public)
 export const getAllDoctors = asyncHandler(async (req, res) => {
-  const allDocs = await Doctor.find();
+  const allDocs = await Doctor.find().populate("userId", "fullName email");
   if (!allDocs) {
     throw new ApiError(404, "No Doctors Found");
   }
@@ -27,7 +27,7 @@ export const getAllDoctors = asyncHandler(async (req, res) => {
 export const getDoctor = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const doctor = await Doctor.findById(id);
+  const doctor = await Doctor.findById(id).populate("userId", "fullName email");
   if (!doctor) throw new ApiError(404, "Doctor Not Found!");
 
   return res
