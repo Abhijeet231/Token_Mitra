@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Calendar from '../../../components/doctor/Calendar'
+import Calendar from '@/components/doctor/Calendar'
 import { toast } from 'react-toastify'
-import { createAvailability } from '@/services/docAvailability'
+import { createAvailability } from '@/services/docAvailability.service'
 
 const AvailabilityForm = () => {
   const [selectedDate, setSelectedDate] = useState(null)
