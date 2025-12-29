@@ -8,9 +8,6 @@ import Doctor from "../models/doctor.model.js";
 export const addAvailability = asyncHandler(async (req, res) => {
   // extracting the data from request body
   const { date, startTime, endTime, maxPatients } = req.body;
-  if (!date || !startTime || !endTime || !maxPatients) {
-    throw new ApiError(400, "All fields are required");
-  }
 
   //Creating model
   const availability = await DocAvailability.create({
@@ -72,6 +69,12 @@ export const getDoctorAvailability = asyncHandler(async (req, res) => {
     doctorId: doctor.userId,
     isActive: true,
   }).sort({ date: 1 });
+
+  if( slots.length === 0 ) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, [], "No available slots found"));
+  }
 
   return res
     .status(200)

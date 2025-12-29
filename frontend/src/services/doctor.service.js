@@ -21,6 +21,6 @@ export const updateDoctorProfile = (data) => {
 }
 
 // Get Specific Doctor
-export const getSpecificDoctor = (doctorId) => {
-    return api.get(`/doctors/${doctorId}`)
+export const getSpecificDoctor = (id) => {
+    return api.get(`/doctors/${id}`)
 }

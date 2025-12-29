@@ -16,14 +16,16 @@ router.get("/all", getAllDoctors); // public route
 // Get loggedIn doctor (private route)
 router.get("/me", verifyJWT, getLoggedInDoctor);
 
-// Get specific doctor
-router.get("/:id", getDoctor); // public route
 
 // Create Doctor Profile
 router.post("/me", verifyJWT, upload.single("profileImage"), validate(createDoctorProfileSchema), createDoctorProfile)
 
 // Update doctor (private route)
 router.patch("/me", verifyJWT, upload.single("profileImage"),validate(updateDocProfileSchema), updateDoctorProfile);
+
+
+// Get specific doctor
+router.get("/:id", getDoctor); // public route
 
 
 export default router;

@@ -48,6 +48,7 @@ const AvailabilityForm = () => {
       resetForm()
     } catch (error) {
       toast.error('Failed to add availability')
+      console.log("Failed to add availability: ", error)
     } finally {
       setLoading(false)
       

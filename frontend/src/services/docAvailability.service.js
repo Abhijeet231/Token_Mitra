@@ -1,29 +1,34 @@
 import api from "./api";
 
 // Create Availability
-export const createAvailability = (data) => {
-    return api.post("/doctors/me/availability", data)
-};
+export const createAvailability = (credentials) => {
+    return api.post("/doctor/me/availability", credentials)
+};                                   
 
 // Get Availability for doctor
 export const getMyAvailability = () => {
-    return api.get("/doctors/me/availability")
+    return api.get("/doctor/me/availability")
 };
 
 // Get Availability for patients
-export const getDoctorsAvailability = () => {
-    return api.get(`/${id}/availability`)
-}
+export const getDoctorsAvailability = (id) => {
+    return api.get(`/doctor/${id}/availability`)
+};
+
+// UPdate available slots for doctor
+export const updateAvailableSlots = (id , credentials) => {
+    return api.patch(`/doctor/me/availability/${id}`, credentials)
+};
 
 // Toggle Availability (docs only)
-export const toggleAvailabilityStatus = (data) => {
-      return api.patch(`/me/availability/${id}/toggle`, data)
-}
+export const toggleAvailabilityStatus = (id, data) => {
+      return api.patch(`/doctor/me/availability/${id}/toggle`, data)
+};
 
 // Delete Availability (DOcs only)
-export const deleteAvailability = () => {
-    return api.delete(`/me/availability/${id}`)
-}
+export const deleteAvailability = (id) => {
+    return api.delete(`/doctor/me/availability/${id}`)
+};
 
 
 

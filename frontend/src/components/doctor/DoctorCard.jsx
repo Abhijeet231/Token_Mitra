@@ -30,18 +30,18 @@ const DoctorCard = ({ doctor}) => {
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Award className="w-4 h-4 text-amber-500" />
-            <span>{doctor?.experience} experience</span>
+            <span>{doctor?.experience} Years of experience</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Clock className="w-4 h-4 text-amber-500" />
-            <span className="text-green-600 font-medium">{doctor?.isAvailable}</span>
+            <span className="text-green-600 font-medium">Book a {doctor?.slotDuration}-minute slot </span>
           </div>
         </div>
         
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <span className="text-sm text-gray-500">{doctor?.reviews} reviews</span>
           <Link
-           to= "/patient/booking"
+           to= {`/doctors/${doctor?._id}`}
           className="px-4 py-2 bg-linear-to-r from-amber-500 to-orange-500 text-white rounded-lg font-medium hover:from-amber-600 hover:to-orange-600 transition-all cursor-pointer">
             Book Now
           </Link>

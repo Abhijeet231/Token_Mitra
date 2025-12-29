@@ -24,6 +24,10 @@ export const createBookings = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Availability ID is required");
   }
 
+  if(!issue) {
+    throw new ApiError(400, "Issue is required")
+  }
+
   // Get the specific slot
   const slot = await DocAvailability.findById(availabilityId);
   if (!slot) {
@@ -50,7 +54,7 @@ export const createBookings = asyncHandler(async (req, res) => {
 
   // Check duplicate booking by same user
   const existingBooking = await Booking.findOne({
-    patientId: req.user._id,
+    patientId: patient.userId, // req.user._id
     availabilityId: availabilityId,
     status: { $in: ["pending"] },
   });
@@ -62,9 +66,31 @@ export const createBookings = asyncHandler(async (req, res) => {
   // Calculate next token number
   const tokenNumber = slot.bookedPatientCount + 1;
 
+  // Atomic Update
+  const updatedSlot = await DocAvailability.findOneAndUpdate(
+    {
+      availabilityId: availabilityId,
+      bookedPatientCount: {$lt: slot.maxPatients},
+      isActive: true
+    },
+    {
+      $inc: {bookedPatientCount: 1},
+      $set: {
+        isActive: slot.bookedPatientCount + 1 >= slot.maxPatients ? false : true
+      }
+    },
+    {new: true} // Return updated document
+  );
+
+  // if update failed then slot was taken by someone else
+    if(!updatedSlot) {
+      throw new ApiError (400, "Slot is no longer available or has been fully booked")
+    }
+
+
   // Create booking
   const newBooking = await Booking.create({
-    patientId: req.user._id,
+    patientId: patient.userId, // req.user._id
     doctorId: slot.doctorId,
     availabilityId,
     issue,
@@ -74,14 +100,7 @@ export const createBookings = asyncHandler(async (req, res) => {
     status: "pending",
   });
 
-  // Update booking count
-  slot.bookedPatientCount += 1;
 
-  if (slot.bookedPatientCount >= slot.maxPatients) {
-    slot.isActive = false;
-  }
-
-  await slot.save();
 
   // fetching extra data for sending in email
   const patientForEmailReq = await User.findById(req.user._id);

@@ -11,11 +11,10 @@ const router = Router();
 // Creating availability (protected route)
 router.post("/me/availability", verifyJWT, doctorOnly, validate(addAvailabilitySchema), addAvailability  );
 
-// Get availability (protected route)
+// Get availability (protected route) doctor only
 router.get("/me/availability", verifyJWT, doctorOnly, getMyAvailability );
 
-// Get available slots for patients 
-router.get("/:id/availability", getDoctorAvailability);
+
 
 // Update available slots (protected route > doctor only)
 router.patch("/me/availability/:availabilityId", verifyJWT, doctorOnly, validate(updateAvailabilitySchema), updateAvailability);
@@ -26,6 +25,8 @@ router.patch("/me/availability/:availabilityId/toggle", verifyJWT, doctorOnly, t
 // Delete available slots (protected route > doctor only)
 router.delete("/me/availability/:availabilityId", verifyJWT, doctorOnly, deleteAvailability);
 
+// Get available slots for patients 
+router.get("/:doctorId/availability", getDoctorAvailability);
 
 
 
