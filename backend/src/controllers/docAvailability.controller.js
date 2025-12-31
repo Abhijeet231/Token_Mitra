@@ -59,7 +59,7 @@ export const getMyAvailability = asyncHandler(async (req, res) => {
 // fetching available slots to patient (public)
 export const getDoctorAvailability = asyncHandler(async (req, res) => {
   // Finding the doctor
-  const doctor = await Doctor.findById(req.params.id);
+  const doctor = await Doctor.findById(req.params.doctorId);
   if (!doctor) {
     throw new ApiError(404, "Doctor not found!");
   }
@@ -70,11 +70,7 @@ export const getDoctorAvailability = asyncHandler(async (req, res) => {
     isActive: true,
   }).sort({ date: 1 });
 
-  if( slots.length === 0 ) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, [], "No available slots found"));
-  }
+
 
   return res
     .status(200)
