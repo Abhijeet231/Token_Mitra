@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const DoctorCard = ({ doctor}) => {
   return (
     <div
-      className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow  overflow-hidden group"
+      className="bg-white rounded-2xl shadow-md hover:shadow-xl  overflow-hidden group hover:translate-y-1 transition-all duration-300"
     >
       <div className="relative h-48 overflow-hidden bg-linear-to-br from-amber-100 to-orange-100">
         <img 
