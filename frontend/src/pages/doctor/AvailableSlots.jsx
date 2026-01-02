@@ -22,7 +22,7 @@ useEffect(() => {
 }, [])
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto p6">
       <h2 className="mb-2 text-2xl font-semibold text-gray-800">My Slots</h2>
      {slots.map ((el) => 
         
