@@ -69,7 +69,7 @@ export const createBookings = asyncHandler(async (req, res) => {
   // Atomic Update
   const updatedSlot = await DocAvailability.findOneAndUpdate(
     {
-      availabilityId: availabilityId,
+      _id: availabilityId,
       bookedPatientCount: {$lt: slot.maxPatients},
       isActive: true
     },
