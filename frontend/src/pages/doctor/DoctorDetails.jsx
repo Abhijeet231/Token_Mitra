@@ -68,8 +68,9 @@ const DoctorDetails = () => {
     setIsModalOpen(false);
     // OPtional refres slots if needed 
   } catch (error) {
-    toast.error("Failed to book appointment!");
-    throw error;
+     const errorMessage = error.response?.data?.message || error.message || "Something went wrong";
+    toast.error(errorMessage);
+    console.log("Error while creating Booking: ", errorMessage)
   }
  }
 

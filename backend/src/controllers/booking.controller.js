@@ -54,7 +54,7 @@ export const createBookings = asyncHandler(async (req, res) => {
 
   // Check duplicate booking by same user
   const existingBooking = await Booking.findOne({
-    patientId: patient.userId, // req.user._id
+    patientId: req.user._id, // patient.userId
     availabilityId: availabilityId,
     status: { $in: ["pending"] },
   });
