@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getPatientDetails } from "@/services/patient.service";
+import { getBookingsForPatient } from "@/services/booking.service";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { CalendarDays } from "lucide-react";
+import {  CalendarDays, LoaderCircle  } from "lucide-react";
+import MyBookingCard from "@/components/patient/MyBookingCard";
 
 const PatientProfile = () => {
   const navigate = useNavigate();
 
   const [patient, setPatient] = useState(null);
+  const [myBookings, setMyBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadBooking, setLoadBooking] = useState(false);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -32,11 +36,32 @@ const PatientProfile = () => {
     fetchPatient();
   }, [navigate]);
 
+  const getMyBookings = useCallback(async () => {
+    try {
+      setLoadBooking(true);
+      let res = await getBookingsForPatient();
+      setMyBookings(res.data.data);
+      console.log("My Bookings with Doctors:", res.data);
+    } catch (error) {
+      console.log("Error while fetching patient bookings with doctors:", error);
+    } finally {
+      setLoadBooking(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getMyBookings();
+  }, []);
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-gray-600">Loading profile...</div>
-      </div>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+  <h3 className="text-center font-semibold text-2xl text-gray-700 animate-pulse">
+    Loading...
+  </h3>
+
+  <LoaderCircle className="w-10 h-10 text-amber-500 animate-spin" />
+</div>
     );
   }
 
@@ -48,7 +73,7 @@ const PatientProfile = () => {
         {/* Profile Card */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-amber-200  hover:shadow-xl">
           <div className="bg-linear-to-r from-amber-500/70 to-orange-500/70 h-24"></div>
-          
+
           <div className="px-8 pb-8">
             <div className="flex flex-col items-center -mt-12">
               {/* Profile Image with First Letter */}
@@ -61,17 +86,27 @@ const PatientProfile = () => {
               <h2 className="mt-4 text-2xl font-semibold text-gray-900">
                 {patient.userId.fullName}
               </h2>
-              <p className="text-gray-500 text-sm mt-1">{patient.userId.email}</p>
+              <p className="text-gray-500 text-sm mt-1">
+                {patient.userId.email}
+              </p>
 
               <div className="mt-6 flex gap-12 text-center">
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-500 font-medium">Age</p>
-                  <p className="mt-1 text-lg font-semibold text-gray-900">{patient.age}</p>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 font-medium">
+                    Age
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-gray-900">
+                    {patient.age}
+                  </p>
                 </div>
                 <div className="border-l border-gray-200"></div>
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-500 font-medium">Gender</p>
-                  <p className="mt-1 text-lg font-semibold text-gray-900 capitalize">{patient.gender}</p>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 font-medium">
+                    Gender
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-gray-900 capitalize">
+                    {patient.gender}
+                  </p>
                 </div>
               </div>
 
@@ -96,27 +131,46 @@ const PatientProfile = () => {
         </div>
 
         {/* Bookings Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-          <div className="flex items-center gap-2 mb-6">
-            <CalendarDays className="w-5 h-5 text-amber-600" />
-            <h3 className="text-lg font-semibold text-gray-900">My Bookings</h3>
-          </div>
-
-          {/* Empty state */}
-          <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-              <CalendarDays className="w-8 h-8 text-gray-400" />
+        {myBookings.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <CalendarDays className="w-5 h-5 text-amber-600" />
+              <h3 className="text-lg font-semibold text-gray-900">
+                My Bookings
+              </h3>
             </div>
-            <p className="text-gray-600 mb-4">You don't have any bookings yet.</p>
-            <button
-              onClick={() => navigate("/patient")}
-              className="px-6 py-2.5 rounded-lg bg-amber-600 text-white font-medium
+
+            {/* Empty state */}
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <CalendarDays className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-600 mb-4">
+                You don't have any bookings yet.
+              </p>
+              <button
+                onClick={() => navigate("/patient")}
+                className="px-6 py-2.5 rounded-lg bg-amber-600 text-white font-medium
                 hover:bg-amber-700 transition shadow-sm hover:shadow"
-            >
-              Book an Appointment
-            </button>
+              >
+                Book an Appointment
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <CalendarDays className="w-5 h-5 text-amber-600" />
+              <h3 className="text-lg font-semibold text-gray-900">
+                My Bookings
+              </h3>
+            </div>
+
+            {myBookings.map((booking) => (
+              <MyBookingCard booking = {booking} key={booking._id}/>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
