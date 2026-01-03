@@ -11,6 +11,8 @@ import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 
+import About from "@/pages/About";
+
 import PatientHome from "@/pages/patient/PatientHome";
 import PatientProfile from "@/pages/patient/PatientProfile";
 import PatientBookings from "@/pages/patient/PatientBookings";
@@ -38,6 +40,7 @@ const router = createBrowserRouter([
       { index: true, element: <Landing /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      {path: "about", element:<About/>},
       { path: "doctors/:id", element: <DoctorDetails /> },
 
       // Protected Routes
