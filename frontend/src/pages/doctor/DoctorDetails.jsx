@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { getSpecificDoctor } from "@/services/doctor.service.js";
 import { getDoctorsAvailability } from "@/services/docAvailability.service";
-import { LoaderCircle, MessageSquareMore} from "lucide-react";
+import { LoaderCircle} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SlotCard from "@/components/doctor/SlotCard";
 import DoctorDetailCard from "@/components/doctor/DoctorDetailCard";
@@ -22,6 +22,12 @@ const DoctorDetails = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+
+  // REfetching Slots 
+  const refetchSlots = async() => {
+    const res = await getDoctorsAvailability(id);
+    setSlots(res.data?.data || []);
+  }
 
   // Fetching Specific Doctor
   useEffect(() => {
@@ -47,6 +53,8 @@ const DoctorDetails = () => {
     if (id) fetchData();
   }, [id]);
 
+
+
 // Handle Book Slot Click
  const handleBookSlotClick = (slot) => {
   setSelectedSlot(slot);
@@ -61,12 +69,14 @@ const DoctorDetails = () => {
       issue: issue
     }
    const response = await createBooking(bookingData);
-    console.log("Booking data:", {availabilityId: slotId, issue: issue});
     console.log("Booking Response:", response.data)
 
     toast.success("Appointment Booked Successfully!");
     setIsModalOpen(false);
-    // OPtional refres slots if needed 
+
+    // refetching slots 
+    refetchSlots()
+     
   } catch (error) {
      const errorMessage = error.response?.data?.message || error.message || "Something went wrong";
     toast.error(errorMessage);
@@ -115,6 +125,7 @@ if(loading) {
         slot={ selectedSlot}
         doctor={doctor}
         onSubmit={handleBookingSubmit}
+        
       />
 
     

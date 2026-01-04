@@ -9,7 +9,8 @@ const BookingModal = (
     onClose,
     slot,
     doctor,
-    onSubmit
+    onSubmit,
+    
   }
 ) => {
 
@@ -30,6 +31,7 @@ const BookingModal = (
     try {
       await onSubmit(slot._id, issue);
       setIssue("");
+     
     } catch (error) {
       console.log("Booking Error:", error)
     }finally{
@@ -120,6 +122,7 @@ const BookingModal = (
               <button
                 type="submit"
                 disabled={isSubmitting}
+                
                 className={`flex-1 px-4 py-3 font-semibold rounded-lg transition-all ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed text-gray-200'
