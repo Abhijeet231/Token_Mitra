@@ -1,6 +1,30 @@
 import { Clock, Stethoscope, Calendar } from "lucide-react";
+import { cancelBooking } from "@/services/booking.service";
+import { toast } from "react-toastify";
 
-const MyBookingCard = ({ booking }) => {
+
+
+const MyBookingCard = ({ booking, onCancelBooking }) => {
+
+  const handleCancelBooking = async () => {
+           
+     if(booking?.status === "cancelled") {
+      toast.info("Booking Already Cancelled!")
+     }
+
+    try {
+      await cancelBooking(booking._id);
+      toast.success("Booking cancelled successfully.");
+      onCancelBooking(); // refetch bookings after cancellation
+
+    } catch (error) {
+      toast.error("Failed to cancel booking. Please try again.");
+      console.error("Error cancelling booking:", error);
+    }
+  };
+
+
+
   return (
     <>
       <div className="border border-amber-200 shadow-md p-5 mt-3 mb-4 hover:border-amber-300 bg-amber-50/30 hover:shadow-lg hover:scale-105  transition-all duration-200 rounded-xl">
@@ -58,7 +82,10 @@ const MyBookingCard = ({ booking }) => {
             </span>
 
             <span>
-              <button className="bg-red-600 px-3 py-0.5 rounded-sm shadow-sm text-white font-semibold cursor-pointer hover:bg-red-700 ">
+              <button
+              disabled={booking?.status === "cancelled"}
+              onClick={handleCancelBooking}
+              className={`px-3 py-0.5 rounded-sm shadow-sm text-white font-semibold cursor-pointer  ${booking.status === "cancelled" ? "bg-gray-600 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"}`}>
                 Cancel Booking
               </button>
             </span>

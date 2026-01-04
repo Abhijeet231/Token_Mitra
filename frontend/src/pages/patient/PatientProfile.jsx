@@ -167,7 +167,9 @@ const PatientProfile = () => {
             </div>
 
             {myBookings.map((booking) => (
-              <MyBookingCard booking = {booking} key={booking._id}/>
+              <MyBookingCard 
+               onCancelBooking = {getMyBookings}
+              booking = {booking} key={booking._id}/>
             ))}
           </div>
         )}

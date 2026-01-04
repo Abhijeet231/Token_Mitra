@@ -4,7 +4,7 @@ import { Code, Database, Mail, Github, Briefcase, GraduationCap, Lightbulb } fro
 export default function About() {
   const frontendSkills = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'];
   const backendSkills = ['Node.js', 'MongoDB', 'REST APIs'];
-  const tools = ['Git & GitHub', 'Resend', 'Authentication & RBAC'];
+  const tools = ['Git & GitHub', 'Resend', 'JWT Authentication & RBAC', "Mapbox"];
 
   return (
     <div className="min-h-screen bg-linear-to-br from-amber-50 via-white to-orange-50">

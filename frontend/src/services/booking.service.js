@@ -16,8 +16,8 @@ export const getBookingsForDoctor = () => {
 }
 
 // Cancel Booking (Paitent Only)
-export const cancelBooking = (bookingId, credentials) => {
-    return api.patch(`/bookings/${bookingId}/cancel`, credentials);
+export const cancelBooking = (bookingId) => {
+    return api.patch(`/bookings/${bookingId}/cancel`);
 }
 
 // Update Booking Status (Doctor Only)
