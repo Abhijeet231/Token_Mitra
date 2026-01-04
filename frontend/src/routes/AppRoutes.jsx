@@ -30,6 +30,7 @@ import AvailabilityForm from "@/pages/doctor/dashboard/AvailabilityForm";
 import ScheduledAppointments from "@/pages/doctor/ScheduledAppointments";
 import AvailableSlots from "@/pages/doctor/AvailableSlots";
 import EditPatientProfile from "@/pages/patient/EditPatientProfile";
+import Contact from "@/pages/Contact";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       {path: "about", element:<About/>},
+      {path: "contact", element:<Contact/>},
       { path: "doctors/:id", element: <DoctorDetails /> },
 
       // Protected Routes
