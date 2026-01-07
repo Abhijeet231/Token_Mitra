@@ -25,7 +25,7 @@ const PatientProfileComplete = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-green-50 via-emerald-50 to-lime-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-amber-50 via-orange-50 to-lime-50 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-green-100 p-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
           Complete Your Profile
@@ -47,7 +47,7 @@ const PatientProfileComplete = () => {
               type="number"
               id="age"
               className="w-full px-4 py-3 rounded-lg border border-gray-300
-                         focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500
+                         focus:border-amber-500 focus:ring-2 focus:ring-amber-500
                          focus:ring-opacity-20 outline-none transition"
               {...register("age", {
                 required: "Age is required",
@@ -75,7 +75,7 @@ const PatientProfileComplete = () => {
             <select
               id="gender"
               className="w-full px-4 py-3 rounded-lg border border-gray-300
-                         focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500
+                         focus:border-amber-500 focus:ring-2 focus:ring-amber-500
                          focus:ring-opacity-20 outline-none transition bg-white"
               {...register("gender", {
                 required: "Gender is required",
@@ -98,8 +98,8 @@ const PatientProfileComplete = () => {
             type="submit"
             disabled={isSubmitting}
             className="w-full mt-6 px-6 py-3 rounded-lg text-white font-semibold
-                       bg-linear-to-r from-green-600 to-emerald-600
-                       hover:from-green-700 hover:to-emerald-700
+                       bg-linear-to-r from-amber-600 to-amber-600
+                       hover:from-amber-700 hover:to-amber-700
                        transition disabled:opacity-50 disabled:cursor-not-allowed
                        shadow-md hover:shadow-lg"
           >

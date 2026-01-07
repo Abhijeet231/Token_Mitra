@@ -1,11 +1,14 @@
-import { Outlet } from "react-router-dom"
-import DoctorSidebar from "./dashboard/DoctorSidebar"
+import { Outlet } from "react-router-dom";
+import DoctorSidebar from "./dashboard/DoctorSidebar";
+import { Suspense } from "react";
 
 const DoctorDashboard = () => {
   return (
-     <div className=" flex flex-row 
+    <div
+      className=" flex flex-row 
     
-     ">
+     "
+    >
       {/* Sidebar - 30% */}
       <aside className="w-[30%] max-w-xs bg-white border-r">
         <DoctorSidebar />
@@ -13,10 +16,12 @@ const DoctorDashboard = () => {
 
       {/* Main Content - 70% */}
       <main className="flex-1 p-6 overflow-y-auto">
-        <Outlet />
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default DoctorDashboard
+export default DoctorDashboard;

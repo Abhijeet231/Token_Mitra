@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "@/App";
+import { lazy } from "react";
 
 // Route guards
 import ProtectedRoute from "./ProtectedRoute";
@@ -19,16 +20,18 @@ import PatientBookings from "@/pages/patient/PatientBookings";
 import PatientProfileComplete from "@/pages/patient/PatientProfileComplete";
 
 import DoctorDashboard from "@/pages/doctor/DoctorDashboard";
-import DoctorProfile from "@/pages/doctor/DoctorProfile";
-import DoctorDetails from "@/pages/doctor/DoctorDetails";
 
-import Unauthorized from "@/pages/Unauthorized ";
+const DoctorProfile = lazy(() => import('@/pages/doctor/DoctorProfile'))
+const ScheduledAppointments = lazy(() => import ('@/pages/doctor/ScheduledAppointments'))
+const AvailabilityForm = lazy(() => import('@/pages/doctor/dashboard/AvailabilityForm'))
+const AvailableSlots = lazy(() => import('@/pages/doctor/AvailableSlots'))
+import DoctorDetails from "@/pages/doctor/DoctorDetails"
+
+
+import Unauthorized from "@/pages/Unauthorized";
 import NotFound from "@/pages/NotFound";
 import EditDoctorProfile from "@/pages/doctor/EditDoctorProfile";
 import CreateDoctorProfile from "@/pages/doctor/CreateDoctorProfile";
-import AvailabilityForm from "@/pages/doctor/dashboard/AvailabilityForm";
-import ScheduledAppointments from "@/pages/doctor/ScheduledAppointments";
-import AvailableSlots from "@/pages/doctor/AvailableSlots";
 import EditPatientProfile from "@/pages/patient/EditPatientProfile";
 import Contact from "@/pages/Contact";
 
