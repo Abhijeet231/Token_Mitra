@@ -20,18 +20,18 @@ const LandingPage = () => {
   
   return (
 
-    <div className="w-full">
+    <div className="w-full bg-linear-to-br from-amber-50 via-white to-orange-50">
 
       {/* ================= HERO SECTION ================= */}
-      <section className="bg-linear-to-b from-emerald-50 to-white">
+      <section>
         <div className="max-w-7xl mx-auto px-6 py-28 text-center">
-          <div className="inline-block px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6">
+          <div className="inline-block px-4 py-1.5 bg-white text-amber-700 rounded-full text-sm font-medium mb-6">
             ✨ Trusted by 1000+ patients
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 leading-tight">
             Book Doctor Appointments <br />
-            <span className="text-emerald-600">Without Long Waiting</span>
+            <span className="text-amber-600">Without Long Waiting</span>
           </h1>
 
           <p className="mt-8 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
@@ -42,14 +42,14 @@ const LandingPage = () => {
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
             <button
               onClick={() => handleBtnClick("/register")}
-              className="bg-emerald-600 text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-emerald-700 transition cursor-pointer "
+              className="bg-amber-600 text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-amber-700 transition cursor-pointer "
             >
               Get Started Free
             </button>
 
             <button
               onClick={() => handleBtnClick("/login")}
-              className="border-2 border-slate-300 px-10 py-4 rounded-lg text-base font-semibold text-slate-700 hover:border-emerald-600 hover:text-emerald-600 transition cursor-pointer"
+              className="border-2 border-slate-300 px-10 py-4 rounded-lg text-base font-semibold text-slate-700 hover:border-amber-600 hover:text-amber-600 transition cursor-pointer"
             >
               Login
             </button>
@@ -65,15 +65,15 @@ const LandingPage = () => {
       <section className="bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
           <div>
-            <h3 className="text-4xl font-bold text-emerald-600">100+</h3>
+            <h3 className="text-4xl font-bold text-amber-600">100+</h3>
             <p className="mt-3 text-slate-600 font-medium">Verified Doctors</p>
           </div>
           <div>
-            <h3 className="text-4xl font-bold text-emerald-600">1,000+</h3>
+            <h3 className="text-4xl font-bold text-amber-600">1,000+</h3>
             <p className="mt-3 text-slate-600 font-medium">Happy Patients</p>
           </div>
           <div>
-            <h3 className="text-4xl font-bold text-emerald-600">Instant</h3>
+            <h3 className="text-4xl font-bold text-amber-600">Instant</h3>
             <p className="mt-3 text-slate-600 font-medium">Token Booking</p>
           </div>
         </div>
@@ -101,10 +101,10 @@ const LandingPage = () => {
             ].map((doctor, id) => (
               <div
                 key={id}
-                className="bg-white border border-slate-200 rounded-xl p-8 hover:border-emerald-300 hover:shadow-lg transition"
+                className="bg-white border border-slate-200 rounded-xl p-8 hover:border-amber-300 hover:shadow-lg transition"
               >
-                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-                  <span className="text-2xl font-bold text-emerald-600">
+                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold text-amber-600">
                     {doctor.name.split(' ')[1][0]}
                   </span>
                 </div>
@@ -112,14 +112,14 @@ const LandingPage = () => {
                 <h3 className="text-xl font-bold text-slate-900">
                   {doctor.name}
                 </h3>
-                <p className="text-emerald-600 font-medium mt-2">{doctor.specialization}</p>
+                <p className="text-amber-600 font-medium mt-2">{doctor.specialization}</p>
                 <p className="text-sm text-slate-500 mt-1">
                   {doctor.experience} experience
                 </p>
 
                 <Link
                   to={`/doctors/${id + 1}`}
-                  className="inline-flex items-center mt-6 text-emerald-600 text-sm font-semibold hover:text-emerald-700"
+                  className="inline-flex items-center mt-6 text-amber-600 text-sm font-semibold hover:text-amber-700"
                 >
                   View Profile
                   <span className="ml-1">→</span>
@@ -131,7 +131,7 @@ const LandingPage = () => {
           <div className="text-center mt-12">
             <Link
               to="/doctors"
-              className="inline-block border-2 border-emerald-600 text-emerald-600 px-8 py-3 rounded-lg font-semibold hover:bg-emerald-600 hover:text-white transition"
+              className="inline-block border-2 border-amber-600 text-amber-600 px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 hover:text-white transition"
             >
               Browse All Doctors
             </Link>
@@ -153,8 +153,8 @@ const LandingPage = () => {
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-emerald-600">1</span>
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-amber-600">1</span>
               </div>
               <h3 className="text-xl font-bold text-slate-900">
                 Search Doctors
@@ -165,8 +165,8 @@ const LandingPage = () => {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-emerald-600">2</span>
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-amber-600">2</span>
               </div>
               <h3 className="text-xl font-bold text-slate-900">
                 Book Appointment
@@ -177,8 +177,8 @@ const LandingPage = () => {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-emerald-600">3</span>
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-bold text-amber-600">3</span>
               </div>
               <h3 className="text-xl font-bold text-slate-900">
                 Visit On Time
@@ -205,7 +205,7 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white border border-slate-200 rounded-xl p-8">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🔒</span>
               </div>
               <h3 className="text-lg font-bold text-slate-900">Secure & Private</h3>
@@ -215,7 +215,7 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">⚡</span>
               </div>
               <h3 className="text-lg font-bold text-slate-900">Instant Booking</h3>
@@ -225,7 +225,7 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">📱</span>
               </div>
               <h3 className="text-lg font-bold text-slate-900">Mobile Friendly</h3>
@@ -235,7 +235,7 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🔔</span>
               </div>
               <h3 className="text-lg font-bold text-slate-900">Smart Reminders</h3>
@@ -245,7 +245,7 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">✅</span>
               </div>
               <h3 className="text-lg font-bold text-slate-900">Verified Doctors</h3>
@@ -255,7 +255,7 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">💬</span>
               </div>
               <h3 className="text-lg font-bold text-slate-900">24/7 Support</h3>
@@ -268,25 +268,25 @@ const LandingPage = () => {
       </section>
 
       {/* ================= CTA ================= */}
-      <section className="bg-linear-to-br from-emerald-600 to-emerald-700">
+      <section className="bg-linear-to-br from-amber-400 to-orange-600">
         <div className="max-w-7xl mx-auto px-6 py-24 text-center">
           <h2 className="text-4xl font-bold text-white">
             Ready to Transform Your Healthcare Experience?
           </h2>
 
-          <p className="mt-6 text-lg text-emerald-50 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-lg text-amber-50 max-w-2xl mx-auto leading-relaxed">
             Join thousands of patients who trust TokenMitra for hassle-free
             appointment booking and quality healthcare access.
           </p>
 
           <button
             onClick={() => handleBtnClick('/register')}
-            className="inline-block mt-10 bg-white text-emerald-600 px-10 py-4 rounded-lg text-base font-bold hover:bg-slate-50 transition cursor-pointer"
+            className="inline-block mt-10 bg-white text-amber-600 px-10 py-4 rounded-lg text-base font-bold hover:bg-slate-50 transition cursor-pointer"
           >
             Create Your Free Account
           </button>
 
-          <p className="mt-4 text-sm text-emerald-100">
+          <p className="mt-4 text-sm text-amber-100">
             Get started in less than 2 minutes
           </p>
         </div>

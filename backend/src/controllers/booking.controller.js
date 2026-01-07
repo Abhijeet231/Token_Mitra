@@ -52,12 +52,14 @@ export const createBookings = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Slot is fully booked");
   }
 
-  // Check duplicate booking by same user
+  // Check duplicate booking by same user (this checks wheather the patient is not booking the same slot of the same doctor again..)
   const existingBooking = await Booking.findOne({
     patientId: req.user._id, // patient.userId
     availabilityId: availabilityId,
     status: { $in: ["pending"] },
   });
+
+// ***** Future Updates: add check for patient who can only book 1 slot in 1 Doctor. Now patient can book muliple different slots for the same doctor *****
 
   if (existingBooking) {
     throw new ApiError(409, "You have already booked this slot");
@@ -66,7 +68,7 @@ export const createBookings = asyncHandler(async (req, res) => {
   // Calculate next token number
   const tokenNumber = slot.bookedPatientCount + 1;
 
-  // Atomic Update
+  // Atomic Update to prevent overbooking issue
   const updatedSlot = await DocAvailability.findOneAndUpdate(
     {
       _id: availabilityId,

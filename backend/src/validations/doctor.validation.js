@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-export const updateDocProfileSchema = z.object({
+export const updateDocProfileSchema = z.looseObject({
   specialization: z.string().min(2).optional(),
   qualification: z.string().min(2).optional(),
   experience: z.coerce.number().min(0).optional(),
@@ -10,7 +10,7 @@ export const updateDocProfileSchema = z.object({
 
 
 
-export const createDoctorProfileSchema = z.object({
+export const createDoctorProfileSchema = z.looseObject({
   specialization: z.string().min(2),
   qualification: z.string().min(2),
   experience: z.coerce.number().min(0),

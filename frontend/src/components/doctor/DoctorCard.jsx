@@ -1,5 +1,6 @@
 import { Star, MapPin, Clock, Award } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const DoctorCard = ({ doctor}) => {
@@ -39,7 +40,9 @@ const DoctorCard = ({ doctor}) => {
         </div>
         
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <span className="text-sm text-gray-500">{doctor?.reviews} reviews</span>
+          <span 
+          onClick={() => toast.info("⭐ Reviews are coming soon")}
+          className="text-sm text-gray-600 cursor-pointer">{doctor?.reviews} Reviews</span>
           <Link
            to= {`/doctors/${doctor?._id}`}
           className="px-4 py-2 bg-linear-to-r from-amber-500 to-orange-500 text-white rounded-lg font-medium hover:from-amber-600 hover:to-orange-600 transition-all cursor-pointer">

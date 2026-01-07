@@ -22,17 +22,17 @@ const Footer = () => {
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">Quick Links</h3>
               <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-amber-600 transition-colors">Find Doctors</a></li>
-                <li><a href="#" className="hover:text-amber-600 transition-colors">Book Appointment</a></li>
-                <li><a href="#" className="hover:text-amber-600 transition-colors">Health Records</a></li>
+                <li><a href="/" className="hover:text-amber-600 transition-colors">Find Doctors</a></li>
+                <li><a href="/doctors/:id" className="hover:text-amber-600 transition-colors">Book Appointment</a></li>
+                <li><a href="/" className="hover:text-amber-600 transition-colors">Health Records</a></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">Support</h3>
               <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-amber-600 transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-amber-600 transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-amber-600 transition-colors">Privacy Policy</a></li>
+                <li><a href="/about" className="hover:text-amber-600 transition-colors">Help Center</a></li>
+                <li><a href="/contact" className="hover:text-amber-600 transition-colors">Contact Us</a></li>
+                <li><a href="/about" className="hover:text-amber-600 transition-colors">Privacy Policy</a></li>
               </ul>
             </div>
             <div>
@@ -45,7 +45,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-            <p>&copy; 2024 HealthCare. All rights reserved.</p>
+            <p>&copy; 2026 HealthCare. All rights reserved.</p>
           </div>
         </div>
       </footer>

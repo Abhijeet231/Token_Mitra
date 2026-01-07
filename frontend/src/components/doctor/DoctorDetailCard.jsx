@@ -1,7 +1,13 @@
 import React from 'react'
 import { MessageSquareMore} from "lucide-react"
+import { toast } from 'react-toastify'
 
 const DoctorDetailCard = ({doctor}) => {
+
+  const handleChatButton = () => {
+    toast.info("Chat Feature Is Not Live Yet!")
+  }
+
   return (
   
          <div className="w-full flex justify-center  mt-6
@@ -43,6 +49,7 @@ const DoctorDetailCard = ({doctor}) => {
             {/* Action Button */}
             <div className="mt-4 md:mt-0 flex md:justify-end">
               <button
+                onClick={handleChatButton}
                 className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 cursor-pointer
                      text-white font-semibold px-5 py-2 rounded-lg 
                      transition-all shadow-sm hover:shadow-md"
