@@ -6,8 +6,11 @@ import {
   uploadOnCloudinary,
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
+import User from "../models/user.model.js";
+import Booking from "../models/booking.model.js";
+import DocAvailability from "../models/docAvailability.model.js";
 
-// Get all Doctors (public)
+// GET ALL DOCTORS (public)
 export const getAllDoctors = asyncHandler(async (req, res) => {
   const allDocs = await Doctor.find().populate("userId", "fullName email");
   if (!allDocs) {
@@ -23,7 +26,7 @@ export const getAllDoctors = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, allDocs, "All Doctors fetched Successfully.."));
 });
 
-// Get Specific Doctor (public)
+// GET SPECIFIC DOCTOR (public)
 export const getDoctor = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -35,7 +38,7 @@ export const getDoctor = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, doctor, "Doctor details fetched successfully."));
 });
 
-// Get LoggedIn Doctor (protected- only accessible by doc himself)
+// GET LOGGED IN DOCTOR (protected- only accessible by doc himself)
 export const getLoggedInDoctor = asyncHandler(async (req, res) => {
   const doctor = await Doctor.findOne({ userId: req.user._id }).populate(
     "userId",
@@ -54,7 +57,7 @@ export const getLoggedInDoctor = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, doctor, "Doctor Profile fetched"));
 });
 
-// Create Doctors Profile
+// CREATE DOCTOR PROFILE
 export const createDoctorProfile = asyncHandler(async (req, res) => {
   const {
     specialization,
@@ -101,7 +104,7 @@ export const createDoctorProfile = asyncHandler(async (req, res) => {
     );
 });
 
-//  Update Doctor Profile
+//  UPDATE DOCTOR PROFILE
 export const updateDoctorProfile = asyncHandler(async (req, res) => {
   let doctor = await Doctor.findOne({ userId: req.user._id });
 
@@ -163,7 +166,35 @@ if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
 
 });
   
-// Delete Doctor Profile
+// DELETE DOCTOR PROFILE
 export const deleteDoctorProfile = asyncHandler (async(req,res) => {
-  
+
+  // Checking if User Exists
+  const user = await User.findById(req.user._id);
+  if(!user){
+    throw new ApiError(404, "User Not found to delete!")
+  }
+
+  // Finding Doctor Profile
+  const doctorProfile = await Doctor.findOne({userId: user._id});
+  if(!doctorProfile) {
+    throw new ApiError(404, "Doctor Profile not found to delete")
+  }
+  // Deleting profileImage 
+  if(doctorProfile.profileImage?.public_id) {
+    await deleteFromCloudinary(doctorProfile.profileImage.public_id);
+  }
+
+  // Deleting available slots related to doctor
+  await DocAvailability.deleteMany({doctorId: user._id});
+
+  // Deleting bookings related to doctor
+  await Booking.deleteMany({doctorId: user._id});
+
+  // Deleting Doctor Profile 
+  await Doctor.deleteOne({userId: user._id});
+
+  // Deleting User Profile
+  await User.deleteOne({_id: user._id});
+
 })

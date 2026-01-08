@@ -5,7 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
 import Booking from "../models/booking.model.js";
 
-// Get loggedIn patient (patient only)
+// GET LOGGED IN PATINET (patient only)
 export const getPatient = asyncHandler(async(req,res) => {
        
     const patient = await Patient.findOne({userId: req.user._id}).populate("userId", "fullName email");
@@ -21,7 +21,7 @@ export const getPatient = asyncHandler(async(req,res) => {
     return res.status(200).json(new ApiResponse(200, patient, "Patient Profile fetched"));
 });
 
-// Create  Patient profile (create patient model)
+// CREATE PATIENT PROFILE (create patient model)
 export const createPatientProfile = asyncHandler(async(req,res) => {
        
     let patient = await Patient.findOne({userId: req.user._id});
@@ -41,7 +41,7 @@ export const createPatientProfile = asyncHandler(async(req,res) => {
 });
 
 
-// Update Patient Profile
+// UPDATE PATIENT PROFILE
 export const updatePatientProfile = asyncHandler(async(req,res) => {
     
    let patient = await Patient.findOne({userId: req.user._id});
@@ -57,7 +57,7 @@ export const updatePatientProfile = asyncHandler(async(req,res) => {
     return res.status(200).json(new ApiResponse(200, patient, "Patient profile updated successfully."))
 })
 
-// Delete Patient Profile
+// DELETE PATIENT PROFILE
 export const deletePatientProfile  = asyncHandler (async(req,res) => {
 
     // Checking if user exists or not 
@@ -67,16 +67,16 @@ export const deletePatientProfile  = asyncHandler (async(req,res) => {
    };
 
    // Finding  patient Profile
-   const patientProfile = await Patient.findOne({userId: user._id}); // user id can be written as req.user._id also 
+   const patientProfile = await Patient.findOne({userId: user._id}); 
    if(!patientProfile) {
-    throw new ApiError(400, "Patient Profile not found to delete")
+    throw new ApiError(404, "Patient Profile not found to delete")
    }
 
    // Deleting Bookings made by patient
-   await Booking.deleteMany({patientId: patientProfile.userId})
+   await Booking.deleteMany({patientId: user._id})
    
    // Deleting Patient Profile
-   await Patient.deleteOne({userId: patientProfile.userId});
+   await Patient.deleteOne({userId: user._id});
 
    // Deleting User Profile
    await User.deleteOne({_id: user._id});
