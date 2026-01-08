@@ -14,14 +14,14 @@ const router = Router();
 router.get("/all", getAllDoctors); // public route 
 
 // Get loggedIn doctor (private route)
-router.get("/me", verifyJWT, getLoggedInDoctor);
+router.get("/me", verifyJWT, doctorOnly, getLoggedInDoctor);
 
 
 // Create Doctor Profile
-router.post("/me", verifyJWT, upload.single("profileImage"), validate(createDoctorProfileSchema), createDoctorProfile)
+router.post("/me", verifyJWT, doctorOnly, upload.single("profileImage"), validate(createDoctorProfileSchema), createDoctorProfile)
 
 // Update doctor (private route)
-router.patch("/me", verifyJWT, upload.single("profileImage"),validate(updateDocProfileSchema), updateDoctorProfile);
+router.patch("/me", verifyJWT, doctorOnly, upload.single("profileImage"),validate(updateDocProfileSchema), updateDoctorProfile);
 
 
 // Get specific doctor

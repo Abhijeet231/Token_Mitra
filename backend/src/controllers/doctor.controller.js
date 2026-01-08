@@ -163,3 +163,7 @@ if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
 
 });
   
+// Delete Doctor Profile
+export const deleteDoctorProfile = asyncHandler (async(req,res) => {
+  
+})

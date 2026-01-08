@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
+import { deleteDoctorProfile } from "./doctor.controller.js";
+import { deletePatientProfile } from "./patient.controller.js";
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
@@ -121,3 +123,13 @@ export const getCurrentUser = asyncHandler(async(req,res) => {
 
 })
 
+// Delete User
+export const deleteMyProfile = async (req,res) => {
+  if(req.user.role === "doctor") {
+    return deleteDoctorProfile(req,res);
+  }
+
+  if(req.user.role === "patient") {
+    return deletePatientProfile(req, res);
+  }
+}
