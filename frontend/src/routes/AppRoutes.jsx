@@ -2,6 +2,8 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "@/App";
 import { lazy } from "react";
 
+
+
 // Route guards
 import ProtectedRoute from "./ProtectedRoute";
 import PatientRoute from "./PatientRoute";

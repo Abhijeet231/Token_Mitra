@@ -14,3 +14,8 @@ export const createPatientProfile = (data) => {
 export const updatePatientProfile = (data) => {
     return api.patch("/patients/me", data);
 }
+
+// Delete patient profile
+export const deletePatientProfile = () => {
+    return api.delete("/patients/me")
+}

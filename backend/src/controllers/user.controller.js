@@ -123,13 +123,3 @@ export const getCurrentUser = asyncHandler(async(req,res) => {
 
 })
 
-// Delete User
-export const deleteMyProfile = async (req,res) => {
-  if(req.user.role === "doctor") {
-    return deleteDoctorProfile(req,res);
-  }
-
-  if(req.user.role === "patient") {
-    return deletePatientProfile(req, res);
-  }
-}

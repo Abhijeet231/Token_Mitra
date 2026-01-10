@@ -19,3 +19,4 @@ export const logout = () => {
 export const getMe = () => {
     return api.get("/users/auth/me");
 };
+

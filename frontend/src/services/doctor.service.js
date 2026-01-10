@@ -24,3 +24,8 @@ export const updateDoctorProfile = (data) => {
 export const getSpecificDoctor = (id) => {
     return api.get(`/doctors/${id}`)
 }
+
+// Deleting doctor
+export const deleteDoctorProfile = () => {
+    return api.delete("/doctors/me")
+}

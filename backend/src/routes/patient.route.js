@@ -2,7 +2,7 @@ import { Router } from "express";
 import verifyJWT from "../middleware/auth.middleware.js";
 import validate from "../middleware/validate.middleware.js";
 import patientOnly from "../middleware/patientOnly.js";
-import { getPatient, createPatientProfile, updatePatientProfile } from "../controllers/patient.controller.js";
+import { getPatient, createPatientProfile, updatePatientProfile, deletePatientProfile } from "../controllers/patient.controller.js";
 import { createPatientProfileSchema, updatePatientProfileSchema } from "../validations/patient.validation.js";
 
 const router = Router();
@@ -16,5 +16,7 @@ router.put('/me', verifyJWT, patientOnly, validate(createPatientProfileSchema), 
 // Update Patient Profile
 router.patch('/me', verifyJWT,patientOnly, validate(updatePatientProfileSchema), updatePatientProfile);
 
+// Delete patient profile
+router.delete('/me', verifyJWT, patientOnly, deletePatientProfile)
 
 export default router;

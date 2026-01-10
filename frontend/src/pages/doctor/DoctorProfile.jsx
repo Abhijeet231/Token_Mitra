@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
+import { deleteDoctorProfile } from "@/services/doctor.service";
 
 
 const DoctorProfile = () => {
@@ -12,6 +13,7 @@ const DoctorProfile = () => {
 
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
+
 
   // Fetching doctors profile
   useEffect(() => {
@@ -35,6 +37,21 @@ const DoctorProfile = () => {
 
     getDoc();
   }, [navigate]);
+
+// Delete Profile
+const deleteProfile = async() => {
+   try {
+     if (!window.confirm("This will permanently delete your account. Continue?")) {
+    return;
+  }
+    await deleteDoctorProfile();
+    toast.info("Profile Deleted Successfully!")
+    navigate("/")
+   } catch (error) {
+    toast.error("Error while deleting User Profile");
+    console.log("Error while deleting user profile", error)
+   }
+} 
 
   if(loading) {
     return (
@@ -111,7 +128,9 @@ const DoctorProfile = () => {
  Edit Profile
  </Link>
 
- <button className="flex items-center gap-2 px-5 py-2 rounded-lg text-red-700 bg-red-50 border-2 border-red-500 font-medium shadow-md hover:bg-red-100 hover:border-red-600 hover:shadow-lg transition-all duration-200 cursor-pointer">
+ <button 
+ onClick={deleteProfile}
+ className="flex items-center gap-2 px-5 py-2 rounded-lg text-red-700 bg-red-50 border-2 border-red-500 font-medium shadow-md hover:bg-red-100 hover:border-red-600 hover:shadow-lg transition-all duration-200 cursor-pointer">
   Delete Profile
  </button>
 

@@ -174,7 +174,10 @@ export const deleteDoctorProfile = asyncHandler (async(req,res) => {
   if(!user){
     throw new ApiError(404, "User Not found to delete!")
   }
-
+  // checking role of user
+  if(user.role !== "doctor") {
+    throw new ApiError(403, "Unauthorized to delete Doctor Profile")
+  }
   // Finding Doctor Profile
   const doctorProfile = await Doctor.findOne({userId: user._id});
   if(!doctorProfile) {
@@ -196,5 +199,14 @@ export const deleteDoctorProfile = asyncHandler (async(req,res) => {
 
   // Deleting User Profile
   await User.deleteOne({_id: user._id});
+
+  // Clearing auth cookie
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict"
+  });
+
+   return res.status(200).json(new ApiResponse(200, null, "Doctor Profile Deleted Successfully"))
 
 })
