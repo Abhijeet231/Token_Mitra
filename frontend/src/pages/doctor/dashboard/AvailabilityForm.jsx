@@ -2,8 +2,12 @@ import React, { useState } from 'react'
 import Calendar from '@/components/doctor/Calendar'
 import { toast } from 'react-toastify'
 import { createAvailability } from '@/services/docAvailability.service'
+import { useNavigate } from 'react-router-dom'
 
 const AvailabilityForm = () => {
+
+  const navigate = useNavigate();
+
   const [selectedDate, setSelectedDate] = useState(null)
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
@@ -46,6 +50,7 @@ const AvailabilityForm = () => {
       await createAvailability(payload)
       toast.success('Availability added successfully')
       resetForm()
+      navigate("/doctors/myslots")
     } catch (error) {
       toast.error('Failed to add availability')
       console.log("Failed to add availability: ", error)

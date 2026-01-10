@@ -4,6 +4,7 @@ import { getLoggedInDoctor } from "@/services/doctor.service";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 
 
 const DoctorProfile = () => {
@@ -37,8 +38,12 @@ const DoctorProfile = () => {
 
   if(loading) {
     return (
-       <div className="min-h-screen flex items-center justify-center">
-        Loading profile...
+       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <h3 className="text-center font-semibold text-2xl text-gray-700 animate-pulse">
+          Loading...
+        </h3>
+
+        <LoaderCircle className="w-10 h-10 text-amber-500 animate-spin" />
       </div>
     );
   }

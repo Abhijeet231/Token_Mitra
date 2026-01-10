@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import DoctorSidebar from "./dashboard/DoctorSidebar";
 import { Suspense } from "react";
+import DashboardSkeleton from "@/components/skeletons/doctorSkeleton/DashboardSkeleton";
 
 const DoctorDashboard = () => {
   return (
@@ -16,7 +17,7 @@ const DoctorDashboard = () => {
 
       {/* Main Content - 70% */}
       <main className="flex-1 p-6 overflow-y-auto">
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={null}>
           <Outlet />
         </Suspense>
       </main>

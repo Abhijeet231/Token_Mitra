@@ -25,7 +25,7 @@ const LandingPage = () => {
       {/* ================= HERO SECTION ================= */}
       <section>
         <div className="max-w-7xl mx-auto px-6 py-28 text-center">
-          <div className="inline-block px-4 py-1.5 bg-white text-amber-700 rounded-full text-sm font-medium mb-6">
+          <div className="inline-block px-4 py-1.5 bg-yellow-100 text-amber-700 rounded-full text-sm font-medium mb-6">
             ✨ Trusted by 1000+ patients
           </div>
           
@@ -62,7 +62,7 @@ const LandingPage = () => {
       </section>
 
       {/* ================= TRUST / STATS ================= */}
-      <section className="bg-white border-y border-slate-200">
+      <section className="bg-amber-50/20 mt-5 rounded-lg shadow-xl ">
         <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
           <div>
             <h3 className="text-4xl font-bold text-amber-600">100+</h3>
@@ -78,121 +78,10 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* ================= DOCTOR SHOWCASE ================= */}
-      <section className="bg-slate-50">
-        <div className="max-w-7xl mx-auto px-6 py-24">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold text-slate-900">
-              Consult Trusted Doctors
-            </h2>
-
-            <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              Browse doctors by specialization and experience, and book
-              appointments instantly with verified healthcare professionals.
-            </p>
-          </div>
-
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { name: "Dr. Priya Sharma", specialization: "Cardiologist", experience: "12+ years" },
-              { name: "Dr. Rajesh Kumar", specialization: "Orthopedic", experience: "10+ years" },
-              { name: "Dr. Anjali Mehta", specialization: "Pediatrician", experience: "8+ years" }
-            ].map((doctor, id) => (
-              <div
-                key={id}
-                className="bg-white border border-slate-200 rounded-xl p-8 hover:border-amber-300 hover:shadow-lg transition"
-              >
-                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
-                  <span className="text-2xl font-bold text-amber-600">
-                    {doctor.name.split(' ')[1][0]}
-                  </span>
-                </div>
-                
-                <h3 className="text-xl font-bold text-slate-900">
-                  {doctor.name}
-                </h3>
-                <p className="text-amber-600 font-medium mt-2">{doctor.specialization}</p>
-                <p className="text-sm text-slate-500 mt-1">
-                  {doctor.experience} experience
-                </p>
-
-                <Link
-                  to={`/doctors/${id + 1}`}
-                  className="inline-flex items-center mt-6 text-amber-600 text-sm font-semibold hover:text-amber-700"
-                >
-                  View Profile
-                  <span className="ml-1">→</span>
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link
-              to="/doctors"
-              className="inline-block border-2 border-amber-600 text-amber-600 px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 hover:text-white transition"
-            >
-              Browse All Doctors
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= HOW IT WORKS ================= */}
-      <section className="bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-24">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold text-slate-900">
-              How TokenMitra Works
-            </h2>
-            <p className="mt-6 text-lg text-slate-600">
-              Simple, fast, and efficient — book your appointment in three easy steps.
-            </p>
-          </div>
-
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-amber-600">1</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">
-                Search Doctors
-              </h3>
-              <p className="mt-4 text-slate-600 leading-relaxed">
-                Find doctors based on specialization, location, and availability.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-amber-600">2</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">
-                Book Appointment
-              </h3>
-              <p className="mt-4 text-slate-600 leading-relaxed">
-                Choose a suitable time slot and book your token instantly online.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-amber-600">3</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">
-                Visit On Time
-              </h3>
-              <p className="mt-4 text-slate-600 leading-relaxed">
-                No long queues — visit as per your scheduled token number.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* ================= FEATURES ================= */}
-      <section className="bg-slate-50">
+      <section className="bg-amber-50">
         <div className="max-w-7xl mx-auto px-6 py-24">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl font-bold text-slate-900">
@@ -204,7 +93,7 @@ const LandingPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white border border-slate-200 rounded-xl p-8">
+            <div className="bg-white border border-slate-200 rounded-xl p-8 hover:scale-105 hover:shadow-xl transition-all duration-400">
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🔒</span>
               </div>
@@ -214,7 +103,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-xl p-8">
+            <div className="bg-white border border-slate-200 rounded-xl p-8 hover:scale-105 hover:shadow-xl transition-all duration-400">
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">⚡</span>
               </div>
@@ -224,7 +113,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-xl p-8">
+            <div className="bg-white border border-slate-200 rounded-xl p-8 hover:scale-105 hover:shadow-xl transition-all duration-400">
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">📱</span>
               </div>
@@ -234,7 +123,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-xl p-8">
+            <div className="bg-white border border-slate-200 rounded-xl p-8 hover:scale-105 hover:shadow-xl transition-all duration-400">
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">🔔</span>
               </div>
@@ -244,7 +133,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-xl p-8">
+            <div className="bg-white border border-slate-200 rounded-xl p-8 hover:scale-105 hover:shadow-xl transition-all duration-400">
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">✅</span>
               </div>
@@ -254,7 +143,7 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-xl p-8">
+            <div className="bg-white border border-slate-200 rounded-xl p-8 hover:scale-105 hover:shadow-xl transition-all duration-400">
               <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
                 <span className="text-2xl">💬</span>
               </div>
