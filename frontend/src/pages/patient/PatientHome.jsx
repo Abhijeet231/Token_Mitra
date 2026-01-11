@@ -1,8 +1,8 @@
 import { Search, ChevronDown, ChevronUp, LoaderCircle } from 'lucide-react';
-import Footer from '@/components/Footer';
-import DoctorCard from '@/components/doctor/DoctorCard';
+import Footer from '@/components/Footer.jsx';
+import DoctorCard from '@/components/doctor/DoctorCard.jsx';
 import { useState, useEffect } from 'react';
-import { getAllDoctors } from '@/services/doctor.service';
+import { getAllDoctors } from '@/services/doctor.service.js';
 import { toast } from 'react-toastify';
 
 

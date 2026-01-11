@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer.jsx";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext.jsx";
 import { useEffect } from "react";
 
 const LandingPage = () => {

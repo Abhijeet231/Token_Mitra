@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import DoctorSidebar from "./dashboard/DoctorSidebar";
+import DoctorSidebar from "./dashboard/DoctorSidebar.jsx";
 import { Suspense } from "react";
-import DashboardSkeleton from "@/components/skeletons/doctorSkeleton/DashboardSkeleton";
+
 
 const DoctorDashboard = () => {
   return (

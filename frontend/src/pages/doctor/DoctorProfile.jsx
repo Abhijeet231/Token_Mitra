@@ -1,11 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { getLoggedInDoctor } from "@/services/doctor.service";
+import { getLoggedInDoctor } from "@/services/doctor.service.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
-import { deleteDoctorProfile } from "@/services/doctor.service";
+import { deleteDoctorProfile } from "@/services/doctor.service.js";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();

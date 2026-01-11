@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { getPatientDetails } from "@/services/patient.service";
-import { getBookingsForPatient } from "@/services/booking.service";
+import { getPatientDetails } from "@/services/patient.service.js";
+import { getBookingsForPatient } from "@/services/booking.service.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {  CalendarDays, LoaderCircle  } from "lucide-react";
-import MyBookingCard from "@/components/patient/MyBookingCard";
-import { deletePatientProfile } from "@/services/patient.service";
+import MyBookingCard from "@/components/patient/MyBookingCard.jsx";
+import { deletePatientProfile } from "@/services/patient.service.js";
 
 const PatientProfile = () => {
   const navigate = useNavigate();

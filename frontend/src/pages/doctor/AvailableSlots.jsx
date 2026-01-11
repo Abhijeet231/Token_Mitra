@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getMyAvailability } from "@/services/docAvailability.service";
+import { getMyAvailability } from "@/services/docAvailability.service.js";
 import { toast } from "react-toastify";
 import { Calendar, Clock, Users, UserCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";

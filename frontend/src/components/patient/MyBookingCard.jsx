@@ -1,5 +1,5 @@
 import { Clock, Stethoscope, Calendar } from "lucide-react";
-import { cancelBooking } from "@/services/booking.service";
+import { cancelBooking } from "@/services/booking.service.js";
 import { toast } from "react-toastify";
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Calendar from '@/components/doctor/Calendar'
+import Calendar from '@/components/doctor/Calendar.jsx'
 import { toast } from 'react-toastify'
-import { createAvailability } from '@/services/docAvailability.service'
+import { createAvailability } from '@/services/docAvailability.service.js'
 import { useNavigate } from 'react-router-dom'
 
 const AvailabilityForm = () => {

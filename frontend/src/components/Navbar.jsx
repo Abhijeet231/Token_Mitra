@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X, User, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext.jsx";
 import { UserCircleIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

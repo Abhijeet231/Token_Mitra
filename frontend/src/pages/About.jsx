@@ -1,6 +1,6 @@
 import React from 'react';
 import { Code, Database, Mail, Github, Briefcase, GraduationCap, Lightbulb } from 'lucide-react';
-import Footer from '@/components/Footer';
+import Footer from '@/components/Footer.jsx';
 
 export default function About() {
   const frontendSkills = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'];

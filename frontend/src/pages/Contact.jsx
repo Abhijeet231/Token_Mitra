@@ -1,6 +1,6 @@
 import React from 'react';
 import { Mail, Github, Linkedin, Twitter, MessageCircle } from 'lucide-react';
-import Footer from '@/components/Footer';
+import Footer from '@/components/Footer.jsx';
 
 
 export default function Contact() {

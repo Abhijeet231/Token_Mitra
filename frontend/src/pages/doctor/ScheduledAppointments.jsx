@@ -1,4 +1,4 @@
-import { getBookingsForDoctor } from "@/services/booking.service";
+import { getBookingsForDoctor } from "@/services/booking.service.js";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   LoaderCircle,
 } from "lucide-react";
+
 
 const ScheduledAppointments = () => {
   const [bookings, setBookings] = useState([]);
