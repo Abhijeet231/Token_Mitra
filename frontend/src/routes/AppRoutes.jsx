@@ -5,9 +5,9 @@ import { lazy } from "react";
 
 
 // Route guards
-import ProtectedRoute from "./ProtectedRoute.jsx";
-import PatientRoute from "./PatientRoute.jsx";
-import DoctorRoute from "./DoctorRoute.jsx";
+import ProtectedRoute from "@/routes/ProtectedRoute.jsx"; 
+import PatientRoute from "@/routes/PatientRoute.jsx";
+import DoctorRoute from "@/routes/DoctorRoute.jsx";
 
 // Pages
 import Landing from "@/pages/Landing.jsx";
