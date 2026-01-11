@@ -27,5 +27,5 @@ export const getSpecificDoctor = (id) => {
 
 // Deleting doctor
 export const deleteDoctorProfile = () => {
-    return api.delete("/doctors/me")
+    return api.delete("/doctors/me/delete")
 }

@@ -17,6 +17,6 @@ router.put('/me', verifyJWT, patientOnly, validate(createPatientProfileSchema), 
 router.patch('/me', verifyJWT,patientOnly, validate(updatePatientProfileSchema), updatePatientProfile);
 
 // Delete patient profile
-router.delete('/me', verifyJWT, patientOnly, deletePatientProfile)
+router.delete('/me/delete', verifyJWT, patientOnly, deletePatientProfile)
 
 export default router;

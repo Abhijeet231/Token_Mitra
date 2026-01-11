@@ -36,11 +36,11 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     // LOGOUT
-    const logout = useCallback(async () => {
+    const logout = useCallback(async (silent = false) => {
         await logoutService();
         setUser(null);
         setStatus("unauthenticated");
-        toast.success("LOgged Out successfully!")
+        if(!silent) toast.success("Logged out successfully!")
     }, []);
 
     

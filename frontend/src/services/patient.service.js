@@ -17,5 +17,5 @@ export const updatePatientProfile = (data) => {
 
 // Delete patient profile
 export const deletePatientProfile = () => {
-    return api.delete("/patients/me")
+    return api.delete("/patients/me/delete")
 }
