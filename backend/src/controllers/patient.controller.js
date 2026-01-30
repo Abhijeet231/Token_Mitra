@@ -99,8 +99,8 @@ export const deletePatientProfile = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    domain: process.env.NODE_ENV === "production" ? ".onrender.com" : undefined,
-    maxAge: 24 * 60 * 60 * 1000,
+   path: "/",
+    maxAge: 2 * 24 * 60 * 60 * 1000,
   });
 
   return res
