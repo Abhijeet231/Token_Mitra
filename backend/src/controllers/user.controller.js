@@ -76,8 +76,11 @@ export const loginUser = asyncHandler(async (req, res) => {
     maxAge: 2 * 24 * 60 * 60 * 1000,
   };
 
+  res.set("Cache-Control", "no-store");
+
   return res
     .status(200)
+    .set("Cache-Control", "no-store")
     .cookie("accessToken", token, options)
     .json(new ApiResponse(200, loggedInUser, "User LoggedIn Successfully"));
 });
