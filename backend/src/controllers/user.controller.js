@@ -35,10 +35,13 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   const token = genAccessToken(user._id, user.role);
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   res.cookie("accessToken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    ...(isProduction && { domain: process.env.COOKIE_DOMAIN }),
     path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
   });
@@ -68,13 +71,16 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const loggedInUser = await User.findById(user._id).select("-password");
 
-  const options = {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res.cookie("accessToken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    ...(isProduction && { domain: process.env.COOKIE_DOMAIN }),
     path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
-  };
+  });
 
   res.set("Cache-Control", "no-store");
 
@@ -93,13 +99,16 @@ export const logoutUser = asyncHandler(async (req, res) => {
 
   console.log("LOGGED IN USER:", req.user);
 
-  const cookieOptions = {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res.cookie("accessToken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    ...(isProduction && { domain: process.env.COOKIE_DOMAIN }),
     path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
-  };
+  });
 
   return res
     .status(200)
@@ -120,14 +129,17 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
   }
 
   const token = genAccessToken(currUser._id, currUser.role);
-  
-  const cookieOptions = {
+
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res.cookie("accessToken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    ...(isProduction && { domain: process.env.COOKIE_DOMAIN }),
     path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
-  };
+  });
 
   return res
     .status(200)
