@@ -21,12 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-  res.set("Cache-Control", "no-store");
-  next();
-});
-
-
 // User Routes
 import userRouter from "./routes/user.route.js";
 app.use("/api/v1/users", userRouter);
@@ -49,6 +43,5 @@ import bookingRoutes from "./routes/bookiing.route.js";
 app.use("/api/v1/bookings", bookingRoutes);
 
 app.use(errorHandler);
-
 
 export default app;
