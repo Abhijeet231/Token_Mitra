@@ -54,7 +54,7 @@ const PatientProfile = () => {
     try {
       setLoadBooking(true);
       let res = await getBookingsForPatient();
-      setMyBookings(res.data?.data);
+      setMyBookings(res.data.data);
       console.log("My Bookings with Doctors:", res.data);
     } catch (error) {
       console.log("Error while fetching patient bookings with doctors:", error);
@@ -97,29 +97,29 @@ const PatientProfile = () => {
 
       {/* Welcome text */}
       <h1 className="text-4xl font-bold mb-3 bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-        Welcome, {patient?.userId?.fullName}
+        Welcome, {patient.userId.fullName}
       </h1>
 
       {/* User Info */}
       <div className="text-center space-y-3 max-w-lg mx-auto mt-8">
         <div className="flex items-center justify-between py-3 px-6 bg-gray-50 rounded-xl">
           <span className="font-semibold text-gray-600">Full Name</span>
-          <span className="text-gray-900">{patient?.userId?.fullName}</span>
+          <span className="text-gray-900">{patient.userId.fullName}</span>
         </div>
 
         <div className="flex items-center justify-between py-3 px-6 bg-gray-50 rounded-xl">
           <span className="font-semibold text-gray-600">Email</span>
-          <span className="text-gray-900">{patient?.userId?.email}</span>
+          <span className="text-gray-900">{patient.userId.email}</span>
         </div>
 
         <div className="flex items-center justify-between py-3 px-6 bg-gray-50 rounded-xl">
           <span className="font-semibold text-gray-600">Age</span>
-          <span className="text-gray-900">{patient?.age}</span>
+          <span className="text-gray-900">{patient.age}</span>
         </div>
 
         <div className="flex items-center justify-between py-3 px-6 bg-gray-50 rounded-xl">
           <span className="font-semibold text-gray-600">Gender</span>
-          <span className="text-gray-900 capitalize">{patient?.gender}</span>
+          <span className="text-gray-900 capitalize">{patient.gender}</span>
         </div>
       </div>
 
