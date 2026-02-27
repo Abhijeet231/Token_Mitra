@@ -116,16 +116,7 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found!");
   }
 
-  const cookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  path: "/",
-    maxAge: 2 * 24 * 60 * 60 * 1000,
-  };
-
   return res
     .status(200)
-    .cookie("accessToken", token, cookieOptions)
     .json(new ApiResponse(200, currUser, "Current User fetched Successfully"));
 });
