@@ -35,13 +35,13 @@ const DoctorProfile = () => {
     let getDoc = async () => {
       try {
         const res = await getLoggedInDoctor();
-        if (res.data?.needsProfile) {
+        if (res.data.needsProfile) {
           navigate("/doctors/profile/create", { replace: true });
           toast.info("Complete Your Profile!");
           return;
         }
-        setDoctor(res.data?.data);
-        console.log("DOc Data in Profile:", res.data?.data); /// .data
+        setDoctor(res.data.data);
+        console.log("DOc Data in Profile:", res.data.data);
       } catch (error) {
         toast.error("Failed to load profile");
         console.log("Doctor Profile Error:", error);

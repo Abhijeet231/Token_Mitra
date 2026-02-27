@@ -4,7 +4,7 @@ const genAccessToken = (_id, role) => {
     const payload = {_id, role};
 
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn:"2d",
+        expiresIn:"1d",
     });
 };
 
