@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
 
+
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
   console.log("Incoming Body:", req.body);
@@ -39,8 +40,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    domain: process.env.NODE_ENV === "production" ? ".onrender.com" : undefined,
-    maxAge: 24 * 60 * 60 * 1000,
   });
 
   return res
@@ -51,6 +50,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  
 
   //finding user by email
   const user = await User.findOne({ email });
@@ -72,19 +72,18 @@ export const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    domain: process.env.NODE_ENV === "production" ? ".onrender.com" : undefined,
-    maxAge: 24 * 60 * 60 * 1000,
   };
+
 
   return res
     .status(200)
     .cookie("accessToken", token, options)
-    .json(new ApiResponse(200, loggedInUser, "User LoggedIn Successfully"));
+    .json(new ApiResponse(200, loggedInUser, token, "User LoggedIn Successfully"));
 });
 
 // Logout User
-export const logoutUser = asyncHandler(async (req, res) => {
-  if (!req.user?._id) {
+export const logoutUser = asyncHandler(async(req,res) => {
+  if(!req.user?._id) {
     throw new ApiError(401, "Unauthorised Request!");
   }
 
@@ -92,31 +91,34 @@ export const logoutUser = asyncHandler(async (req, res) => {
 
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    domain: process.env.NODE_ENV === "production" ? ".onrender.com" : undefined,
-    maxAge: 24 * 60 * 60 * 1000,
-  };
+  }
 
   return res
-    .status(200)
-    .clearCookie("accessToken", cookieOptions)
-    .json(new ApiResponse(200, null, "Logged Out Successfully!"));
+         .status(200)
+         .clearCookie("accessToken", cookieOptions)
+         .json(new ApiResponse(200, null, "Logged Out Successfully!"))
+
 });
 
 // Current User
-export const getCurrentUser = asyncHandler(async (req, res) => {
-  if (!req.user?._id) {
+export const getCurrentUser = asyncHandler(async(req,res) => {
+  
+    if (!req.user?._id) {
     throw new ApiError(401, "Unauthorized request");
   }
 
   const currUser = await User.findById(req.user._id).select("-password");
 
-  if (!currUser) {
+  if(!currUser) {
     throw new ApiError(404, "User not found!");
   }
-
+  
   return res
-    .status(200)
-    .json(new ApiResponse(200, currUser, "Current User fetched Successfully"));
-});
+.status(200)
+.json(new ApiResponse(200, currUser, "Current User fetched Successfully"))
+             
+
+})
+
