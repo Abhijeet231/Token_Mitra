@@ -22,8 +22,8 @@ const DoctorProfile = () => {
         return;
       }
       await deleteDoctorProfile();
-      navigate("/", {replace: true})
-      // window.location.href = "/";
+      // navigate("/", {replace: true})
+      window.location.href = "/";
     } catch (error) {
       toast.error("Error while deleting User Profile");
       console.log("Error while deleting user profile", error);
@@ -71,7 +71,7 @@ const DoctorProfile = () => {
       <div className="border border-amber-200 rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 hover:border-amber-500 hover:scale-105">
         {/* Profile Image*/}
         <div className="flex justify-center mb-6">
-          <div className="w-28 h-28 rounded-full bg-linear-to-r from-blue-400 to  bg-purple-500 flex items-center justify-center text-4xl text-white shadow-md">
+          <div className="w-28 h-28 rounded-full bg-linear-to-r from-blue-400 to bg-purple-500 flex items-center justify-center text-4xl text-white shadow-md">
             {doctor?.profileImage?.url ? (
               <img
                 src={doctor?.profileImage?.url}
@@ -79,7 +79,7 @@ const DoctorProfile = () => {
                 className="w-full h-full object-cover rounded-full"
               />
             ) : (
-               "U"
+              doctor?.userId?.fullName.charAt(0) || "U"
             )}
           </div>
         </div>
