@@ -95,13 +95,11 @@ export const deletePatientProfile = asyncHandler(async (req, res) => {
   await User.deleteOne({ _id: user._id });
 
   // Clearing cookies
-  const isProduction = process.env.NODE_ENV === "production";
   res.clearCookie("accessToken", {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    ...(isProduction && { domain: process.env.COOKIE_DOMAIN }),
-    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+   path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
   });
 
