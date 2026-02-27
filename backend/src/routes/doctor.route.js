@@ -25,7 +25,7 @@ router.post("/me", verifyJWT, doctorOnly, upload.single("profileImage"), validat
 router.patch("/me", verifyJWT, doctorOnly, upload.single("profileImage"),validate(updateDocProfileSchema), updateDoctorProfile);
 
 // Delete Doctor profile
-router.delete("/me/delete", verifyJWT, doctorOnly, deleteDoctorProfile);
+router.delete("/me", verifyJWT, doctorOnly, deleteDoctorProfile);
 
 // Get specific doctor
 router.get("/:id", getDoctor); // public route

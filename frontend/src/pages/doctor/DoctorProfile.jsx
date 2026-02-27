@@ -7,28 +7,13 @@ import { Link } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
 import { deleteDoctorProfile } from "@/services/doctor.service";
 
+
 const DoctorProfile = () => {
   const navigate = useNavigate();
 
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Delete Profile
-  const deleteProfile = async () => {
-    try {
-      if (
-        !window.confirm("This will permanently delete your account. Continue?")
-      ) {
-        return;
-      }
-      await deleteDoctorProfile();
-      // navigate("/", {replace: true})
-      window.location.href = "/";
-    } catch (error) {
-      toast.error("Error while deleting User Profile");
-      console.log("Error while deleting user profile", error);
-    }
-  };
 
   // Fetching doctors profile
   useEffect(() => {
@@ -37,11 +22,11 @@ const DoctorProfile = () => {
         const res = await getLoggedInDoctor();
         if (res.data.needsProfile) {
           navigate("/doctors/profile/create", { replace: true });
-          toast.info("Complete Your Profile!");
+          toast.info("Complete Your Profile!")
           return;
         }
         setDoctor(res.data.data);
-        console.log("DOc Data in Profile:", res.data.data);
+        console.log("DOc Data in Profile:", res.data.data)
       } catch (error) {
         toast.error("Failed to load profile");
         console.log("Doctor Profile Error:", error);
@@ -53,9 +38,24 @@ const DoctorProfile = () => {
     getDoc();
   }, [navigate]);
 
-  if (loading) {
+// Delete Profile
+const deleteProfile = async() => {
+   try {
+     if (!window.confirm("This will permanently delete your account. Continue?")) {
+    return;
+  }
+    await deleteDoctorProfile();
+    toast.info("Profile Deleted Successfully!")
+    navigate("/")
+   } catch (error) {
+    toast.error("Error while deleting User Profile");
+    console.log("Error while deleting user profile", error)
+   }
+} 
+
+  if(loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <h3 className="text-center font-semibold text-2xl text-gray-700 animate-pulse">
           Loading...
         </h3>
@@ -72,80 +72,77 @@ const DoctorProfile = () => {
         {/* Profile Image*/}
         <div className="flex justify-center mb-6">
           <div className="w-28 h-28 rounded-full bg-linear-to-r from-blue-400 to bg-purple-500 flex items-center justify-center text-4xl text-white shadow-md">
-            {doctor?.profileImage?.url ? (
-              <img
-                src={doctor?.profileImage?.url}
-                alt="ProfileImgae"
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              doctor?.userId?.fullName.charAt(0) || "U"
-            )}
+                {
+                  doctor?.profileImage?.url ? <img src= {doctor?.profileImage?.url} alt="ProfileImgae" className="w-full h-full object-cover rounded-full"/> : doctor?.userId?.fullName.charAt(0) || "U"
+                }
           </div>
         </div>
 
-        {/* Welcome text*/}
-        <h1 className="text-3xl font-bold mb-2 text-gray-800">
-          Welcome, {doctor?.userId?.fullName || "USer"}{" "}
-        </h1>
+{/* Welcome text*/}
+<h1 
+ className="text-3xl font-bold mb-2 text-gray-800"
+>Welcome, {doctor?.userId?.fullName || "USer"} </h1>
 
-        {/* User Info*/}
-        <div className="text-center space-y-2 max-w-md mx-auto text-gray-700">
-          <p>
-            <span className="font-semibold">User Name: </span>{" "}
-            {doctor?.userId?.fullName}
-          </p>
+{/* User Info*/}
+ <div className="text-center space-y-2 max-w-md mx-auto text-gray-700">
+  <p>
+    <span className="font-semibold">User Name: </span> {" "}
+    {doctor?.userId?.fullName}
+  </p>
 
-          <p>
-            <span className="font-semibold">Email:</span>{" "}
-            {doctor?.userId?.email}
-          </p>
+  <p>
+    <span className="font-semibold">Email:</span> {" "}
+    {doctor?.userId?.email}
+  </p>
 
-          <p>
-            <span className="font-semibold">Specialization:</span>{" "}
-            {doctor?.specialization}
-          </p>
+  <p>
+    <span className="font-semibold">Specialization:</span> {" "}
+    {doctor?.specialization}
+  </p>
 
-          <p>
-            <span className="font-semibold">Experience:</span>{" "}
-            {doctor?.experience}
-          </p>
+  <p>
+    <span className="font-semibold">Experience:</span> {" "}
+    {doctor?.experience}
+  </p>
 
-          <p>
-            <span className="font-semibold">Qualification:</span>{" "}
-            {doctor?.qualification}
-          </p>
+  <p>
+    <span className="font-semibold">Qualification:</span> {" "}
+    {doctor?.qualification}
+  </p>
 
-          <p>
-            <span className="font-semibold">Slot Duration:</span>{" "}
-            {doctor?.slotDuration}
-          </p>
+  <p>
+    <span className="font-semibold">Slot Duration:</span> {" "}
+    {doctor?.slotDuration}
+  </p>
 
-          <p>
-            <span className="font-semibold">Clinic Address:</span>{" "}
-            {doctor?.clinicAddress}
-          </p>
-        </div>
+  <p>
+    <span className="font-semibold">Clinic Address:</span> {" "}
+    {doctor?.clinicAddress}
+  </p>
 
-        {/* Buttons*/}
-        <div className="flex justify-center gap-4 mt-8">
-          <Link
-            to="/doctors/profile/edit"
-            className="flex items-center gap-2 px-5 py-2 rounded-lg text-amber-700 bg-amber-50 border-2 border-amber-500 font-medium shadow-md hover:bg-amber-100 hover:border-amber-600 hover:shadow-lg transition-all duration-200 cursor-pointer"
-          >
-            Edit Profile
-          </Link>
+ </div>
 
-          <button
-            onClick={deleteProfile}
-            className="flex items-center gap-2 px-5 py-2 rounded-lg text-red-700 bg-red-50 border-2 border-red-500 font-medium shadow-md hover:bg-red-100 hover:border-red-600 hover:shadow-lg transition-all duration-200 cursor-pointer"
-          >
-            Delete Profile
-          </button>
-        </div>
-      </div>
+ {/* Buttons*/}
+ <div className="flex justify-center gap-4 mt-8">
+ <Link to='/doctors/profile/edit' className="flex items-center gap-2 px-5 py-2 rounded-lg text-amber-700 bg-amber-50 border-2 border-amber-500 font-medium shadow-md hover:bg-amber-100 hover:border-amber-600 hover:shadow-lg transition-all duration-200 cursor-pointer"> 
+ Edit Profile
+ </Link>
+
+ <button 
+ onClick={deleteProfile}
+ className="flex items-center gap-2 px-5 py-2 rounded-lg text-red-700 bg-red-50 border-2 border-red-500 font-medium shadow-md hover:bg-red-100 hover:border-red-600 hover:shadow-lg transition-all duration-200 cursor-pointer">
+  Delete Profile
+ </button>
+
+ </div>
+
+
+  </div >
+    
+            
     </div>
   );
 };
 
 export default DoctorProfile;
+
