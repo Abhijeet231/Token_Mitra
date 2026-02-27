@@ -39,7 +39,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    path: "/",
+   path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
   });
 
@@ -94,7 +94,7 @@ export const logoutUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    path: "/",
+  path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
   };
 
@@ -116,13 +116,11 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found!");
   }
 
-  const token = genAccessToken(currUser._id, currUser.role);
-  
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    path: "/",
+  path: "/",
     maxAge: 2 * 24 * 60 * 60 * 1000,
   };
 
