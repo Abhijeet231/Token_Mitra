@@ -3,7 +3,8 @@ import { ApiError } from "../utils/ApiError.js";
 import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
-
+import { deleteDoctorProfile } from "./doctor.controller.js";
+import { deletePatientProfile } from "./patient.controller.js";
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
@@ -39,7 +40,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: "strict",
   });
 
   return res
@@ -71,7 +72,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: "strict",
   };
 
 
@@ -92,7 +93,7 @@ export const logoutUser = asyncHandler(async(req,res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: "strict"
   }
 
   return res

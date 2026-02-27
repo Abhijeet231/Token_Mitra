@@ -204,7 +204,7 @@ export const deleteDoctorProfile = asyncHandler (async(req,res) => {
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: "strict"
   });
 
    return res.status(200).json(new ApiResponse(200, null, "Doctor Profile Deleted Successfully"))
