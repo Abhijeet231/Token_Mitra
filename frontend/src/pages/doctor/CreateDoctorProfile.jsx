@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createDoctorProfile } from "@/validations/createDoctorProfile.js";
+import { createDoctorProfile } from "@/validations/createDoctorProfile.jsx";
 import { createDocProfile } from "@/services/doctor.service.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
