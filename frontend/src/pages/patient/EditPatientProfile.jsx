@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { updatePatientProfile, getPatientDetails } from "@/services/patient.service.js";
+import { updatePatientProfile, getPatientDetails } from "@/services/patient.service";
 import { useState, useEffect } from "react";
 
 

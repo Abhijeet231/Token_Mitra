@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { getSpecificDoctor } from "@/services/doctor.service.js";
-import { getDoctorsAvailability } from "@/services/docAvailability.service.js";
+import { getDoctorsAvailability } from "@/services/docAvailability.service";
 import { LoaderCircle} from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import SlotCard from "@/components/doctor/SlotCard.jsx";
-import DoctorDetailCard from "@/components/doctor/DoctorDetailCard.jsx";
-import BookingModal from "@/components/doctor/BookingModal.jsx";
-import { createBooking } from "@/services/booking.service.js";
+import SlotCard from "@/components/doctor/SlotCard";
+import DoctorDetailCard from "@/components/doctor/DoctorDetailCard";
+import BookingModal from "@/components/doctor/BookingModal";
+import { createBooking } from "@/services/booking.service";
 
 
 const DoctorDetails = () => {

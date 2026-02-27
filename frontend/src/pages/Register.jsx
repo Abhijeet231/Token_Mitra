@@ -1,6 +1,6 @@
 import React from 'react'
-import { registerUser } from '@/services/auth.service.js';
-import { registerSchema } from '@/validations/register.schema.js';
+import { registerUser } from '@/services/auth.service';
+import { registerSchema } from '@/validations/register.schema';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
