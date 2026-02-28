@@ -5,40 +5,40 @@ import { lazy } from "react";
 
 
 // Route guards
-import ProtectedRoute from "./ProtectedRoute";
-import PatientRoute from "./PatientRoute";
-import DoctorRoute from "./DoctorRoute";
+import ProtectedRoute from "./protectedRoute.jsx";
+import PatientRoute from "./PatientRoute.jsx";
+import DoctorRoute from "./DoctorRoute.jsx";
 
 // Pages
-import Landing from "@/pages/Landing";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
+import Landing from "@/pages/Landing.jsx";
+import Login from "@/pages/Login.jsx";
+import Register from "@/pages/Register.jsx";
 
-import About from "@/pages/About";
+import About from "@/pages/About.jsx";
 
-import PatientHome from "@/pages/patient/PatientHome";
-import PatientProfile from "@/pages/patient/PatientProfile";
-import PatientBookings from "@/pages/patient/PatientBookings";
-import PatientProfileComplete from "@/pages/patient/PatientProfileComplete";
+import PatientHome from "@/pages/patient/PatientHome.jsx";
+import PatientProfile from "@/pages/patient/PatientProfile.jsx";
+import PatientBookings from "@/pages/patient/PatientBookings.jsx";
+import PatientProfileComplete from "@/pages/patient/PatientProfileComplete.jsx";
 
-import DoctorDashboard from "@/pages/doctor/DoctorDashboard";
+import DoctorDashboard from "@/pages/doctor/DoctorDashboard.jsx";
 
-const DoctorProfile = lazy(() => import("@/pages/doctor/DoctorProfile"));
+const DoctorProfile = lazy(() => import("@/pages/doctor/DoctorProfile.jsx"));
 const ScheduledAppointments = lazy(() =>
-  import("@/pages/doctor/ScheduledAppointments")
+  import("@/pages/doctor/ScheduledAppointments.jsx")
 );
 const AvailabilityForm = lazy(() =>
-  import("@/pages/doctor/dashboard/AvailabilityForm")
+  import("@/pages/doctor/dashboard/AvailabilityForm.jsx")
 );
-const AvailableSlots = lazy(() => import("@/pages/doctor/AvailableSlots"));
-import DoctorDetails from "@/pages/doctor/DoctorDetails";
+const AvailableSlots = lazy(() => import("@/pages/doctor/AvailableSlots.jsx"));
+import DoctorDetails from "@/pages/doctor/DoctorDetails.jsx";
 
-import Unauthorized from "@/pages/Unauthorized";
-import NotFound from "@/pages/NotFound";
-import EditDoctorProfile from "@/pages/doctor/EditDoctorProfile";
-import CreateDoctorProfile from "@/pages/doctor/CreateDoctorProfile";
-import EditPatientProfile from "@/pages/patient/EditPatientProfile";
-import Contact from "@/pages/Contact";
+import Unauthorized from "@/pages/Unauthorized.jsx";
+import NotFound from "@/pages/NotFound.jsx";
+import EditDoctorProfile from "@/pages/doctor/EditDoctorProfile.jsx";
+import CreateDoctorProfile from "@/pages/doctor/CreateDoctorProfile.jsx";
+import EditPatientProfile from "@/pages/patient/EditPatientProfile.jsx";
+import Contact from "@/pages/Contact.jsx";
 
 const router = createBrowserRouter([
   {
