@@ -41,6 +41,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    domain: ".tokenmitra.online"
   });
 
   return res
@@ -73,6 +74,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    domain: ".tokenmitra.online"
   };
 
 
@@ -94,6 +96,7 @@ export const logoutUser = asyncHandler(async(req,res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    domain: ".tokenmitra.online",
   }
 
   return res

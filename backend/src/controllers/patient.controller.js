@@ -91,6 +91,7 @@ export const deletePatientProfile  = asyncHandler (async(req,res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    domain: ".tokenmitra.online"
   });
    
 

@@ -205,6 +205,7 @@ export const deleteDoctorProfile = asyncHandler (async(req,res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    domain: ".tokenmitra.online"
   });
 
    return res.status(200).json(new ApiResponse(200, null, "Doctor Profile Deleted Successfully"))
