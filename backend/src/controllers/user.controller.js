@@ -40,7 +40,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
   });
 
   return res
@@ -72,7 +72,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
   };
 
 
@@ -93,7 +93,7 @@ export const logoutUser = asyncHandler(async(req,res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: "strict"
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
   }
 
   return res
