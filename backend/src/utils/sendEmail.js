@@ -8,8 +8,8 @@ export const sendEmail = async({to, subject, react}) => {
             const html = await render(react);
 
             await resend.emails.send({
-                from: "Token_Mitra <onboarding@resend.dev>"
-,
+               from: "TokenMitra <notify@mail.tokenmitra.online>",
+
                 to,
                 subject,
                 html,
