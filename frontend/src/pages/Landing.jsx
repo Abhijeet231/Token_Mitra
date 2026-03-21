@@ -37,7 +37,7 @@ const LandingPage = () => {
 
           <p className="mt-8 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             TokenMitra helps patients book appointments seamlessly and
-            helps doctors manage schedules efficiently — all in one place.
+            helps doctors manage schedules efficiently - all in one place.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
