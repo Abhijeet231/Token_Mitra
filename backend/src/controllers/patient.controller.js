@@ -96,12 +96,13 @@ export const deletePatientProfile = asyncHandler(async (req, res) => {
 
   // Clearing cookies
   const isProd = process.env.NODE_ENV === "production";
+  const isCustomDomain = process.env.COOKIE_DOMAIN;
 
   const options = {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "None" : "lax",
-    ...(isProd && { domain: ".tokenmitra.online" }),
+    ...(isCustomDomain && { domain: isCustomDomain }),
   };
 
   res.clearCookie("accessToken", options);

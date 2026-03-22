@@ -3,8 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import genAccessToken from "../utils/genAccessToken.js";
-import { deleteDoctorProfile } from "./doctor.controller.js";
-import { deletePatientProfile } from "./patient.controller.js";
+
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
@@ -38,12 +37,13 @@ export const registerUser = asyncHandler(async (req, res) => {
   const token = genAccessToken(user._id, user.role);
 
   const isProd = process.env.NODE_ENV === "production";
+  const isCustomDomain = process.env.COOKIE_DOMAIN;
 
   const options = {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "None" : "lax",
-    ...(isProd && { domain: ".tokenmitra.online" }),
+    ...(isCustomDomain && { domain: isCustomDomain }),
   };
 
   return res
@@ -73,12 +73,13 @@ export const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select("-password");
 
   const isProd = process.env.NODE_ENV === "production";
+  const isCustomDomain = process.env.COOKIE_DOMAIN;
 
   const options = {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "None" : "lax",
-    ...(isProd && { domain: ".tokenmitra.online" }),
+    ...(isCustomDomain && { domain: isCustomDomain }),
   };
 
   return res
@@ -96,12 +97,13 @@ export const logoutUser = asyncHandler(async (req, res) => {
   console.log("LOGGED IN USER:", req.user);
 
   const isProd = process.env.NODE_ENV === "production";
+  const isCustomDomain = process.env.COOKIE_DOMAIN;
 
   const options = {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "None" : "lax",
-    ...(isProd && { domain: ".tokenmitra.online" }),
+    ...(isCustomDomain && { domain: isCustomDomain }),
   };
 
   return res

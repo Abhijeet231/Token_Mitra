@@ -42,7 +42,7 @@ export const getDoctor = asyncHandler(async (req, res) => {
 export const getLoggedInDoctor = asyncHandler(async (req, res) => {
   const doctor = await Doctor.findOne({ userId: req.user._id }).populate(
     "userId",
-    "fullName email"
+    "fullName email",
   );
 
   if (!doctor) {
@@ -82,25 +82,28 @@ export const createDoctorProfile = asyncHandler(async (req, res) => {
     slotDuration,
   };
 
-  if(req.file?.path) {
+  if (req.file?.path) {
     const uploadImage = await uploadOnCloudinary(req.file.path);
-    if(!uploadImage) {
-        throw new ApiError(500, "Profile Image Upload Failed");
+    if (!uploadImage) {
+      throw new ApiError(500, "Profile Image Upload Failed");
     }
 
     newDoctor.profileImage = {
-        url: uploadImage.secure_url,
-        public_id: uploadImage.public_id,
+      url: uploadImage.secure_url,
+      public_id: uploadImage.public_id,
     };
   }
 
-  
   const newDocProfile = await Doctor.create(newDoctor);
 
   return res
     .status(201)
     .json(
-      new ApiResponse(201, newDocProfile, "Doctor Profile Created Successfully")
+      new ApiResponse(
+        201,
+        newDocProfile,
+        "Doctor Profile Created Successfully",
+      ),
     );
 });
 
@@ -120,98 +123,99 @@ export const updateDoctorProfile = asyncHandler(async (req, res) => {
     slotDuration,
   } = req.body;
 
-if (typeof specialization === "string" && specialization.trim())
-  doctor.specialization = specialization;
+  if (typeof specialization === "string" && specialization.trim())
+    doctor.specialization = specialization;
 
-if (typeof qualification === "string" && qualification.trim()) doctor.qualification = qualification;
+  if (typeof qualification === "string" && qualification.trim())
+    doctor.qualification = qualification;
 
-if (experience !== undefined) doctor.experience = experience;
+  if (experience !== undefined) doctor.experience = experience;
 
-if (typeof clinicAddress === "string" && clinicAddress.trim()) doctor.clinicAddress = clinicAddress;
+  if (typeof clinicAddress === "string" && clinicAddress.trim())
+    doctor.clinicAddress = clinicAddress;
 
-if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
+  if (slotDuration !== undefined) doctor.slotDuration = slotDuration;
 
   // Handle Profile Image (optional)
   if (req.file?.path) {
     const uploadImage = await uploadOnCloudinary(req.file.path);
-    if(!uploadImage) {
-        throw new ApiError(500, "Profile Image Upload failed!");
+    if (!uploadImage) {
+      throw new ApiError(500, "Profile Image Upload failed!");
     }
     //delete old image if exists
     const oldImage = doctor.profileImage?.public_id;
 
     doctor.profileImage = {
-        url: uploadImage.secure_url,
-        public_id: uploadImage.public_id,
+      url: uploadImage.secure_url,
+      public_id: uploadImage.public_id,
     };
 
-    await doctor.save({validateBeforeSave: true});
+    await doctor.save({ validateBeforeSave: true });
 
-    if(oldImage) {
-        try {
-            await deleteFromCloudinary(oldImage)
-        } catch (error) {
-            console.log("cloudinary cleanup failed:", error);
-        }
-     }
+    if (oldImage) {
+      try {
+        await deleteFromCloudinary(oldImage);
+      } catch (error) {
+        console.log("cloudinary cleanup failed:", error);
+      }
     }
-    
-    // Save doctor when no image is uploaded 
-        await doctor.save({validateBeforeSave: true});
-    
+  }
+
+  // Save doctor when no image is uploaded
+  await doctor.save({ validateBeforeSave: true });
 
   return res
     .status(200)
-    .json(new ApiResponse(200, doctor, "Doctor Profile Updated Successfully"))
-
+    .json(new ApiResponse(200, doctor, "Doctor Profile Updated Successfully"));
 });
-  
-// DELETE DOCTOR PROFILE
-export const deleteDoctorProfile = asyncHandler (async(req,res) => {
 
+// DELETE DOCTOR PROFILE
+export const deleteDoctorProfile = asyncHandler(async (req, res) => {
   // Checking if User Exists
   const user = await User.findById(req.user._id);
-  if(!user){
-    throw new ApiError(404, "User Not found to delete!")
+  if (!user) {
+    throw new ApiError(404, "User Not found to delete!");
   }
   // checking role of user
-  if(user.role !== "doctor") {
-    throw new ApiError(403, "Unauthorized to delete Doctor Profile")
+  if (user.role !== "doctor") {
+    throw new ApiError(403, "Unauthorized to delete Doctor Profile");
   }
   // Finding Doctor Profile
-  const doctorProfile = await Doctor.findOne({userId: user._id});
-  if(!doctorProfile) {
-    throw new ApiError(404, "Doctor Profile not found to delete")
+  const doctorProfile = await Doctor.findOne({ userId: user._id });
+  if (!doctorProfile) {
+    throw new ApiError(404, "Doctor Profile not found to delete");
   }
-  // Deleting profileImage 
-  if(doctorProfile.profileImage?.public_id) {
+  // Deleting profileImage
+  if (doctorProfile.profileImage?.public_id) {
     await deleteFromCloudinary(doctorProfile.profileImage.public_id);
   }
 
   // Deleting available slots related to doctor
-  await DocAvailability.deleteMany({doctorId: user._id});
+  await DocAvailability.deleteMany({ doctorId: user._id });
 
   // Deleting bookings related to doctor
-  await Booking.deleteMany({doctorId: user._id});
+  await Booking.deleteMany({ doctorId: user._id });
 
-  // Deleting Doctor Profile 
-  await Doctor.deleteOne({userId: user._id});
+  // Deleting Doctor Profile
+  await Doctor.deleteOne({ userId: user._id });
 
   // Deleting User Profile
-  await User.deleteOne({_id: user._id});
+  await User.deleteOne({ _id: user._id });
 
   // Clearing auth cookie
-    const isProd = process.env.NODE_ENV === "production";
+  const isProd = process.env.NODE_ENV === "production";
+  const isCustomDomain = process.env.COOKIE_DOMAIN;
 
   const options = {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "None" : "lax",
-    ...(isProd && { domain: ".tokenmitra.online" }),
+    ...(isCustomDomain && { domain: isCustomDomain }),
   };
 
   res.clearCookie("accessToken", options);
 
-   return res.status(200).json(new ApiResponse(200, null, "Doctor Profile Deleted Successfully"))
-
-})
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Doctor Profile Deleted Successfully"));
+});
