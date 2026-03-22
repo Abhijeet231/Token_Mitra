@@ -23,7 +23,7 @@ const Login = () => {
     try {
       const result = await login(data);
       toast.success("User Logged In")
-      console.log("Logged In USer:", result?.data)
+      console.log("Logged In User:", result?.data)
 
       result?.data?.data?.role === 'patient'? navigate('/patient') : navigate("/doctors/profile")
 
