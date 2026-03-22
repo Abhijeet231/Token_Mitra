@@ -9,7 +9,14 @@ app.set("trust proxy", 1);
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: function(origin, callback) {
+      const allowedOrigins = process.env.CORS_ORIGIN?.split(",").map(o => o.trim());
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
