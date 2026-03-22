@@ -37,22 +37,24 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   const token = genAccessToken(user._id, user.role);
 
-  res.cookie("accessToken", token, {
+  const isProd = process.env.NODE_ENV === "production";
+
+  const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    domain: ".tokenmitra.online"
-  });
+    secure: isProd,
+    sameSite: isProd ? "None" : "lax",
+    ...(isProd && { domain: ".tokenmitra.online" }),
+  };
 
   return res
     .status(201)
+    .cookie("accessToken", token, options)
     .json(new ApiResponse(201, createdUser, "User Registered Successfully"));
 });
 
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  
 
   //finding user by email
   const user = await User.findOne({ email });
@@ -70,13 +72,14 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const loggedInUser = await User.findById(user._id).select("-password");
 
+  const isProd = process.env.NODE_ENV === "production";
+
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    domain: ".tokenmitra.online"
+    secure: isProd,
+    sameSite: isProd ? "None" : "lax",
+    ...(isProd && { domain: ".tokenmitra.online" }),
   };
-
 
   return res
     .status(200)
@@ -85,44 +88,41 @@ export const loginUser = asyncHandler(async (req, res) => {
 });
 
 // Logout User
-export const logoutUser = asyncHandler(async(req,res) => {
-  if(!req.user?._id) {
+export const logoutUser = asyncHandler(async (req, res) => {
+  if (!req.user?._id) {
     throw new ApiError(401, "Unauthorised Request!");
   }
 
   console.log("LOGGED IN USER:", req.user);
 
-  const cookieOptions = {
+  const isProd = process.env.NODE_ENV === "production";
+
+  const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    domain: ".tokenmitra.online",
-  }
+    secure: isProd,
+    sameSite: isProd ? "None" : "lax",
+    ...(isProd && { domain: ".tokenmitra.online" }),
+  };
 
   return res
-         .status(200)
-         .clearCookie("accessToken", cookieOptions)
-         .json(new ApiResponse(200, null, "Logged Out Successfully!"))
-
+    .status(200)
+    .clearCookie("accessToken", options)
+    .json(new ApiResponse(200, null, "Logged Out Successfully!"));
 });
 
 // Current User
-export const getCurrentUser = asyncHandler(async(req,res) => {
-  
-    if (!req.user?._id) {
+export const getCurrentUser = asyncHandler(async (req, res) => {
+  if (!req.user?._id) {
     throw new ApiError(401, "Unauthorized request");
   }
 
   const currUser = await User.findById(req.user._id).select("-password");
 
-  if(!currUser) {
+  if (!currUser) {
     throw new ApiError(404, "User not found!");
   }
-  
+
   return res
-.status(200)
-.json(new ApiResponse(200, currUser, "Current User fetched Successfully"))
-             
-
-})
-
+    .status(200)
+    .json(new ApiResponse(200, currUser, "Current User fetched Successfully"));
+});

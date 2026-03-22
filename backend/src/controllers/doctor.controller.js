@@ -201,12 +201,16 @@ export const deleteDoctorProfile = asyncHandler (async(req,res) => {
   await User.deleteOne({_id: user._id});
 
   // Clearing auth cookie
-  res.clearCookie("accessToken", {
+    const isProd = process.env.NODE_ENV === "production";
+
+  const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    domain: ".tokenmitra.online"
-  });
+    secure: isProd,
+    sameSite: isProd ? "None" : "lax",
+    ...(isProd && { domain: ".tokenmitra.online" }),
+  };
+
+  res.clearCookie("accessToken", options);
 
    return res.status(200).json(new ApiResponse(200, null, "Doctor Profile Deleted Successfully"))
 

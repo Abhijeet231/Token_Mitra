@@ -20,12 +20,12 @@ const PatientProfile = () => {
       try {
         const res = await getPatientDetails();
 
-        if (res.data.needsProfile) {
+        if (res.data?.needsProfile) {
           navigate("/patient/profile/complete", { replace: true });
           return;
         }
 
-        setPatient(res.data.data);
+        setPatient(res.data?.data);
       } catch (error) {
         toast.error("Failed to load profile");
         console.error("Patient profile error:", error);
@@ -79,7 +79,7 @@ const PatientProfile = () => {
     );
   }
 
-  const firstLetter = patient.userId.fullName.charAt(0).toUpperCase();
+  const firstLetter = patient?.userId?.fullName?.charAt(0)?.toUpperCase();
 
   return (
    <div className="min-h-screen bg-linear-to-br from-amber-50 via-white to-orange-50 px-4 py-12">
