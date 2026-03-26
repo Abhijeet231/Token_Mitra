@@ -27,23 +27,23 @@ const Navbar = () => {
     }
   };
 
-  // Navigation routes based on user role 
+  // Navigation routes based on user role
   let navItem = null;
 
-  if(user?.role === "patient") {
+  if (user?.role === "patient") {
     navItem = {
       label: "Home",
       path: "/patient",
     };
-  }else if (user?.role === "doctor") {
+  } else if (user?.role === "doctor") {
     navItem = {
       label: "Dashboard",
-      path: "/doctors/profile"
+      path: "/doctors/profile",
     };
-  }else {
+  } else {
     navItem = {
       label: "Home",
-      path: "/"
+      path: "/",
     };
   }
 
@@ -63,12 +63,12 @@ const Navbar = () => {
 
           {/* Navigation Links - Center (Desktop) */}
           <div className="hidden md:flex items-center space-x-1">
-            { navItem && (
-              <Link 
+            {navItem && (
+              <Link
                 to={navItem.path}
                 className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               >
-               {navItem.label}
+                {navItem.label}
               </Link>
             )}
             <Link
@@ -141,70 +141,76 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="px-6 py-4 space-y-2">
-            <Link
-              to="/"
-              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
+        <div className="md:hidden bg-white border-t border-gray-100">
+          <div className="px-4 py-3 space-y-1">
+            {navItem && (
+              <Link
+                to={navItem.path}
+                className="block px-3 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {navItem.label}
+              </Link>
+            )}
             <Link
               to="/about"
-              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+              className="block px-3 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <Link
               to="/contact"
-              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+              className="block px-3 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
 
-            {status === "authenticated" ? (
-              <div>
-                <button
-                  className="flex items-center justify-center space-x-2 w-full px-4 py-3 bg-red-50 text-red-600 hover:bg-red-100 font-medium text-sm rounded-lg transition border border-red-200 mt-3"
-                  onClick={logout}
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
-                </button>
-
-                <button
-                  onClick={handleProfileVisit}
-                  className="flex items-center justify-center space-x-2 w-full  px-4 py-2 mt-4 rounded-lg
-             bg-amber-600 text-white font-semibold
-             hover:bg-amber-700 transition
-             shadow-sm hover:shadow-md"
-                >
-                  <UserCircleIcon className="w-5 h-5" />
-                  My Profile
-                </button>
-              </div>
-            ) : (
-              <div className="pt-3 space-y-2 border-t border-gray-200">
-                <Link
-                  to="/login"
-                  className="flex items-center justify-center space-x-1 w-full px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <User className="w-4 h-4" />
-                  <span>Login</span>
-                </Link>
-                <Link
-                  to="/register"
-                  className="block w-full px-4 py-3 bg-amber-600 text-white text-center font-medium text-sm rounded-lg hover:bg-amber-700 transition shadow-sm"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Get Started
-                </Link>
-              </div>
-            )}
+            <div className="pt-2 mt-2 border-t border-gray-100">
+              {status === "authenticated" ? (
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      handleProfileVisit();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-amber-600 text-white text-sm font-semibold hover:bg-amber-700 transition"
+                  >
+                    <UserCircleIcon className="w-4 h-4" />
+                    My Profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-red-600 bg-red-50 hover:bg-red-100 text-sm font-medium rounded-lg transition border border-red-100"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center gap-1 w-full px-4 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 text-sm font-medium rounded-lg transition"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <User className="w-4 h-4" />
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="block w-full px-4 py-2.5 bg-amber-600 text-white text-center text-sm font-medium rounded-lg hover:bg-amber-700 transition"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
