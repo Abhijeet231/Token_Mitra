@@ -1,98 +1,110 @@
-import { Clock, Stethoscope, Calendar } from "lucide-react";
 import { cancelBooking } from "@/services/booking.service";
 import { toast } from "react-toastify";
+import { Calendar, Clock, Gift, XCircle, Ticket } from "lucide-react";
 
-
+const statusConfig = {
+  pending: {
+    pill: "bg-amber-100 text-amber-800",
+    accent: "from-amber-400 to-amber-600",
+    icon: "bg-amber-50",
+    iconColor: "text-amber-600",
+  },
+  completed: {
+    pill: "bg-green-100 text-green-800",
+    accent: "from-green-400 to-green-600",
+    icon: "bg-green-50",
+    iconColor: "text-green-600",
+  },
+  cancelled: {
+    pill: "bg-red-100 text-red-800",
+    accent: "from-red-400 to-red-500",
+    icon: "bg-red-50",
+    iconColor: "text-red-500",
+  },
+};
 
 const MyBookingCard = ({ booking, onCancelBooking }) => {
-
   const handleCancelBooking = async () => {
-           
-     if(booking?.status === "cancelled") {
-      toast.info("Booking Already Cancelled!")
-     }
-
+    if (booking?.status === "cancelled") {
+      toast.info("Booking Already Cancelled!");
+      return;
+    }
     try {
       await cancelBooking(booking._id);
       toast.success("Booking cancelled successfully.");
-      onCancelBooking(); // refetch bookings after cancellation
-
+      onCancelBooking();
     } catch (error) {
       toast.error("Failed to cancel booking. Please try again.");
       console.error("Error cancelling booking:", error);
     }
   };
 
-
+  const status = booking?.status ?? "pending";
+  const cfg = statusConfig[status] ?? statusConfig.pending;
+  const isCancelled = status === "cancelled";
 
   return (
-    <>
-      <div className="border border-amber-200 shadow-md p-5 mt-3 mb-4 hover:border-amber-300 bg-amber-50/30 hover:shadow-lg hover:scale-105  transition-all duration-200 rounded-xl">
-        <div className="space-y-3">
+    <div
+      style={{ fontFamily: "'Geist', 'DM Sans', sans-serif" }}
+      className="relative flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm ring-1 ring-black/5 hover:shadow-md transition-shadow duration-200 overflow-hidden"
+    >
+      {/* Left accent bar */}
+      <div
+        className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl bg-linear-to-b ${cfg.accent}`}
+      />
+
+      {/* Calendar icon box */}
+      <div
+        className={`shrink-0 w-11 h-11 rounded-xl flex items-center justify-center ${cfg.icon}`}
+      >
+        <Calendar className={`w-5 h-5 ${cfg.iconColor}`} />
+      </div>
+
+      {/* Main info */}
+      <div className="flex-1 min-w-0">
+        <p className="text-[0.95rem] font-700 text-gray-900 font-bold leading-tight truncate">
+          Dr. {booking?.doctorId?.fullName}
+        </p>
+        <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-1.5">
           {/* Date */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-50 rounded-lg">
-              <Calendar className="text-amber-600" size={18} />
-            </div>
-            <span className="text-gray-700 font-medium">
-              {booking?.appointmentDate.split("T")[0]}
-            </span>
-          </div>
-
-          {/* Doctor */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <Stethoscope className="text-blue-600" size={18} />
-            </div>
-            <span className="text-black font-semibold">
-              Dr. {booking?.doctorId?.fullName}
-            </span>
-          </div>
-
-          {/* Slot Time */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-50 rounded-lg">
-              <Clock className="text-purple-600" size={18} />
-            </div>
-            <span className="text-gray-700">{booking?.slotTime}</span>
-          </div>
-
-          {/* Token Number & Status */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-            <span className="text-md text-gray-800">
-              Token:{" "}
-              <span className="font-semibold text-gray-800">
-                #{booking?.tokenNumber}
-              </span>
-            </span>
-
-            <span
-              className={`px-3 py-1  text-md font-semibold ${
-                booking?.status === "pending"
-                  ? " text-amber-700"
-                  : booking?.status === "completed"
-                  ? " text-green-700"
-                  : booking?.status === "cancelled"
-                  ? " text-red-700"
-                  : "bg-gray-100 text-gray-700"
-              }`}
-            >
-              {booking?.status?.charAt(0).toUpperCase() +
-                booking?.status?.slice(1)}
-            </span>
-
-            <span>
-              <button
-              disabled={booking?.status === "cancelled"}
-              onClick={handleCancelBooking}
-              className={`px-3 py-0.5 rounded-sm shadow-sm text-white font-semibold cursor-pointer  ${booking.status === "cancelled" ? "bg-gray-600 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"}`}>
-                Cancel Booking
-              </button>
-            </span>
-          </div>
+          <span className="flex items-center gap-1 text-[0.72rem] text-gray-400 font-medium">
+            <Calendar className="w-3 h-3" />
+            {booking?.appointmentDate?.split("T")[0]}
+          </span>
+          {/* Time */}
+          <span className="flex items-center gap-1 text-[0.72rem] text-gray-400 font-medium">
+            <Clock className="w-3 h-3" />
+            {booking?.slotTime}
+          </span>
+          {/* Token */}
+          <span className="flex items-center gap-1 text-[0.72rem] text-amber-600 font-700 font-bold">
+            <Ticket className="w-3 h-3" />
+            Token #{booking?.tokenNumber}
+          </span>
         </div>
       </div>
-    </>
+
+      {/* Actions */}
+      <div className="flex items-center gap-3 shrink-0">
+        {/* Status pill */}
+        <span
+          className={`text-[0.7rem] font-bold tracking-wide uppercase px-3 py-1 rounded-full ${cfg.pill}`}
+        >
+          {status.charAt(0).toUpperCase() + status.slice(1)}
+        </span>
+
+        {/* Cancel button — only shown when not cancelled/completed */}
+        {!isCancelled && status !== "completed" && (
+          <button
+            onClick={handleCancelBooking}
+            className="flex items-center gap-1.5 text-[0.72rem] font-semibold text-red-500 transition-colors duration-150 cursor-pointer hover:text-red-800"
+          >
+            <XCircle className="w-4 h-4" />
+            Cancel
+          </button>
+        )}
+      </div>
+    </div>
   );
 };
 
