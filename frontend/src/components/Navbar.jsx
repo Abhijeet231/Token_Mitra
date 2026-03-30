@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Menu, X, User, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Menu, X, User, LogOut, UserCircle, Stethoscope } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { UserCircleIcon } from "lucide-react";
 import { toast } from "react-toastify";
@@ -8,8 +8,21 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { status, logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   const handleProfileVisit = () => {
     if (status !== "authenticated") {
@@ -17,198 +30,199 @@ const Navbar = () => {
       navigate("/login");
       return;
     }
-
     if (user?.role === "patient") {
       navigate("/patient/profile");
-    } else if (user?.role == "doctor") {
+    } else if (user?.role === "doctor") {
       navigate("/doctors/profile");
     } else {
       toast.error("Unable to determine user role");
     }
   };
 
-  // Navigation routes based on user role 
+  // ✅ Single source of truth for navItem — used in BOTH desktop & mobile
   let navItem = null;
-
-  if(user?.role === "patient") {
-    navItem = {
-      label: "Home",
-      path: "/patient",
-    };
-  }else if (user?.role === "doctor") {
-    navItem = {
-      label: "Dashboard",
-      path: "/doctors/profile"
-    };
-  }else {
-    navItem = {
-      label: "Home",
-      path: "/"
-    };
+  if (user?.role === "patient") {
+    navItem = { label: "Home", path: "/patient" };
+  } else if (user?.role === "doctor") {
+    navItem = { label: "Dashboard", path: "/doctors/profile" };
+  } else {
+    navItem = { label: "Home", path: "/" };
   }
 
+  const isActive = (path) => location.pathname === path;
+
+  const linkClass = (path) =>
+    `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 
+    ${isActive(path)
+      ? "text-amber-600 bg-amber-50"
+      : "text-stone-500 hover:text-amber-600 hover:bg-amber-50/70"
+    }`;
+
+  const mobileLinkClass = (path) =>
+    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200
+    ${isActive(path)
+      ? "text-amber-600 bg-amber-50 border border-amber-100"
+      : "text-stone-600 hover:text-amber-600 hover:bg-amber-50/60"
+    }`;
+
   return (
-    <nav className="bg-white w-full border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Brand - Left */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">TM</span>
-            </div>
-            <span className="text-xl font-semibold text-stone-800">
-              <span className="text-amber-600">Token</span>Mitra
-            </span>
-          </Link>
+    <>
+      <nav
+        className={`w-full sticky top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.08)] border-b border-amber-100/60"
+            : "bg-white border-b border-gray-100"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-5 md:px-8">
+          <div className="flex justify-between items-center h-16">
 
-          {/* Navigation Links - Center (Desktop) */}
-          <div className="hidden md:flex items-center space-x-1">
-            { navItem && (
-              <Link 
+            {/* ── Brand ── */}
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="w-9 h-9 bg-linear-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-amber-200 group-hover:scale-105 transition-all duration-200">
+                <Stethoscope className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-lg font-bold tracking-tight text-stone-800">
+                Token<span className="text-amber-500">Mitra</span>
+              </span>
+            </Link>
+
+            {/* ── Desktop Nav Links ── */}
+            <div className="hidden md:flex items-center gap-1">
+              {navItem && (
+                <Link to={navItem.path} className={linkClass(navItem.path)}>
+                  {navItem.label}
+                </Link>
+              )}
+              <Link to="/about" className={linkClass("/about")}>About</Link>
+              <Link to="/contact" className={linkClass("/contact")}>Contact</Link>
+            </div>
+
+            {/* ── Desktop Auth ── */}
+            <div className="hidden md:flex items-center gap-3">
+              {status === "authenticated" ? (
+                <>
+                  <button
+                    onClick={handleProfileVisit}
+                    className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl transition-all duration-200"
+                  >
+                    <UserCircleIcon className="w-4 h-4" />
+                    My Profile
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-500 bg-red-50 hover:bg-red-100 border border-red-100 rounded-xl transition-all duration-200"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-stone-600 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-all duration-200"
+                  >
+                    <User className="w-4 h-4" />
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="px-5 py-2 text-sm font-semibold text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm hover:shadow-amber-200 hover:shadow-md transition-all duration-200"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* ── Mobile Hamburger ── */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl text-stone-500 hover:text-amber-600 hover:bg-amber-50 transition-all duration-200"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* ── Mobile Menu ── */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isMenuOpen ? "max-h-125 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="bg-white border-t border-gray-100 px-5 py-4 space-y-1">
+
+            {/* ✅ FIXED: uses navItem.path instead of hardcoded "/" */}
+            {navItem && (
+              <Link
                 to={navItem.path}
-                className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+                className={mobileLinkClass(navItem.path)}
+                onClick={() => setIsMenuOpen(false)}
               >
-               {navItem.label}
+                {navItem.label}
               </Link>
             )}
             <Link
               to="/about"
-              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-            >
-              Contact
-            </Link>
-          </div>
-
-          {/* Auth Buttons - Right (Desktop) */}
-          {status === "authenticated" ? (
-            <div className="hidden md:flex items-center space-x-4">
-              <button
-                onClick={logout}
-                className="flex items-center space-x-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 font-medium text-sm rounded-lg transition border border-red-200"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Logout</span>
-              </button>
-
-              <button
-                onClick={handleProfileVisit}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg
-             bg-amber-600 text-white font-semibold
-             hover:bg-amber-700 transition
-             shadow-sm hover:shadow-md"
-              >
-                <UserCircleIcon className="w-5 h-5" />
-                My Profile
-              </button>
-            </div>
-          ) : (
-            <div className="hidden md:flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="flex items-center space-x-1 px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              >
-                <User className="w-4 h-4" />
-                <span>Login</span>
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 bg-amber-600 text-white font-medium text-sm rounded-lg hover:bg-amber-700 transition shadow-sm"
-              >
-                Get Started
-              </Link>
-            </div>
-          )}
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-stone-600 hover:text-amber-600"
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="px-6 py-4 space-y-2">
-            <Link
-              to="/"
-              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+              className={mobileLinkClass("/about")}
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <Link
               to="/contact"
-              className="block px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+              className={mobileLinkClass("/contact")}
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
 
-            {status === "authenticated" ? (
-              <div>
-                <button
-                  className="flex items-center justify-center space-x-2 w-full px-4 py-3 bg-red-50 text-red-600 hover:bg-red-100 font-medium text-sm rounded-lg transition border border-red-200 mt-3"
-                  onClick={logout}
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
-                </button>
-
-                <button
-                  onClick={handleProfileVisit}
-                  className="flex items-center justify-center space-x-2 w-full  px-4 py-2 mt-4 rounded-lg
-             bg-amber-600 text-white font-semibold
-             hover:bg-amber-700 transition
-             shadow-sm hover:shadow-md"
-                >
-                  <UserCircleIcon className="w-5 h-5" />
-                  My Profile
-                </button>
-              </div>
-            ) : (
-              <div className="pt-3 space-y-2 border-t border-gray-200">
-                <Link
-                  to="/login"
-                  className="flex items-center justify-center space-x-1 w-full px-4 py-3 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <User className="w-4 h-4" />
-                  <span>Login</span>
-                </Link>
-                <Link
-                  to="/register"
-                  className="block w-full px-4 py-3 bg-amber-600 text-white text-center font-medium text-sm rounded-lg hover:bg-amber-700 transition shadow-sm"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Get Started
-                </Link>
-              </div>
-            )}
+            {/* Divider */}
+            <div className="pt-2 mt-2 border-t border-gray-100 space-y-2">
+              {status === "authenticated" ? (
+                <>
+                  <button
+                    onClick={() => { handleProfileVisit(); setIsMenuOpen(false); }}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-semibold text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm transition-all duration-200"
+                  >
+                    <UserCircleIcon className="w-4 h-4" />
+                    My Profile
+                  </button>
+                  <button
+                    onClick={() => { logout(); setIsMenuOpen(false); }}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium text-red-500 bg-red-50 hover:bg-red-100 border border-red-100 rounded-xl transition-all duration-200"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium text-stone-600 hover:text-amber-600 hover:bg-amber-50 rounded-xl border border-gray-100 transition-all duration-200"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <User className="w-4 h-4" />
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-semibold text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm transition-all duration-200"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      )}
-    </nav>
+      </nav>
+    </>
   );
 };
 
