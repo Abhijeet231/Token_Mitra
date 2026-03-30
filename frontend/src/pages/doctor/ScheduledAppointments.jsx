@@ -1,4 +1,7 @@
-import { getBookingsForDoctor } from "@/services/booking.service";
+import {
+  getBookingsForDoctor,
+  updateBookingStatus,
+} from "@/services/booking.service";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -13,6 +16,30 @@ import {
 const ScheduledAppointments = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleCompleteAppointment = async (bookingId) => {
+    if (!bookingId) return;
+
+    try {
+      const credentials = { status: "completed" };
+
+      const res = await updateBookingStatus(bookingId, credentials);
+
+      // Updating the Ui
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking._id === bookingId
+            ? { ...booking, status: "completed" }
+            : booking,
+        ),
+      );
+
+      toast.success("Appointment marked as completed.");
+    } catch (error) {
+      toast.error("Error While updating booking status!");
+      console.error("Error While Updating Booking Status:", error);
+    }
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -110,8 +137,8 @@ const ScheduledAppointments = () => {
                     booking?.status === "completed"
                       ? "bg-green-100 text-green-700"
                       : booking?.status === "pending"
-                      ? "bg-amber-200 text-red-600"
-                      : "bg-gray-100 text-gray-700"
+                        ? "bg-amber-200 text-red-600"
+                        : "bg-gray-100 text-gray-700"
                   }`}
                 >
                   {booking?.status}

@@ -2,12 +2,14 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { ToastContainer, Zoom } from "react-toastify";
 import ScrollToTop from "./routes/ScrollTop";
+import DisclaimerModal from "./components/common/DisclaimerModal.jsx";
 
 
 const App = () => {
   return (
     <>
     <ScrollToTop/>
+    <DisclaimerModal/>
       <Navbar />
       <Outlet />
 
