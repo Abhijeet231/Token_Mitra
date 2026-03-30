@@ -39,7 +39,7 @@ const Navbar = () => {
     }
   };
 
-  
+  // ✅ Single source of truth for navItem — used in BOTH desktop & mobile
   let navItem = null;
   if (user?.role === "patient") {
     navItem = { label: "Home", path: "/patient" };
@@ -80,7 +80,7 @@ const Navbar = () => {
             {/* ── Brand ── */}
             <Link to="/" className="flex items-center gap-2.5 group">
               <div className="w-9 h-9 bg-linear-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-amber-200 group-hover:scale-105 transition-all duration-200">
-                <Stethoscope className="w-5 h-5 text-white" />
+                <Stethoscope className="w-4.5 h-4.5 text-white " />
               </div>
               <span className="text-lg font-bold tracking-tight text-stone-800">
                 Token<span className="text-amber-500">Mitra</span>
@@ -128,7 +128,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="px-5 py-2 text-sm font-semibold text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm hover:shadow-amber-200 hover:shadow-md transition-all duration-200"
+                    className="px-5 py-2 text-sm font-semibold text-white  from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm hover:shadow-amber-200 hover:shadow-md transition-all duration-200"
                   >
                     Get Started
                   </Link>
@@ -155,7 +155,7 @@ const Navbar = () => {
         >
           <div className="bg-white border-t border-gray-100 px-5 py-4 space-y-1">
 
-           
+            {/* ✅ FIXED: uses navItem.path instead of hardcoded "/" */}
             {navItem && (
               <Link
                 to={navItem.path}
@@ -186,7 +186,7 @@ const Navbar = () => {
                 <>
                   <button
                     onClick={() => { handleProfileVisit(); setIsMenuOpen(false); }}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-semibold text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm transition-all duration-200"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-semibold text-white  from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm transition-all duration-200"
                   >
                     <UserCircleIcon className="w-4 h-4" />
                     My Profile
@@ -211,7 +211,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-semibold text-white bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm transition-all duration-200"
+                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-semibold text-white  from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-sm transition-all duration-200"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started
