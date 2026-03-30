@@ -39,7 +39,7 @@ const Navbar = () => {
     }
   };
 
-  // ✅ Single source of truth for navItem — used in BOTH desktop & mobile
+  
   let navItem = null;
   if (user?.role === "patient") {
     navItem = { label: "Home", path: "/patient" };
@@ -155,7 +155,7 @@ const Navbar = () => {
         >
           <div className="bg-white border-t border-gray-100 px-5 py-4 space-y-1">
 
-            {/* ✅ FIXED: uses navItem.path instead of hardcoded "/" */}
+           
             {navItem && (
               <Link
                 to={navItem.path}
