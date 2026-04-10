@@ -46,7 +46,7 @@ export default function DisclaimerModal() {
         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
           This is an early MVP of{" "}
           <span className="font-medium text-zinc-800 dark:text-zinc-200">TokenMitra</span>. Some
-          numbers — like doctor and user counts — are{" "}
+          numbers - like doctor and user counts - are{" "}
           <span className="font-medium text-zinc-800 dark:text-zinc-200">placeholder data</span> to
           demonstrate the product experience.
         </p>
