@@ -14,12 +14,29 @@ const PatientProfile = () => {
   const navigate = useNavigate();
 
   const [patient, setPatient] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [booking, setBookings] = useState([]);
 
   // Fetcing patient details
   const fetchPatientData = useCallback(async () => {
-    const res = await getPatientDetails();
+   try {
+     const res = await getPatientDetails();
+     if(res.data?.needsProfile) {
+      toast.info("Please Complete your profile first.");
+      navigate("/patient/profile/edit");
+      return;
+     }
     setPatient(res.data?.data);
+   } catch (error) {
+    if(error?.response?.status === 404) {
+      toast.info("Please complete your profile first.");
+      navigate('/patient/profile/edit')
+    }else{
+      toast.error("Failed to load profile.");
+    }
+   }finally{
+    setIsLoading(false)
+   }
   }, []);
 
   // Delete Patient Profile
@@ -41,9 +58,17 @@ const PatientProfile = () => {
 
   // Get Bookings for Patient
   const getBookings = useCallback(async () => {
-    const res = await getBookingsForPatient();
-    setBookings(res.data.data);
-    console.log("ACtive Booking for patinet:", res.data.data);
+   try {
+     const res = await getBookingsForPatient();
+    setBookings(res.data?.data);
+    console.log("ACtive Booking for patinet:", res.data?.data);
+   } catch (error) {
+     if (error?.response?.status === 404) {
+      setBookings([]);
+    } else {
+      toast.error("Failed to load bookings.");
+    }
+   }
   }, []);
 
   // Handle Edit Profile
@@ -79,6 +104,7 @@ const PatientProfile = () => {
         <div className="lg:col-span-4 space-y-6 ">
           <PatientProfileDashboard
             patientData={patient}
+            isLoading = {isLoading}
             onDeleteProfile={handleDeleteProfile}
             onEditProfile={handleEditProfile}
           />

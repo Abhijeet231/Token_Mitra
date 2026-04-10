@@ -51,11 +51,14 @@ export const createPatientProfile = asyncHandler(async (req, res) => {
 export const updatePatientProfile = asyncHandler(async (req, res) => {
   let patient = await Patient.findOne({ userId: req.user._id });
   if (!patient) {
-    throw new ApiError(404, "Patient Not found!");
+    // New user - create profile
+    patient = new Patient({
+      userId: req.user._id,
+      ...req.body,
+    });
+  }else{
+    Object.assign(patient, req.body);
   }
-
-  // Update existing profile
-  Object.assign(patient, req.body);
 
   await patient.save();
 
