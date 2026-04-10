@@ -34,13 +34,13 @@ export default function About() {
           
           <div className="space-y-4 text-gray-700 leading-relaxed">
             <p>
-              I'm 23 years old with a background in B.Sc. Biology. After completing my degree, I discovered my passion for technology and decided to transition into software development.
+            I come from a background in B.Sc. Biology, but over time I discovered a strong interest in technology and decided to transition into software development.
             </p>
             <p>
-              Through self-learning and hands-on project building, I've developed a strong foundation in full-stack development. I believe in learning by doing-every project I build teaches me something new about problem-solving, architecture, and user experience.
+              Through self-learning and hands-on project building, I’ve developed a solid foundation in full-stack development. I believe in learning by doing - every project teaches me something new about problem-solving, architecture, and user experience.
             </p>
             <p>
-              What drives me is the challenge of turning ideas into functional applications that solve real-world problems. I'm constantly exploring new technologies and best practices to improve my craft.
+             What drives me is the challenge of turning ideas into functional applications that solve real-world problems. 
             </p>
           </div>
         </div>
