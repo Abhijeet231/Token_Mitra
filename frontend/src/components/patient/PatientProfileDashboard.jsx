@@ -2,15 +2,24 @@ import { LoaderCircle } from "lucide-react";
 
 const PatientProfileDashboard = ({
   patientData,
+  isLoading,
   onDeleteProfile,
   onEditProfile,
 }) => {
-  if (!patientData) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-40">
         <LoaderCircle className="animate-spin text-amber-500 w-6 h-6" />
       </div>
     );
+  }
+
+  if(!patientData) {
+    return (
+      <div className="flex items-center justify-center h-40 text-gray-500 text-sm">
+        No profile found. Please complete your profile.
+      </div>
+    )
   }
 
   const { age, gender, userId } = patientData;

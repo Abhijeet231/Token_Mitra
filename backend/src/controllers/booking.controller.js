@@ -148,9 +148,6 @@ export const getMyBookingsP = asyncHandler(async (req, res) => {
     .populate("availabilityId")
     .sort({ createdAt: -1 });
 
-  if (bookings.length === 0) {
-    throw new ApiError(404, "No booking found");
-  }
 
   return res
     .status(200)
