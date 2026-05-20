@@ -1,220 +1,237 @@
-import React, { useState } from "react";
-import { Menu, X, User, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, LogOut, UserCircle, Activity } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { UserCircleIcon } from "lucide-react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const { status, logout, user } = useAuth();
   const navigate = useNavigate();
 
+  // ── Scroll detection ──────────────────────────────────────────────────────
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // ── Role-based profile navigation ────────────────────────────────────────
   const handleProfileVisit = () => {
     if (status !== "authenticated") {
       toast.info("Please login to view your profile");
       navigate("/login");
       return;
     }
-
     if (user?.role === "patient") {
       navigate("/patient/profile");
-    } else if (user?.role == "doctor") {
+    } else if (user?.role === "doctor") {
       navigate("/doctors/profile");
     } else {
       toast.error("Unable to determine user role");
     }
+    setMobileOpen(false);
   };
 
-  // Navigation routes based on user role
-  let navItem = null;
+  // ── Role-based home link ──────────────────────────────────────────────────
+  const homeItem =
+    user?.role === "patient"
+      ? { label: "Home", path: "/patient" }
+      : user?.role === "doctor"
+      ? { label: "Dashboard", path: "/doctors/profile" }
+      : { label: "Home", path: "/" };
 
-  if (user?.role === "patient") {
-    navItem = {
-      label: "Home",
-      path: "/patient",
-    };
-  } else if (user?.role === "doctor") {
-    navItem = {
-      label: "Dashboard",
-      path: "/doctors/profile",
-    };
-  } else {
-    navItem = {
-      label: "Home",
-      path: "/",
-    };
-  }
+  // ── Nav links (landing-page anchors + role home) ──────────────────────────
+  // On the landing page these scroll; on inner pages they navigate normally.
+  const anchorLinks = [
+    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Testimonials", href: "#testimonials" },
+    { label: "FAQ", href: "#faq" },
+  ];
 
   return (
-    <nav className="bg-white w-full border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Brand - Left */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">TM</span>
+    <>
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+          scrolled
+            ? "bg-white/85 backdrop-blur-xl border-b border-amber-100/70 shadow-sm shadow-amber-100/20"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+
+          {/* ── Logo ── */}
+          <Link to={"/"} className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-200 group-hover:shadow-amber-300 transition-shadow">
+              <Activity className="w-4 h-4 text-white" strokeWidth={2.5} />
             </div>
-            <span className="text-xl font-semibold text-stone-800">
-              <span className="text-amber-600">Token</span>Mitra
+            <span className="font-bold text-slate-900 text-lg tracking-tight">
+              Token<span className="text-amber-500">Mitra</span>
             </span>
           </Link>
 
-          {/* Navigation Links - Center (Desktop) */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItem && (
-              <Link
-                to={navItem.path}
-                className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              >
-                {navItem.label}
-              </Link>
-            )}
+          {/* ── Desktop centre links ── */}
+          <div className="hidden md:flex items-center gap-1">
+            {/* Role-based home/dashboard link */}
             <Link
-              to="/about"
-              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
+              to={homeItem.path}
+              className="px-4 py-2 text-sm text-slate-600 hover:text-amber-600 rounded-lg hover:bg-amber-50 transition-all duration-200 font-medium"
             >
-              About
+              {homeItem.label}
             </Link>
-            <Link
-              to="/contact"
-              className="px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-            >
-              Contact
-            </Link>
+
+            {/* Landing anchors — only shown when unauthenticated (on landing page) */}
+            {status !== "authenticated" &&
+              anchorLinks.map((l) => (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  className="px-4 py-2 text-sm text-slate-600 hover:text-amber-600 rounded-lg hover:bg-amber-50 transition-all duration-200 font-medium"
+                >
+                  {l.label}
+                </a>
+              ))}
+
+        
           </div>
 
-          {/* Auth Buttons - Right (Desktop) */}
-          {status === "authenticated" ? (
-            <div className="hidden md:flex items-center space-x-4">
-              <button
-                onClick={logout}
-                className="flex items-center space-x-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 font-medium text-sm rounded-lg transition border border-red-200"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Logout</span>
-              </button>
+          {/* ── Desktop right CTAs ── */}
+          <div className="hidden md:flex items-center gap-3">
+            {status === "authenticated" ? (
+              <>
+                {/* Profile button */}
+                <button
+                  onClick={handleProfileVisit}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 text-white text-sm font-semibold rounded-xl hover:bg-amber-600 transition-all duration-300 shadow-md shadow-amber-200 hover:shadow-amber-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <UserCircle className="w-4 h-4" />
+                  My Profile
+                </button>
 
-              <button
-                onClick={handleProfileVisit}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg
-             bg-amber-600 text-white font-semibold
-             hover:bg-amber-700 transition
-             shadow-sm hover:shadow-md"
-              >
-                <UserCircleIcon className="w-5 h-5" />
-                My Profile
-              </button>
-            </div>
-          ) : (
-            <div className="hidden md:flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="flex items-center space-x-1 px-4 py-2 text-stone-600 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              >
-                <User className="w-4 h-4" />
-                <span>Login</span>
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 bg-amber-600 text-white font-medium text-sm rounded-lg hover:bg-amber-700 transition shadow-sm"
-              >
-                Get Started
-              </Link>
-            </div>
-          )}
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-stone-600 hover:text-amber-600"
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
+                {/* Logout */}
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-2 px-4 py-2.5 border border-red-200 bg-red-50 text-red-600 text-sm font-semibold rounded-xl hover:bg-red-100 hover:border-red-300 transition-all duration-200"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </>
             ) : (
-              <Menu className="w-6 h-6" />
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-amber-600 transition-colors"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-5 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-amber-600 transition-all duration-300 shadow-lg shadow-slate-900/20 hover:shadow-amber-500/30 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Get Started Free
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* ── Mobile hamburger ── */}
+          <button
+            aria-label="Toggle menu"
+            className="md:hidden p-2 rounded-lg hover:bg-amber-50 transition-colors"
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            {mobileOpen ? (
+              <X className="w-5 h-5 text-slate-700" />
+            ) : (
+              <Menu className="w-5 h-5 text-slate-700" />
             )}
           </button>
         </div>
-      </div>
+      </motion.nav>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100">
-          <div className="px-4 py-3 space-y-1">
-            {navItem && (
-              <Link
-                to={navItem.path}
-                className="block px-3 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {navItem.label}
-              </Link>
-            )}
+      {/* ── Mobile drawer ── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed top-16 inset-x-0 z-40 bg-white/96 backdrop-blur-xl border-b border-amber-100/60 px-6 py-6 flex flex-col gap-1 shadow-xl md:hidden"
+          >
+            {/* Role home */}
             <Link
-              to="/about"
-              className="block px-3 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              onClick={() => setIsMenuOpen(false)}
+              to={homeItem.path}
+              onClick={() => setMobileOpen(false)}
+              className="px-3 py-2.5 text-sm font-medium text-slate-700 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-colors"
             >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="block px-3 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 font-medium text-sm rounded-lg transition"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contact
+              {homeItem.label}
             </Link>
 
-            <div className="pt-2 mt-2 border-t border-gray-100">
+            {/* Landing anchors — only for unauthenticated */}
+            {status !== "authenticated" &&
+              anchorLinks.map((l) => (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="px-3 py-2.5 text-sm font-medium text-slate-700 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-colors"
+                >
+                  {l.label}
+                </a>
+              ))}
+
+
+            {/* Auth section */}
+            <div className="pt-4 mt-3 border-t border-slate-100 flex flex-col gap-2.5">
               {status === "authenticated" ? (
-                <div className="space-y-2">
+                <>
                   <button
-                    onClick={() => {
-                      handleProfileVisit();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-amber-600 text-white text-sm font-semibold hover:bg-amber-700 transition"
+                    onClick={handleProfileVisit}
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-amber-500 text-white text-sm font-bold rounded-xl hover:bg-amber-600 transition-colors shadow-md shadow-amber-200"
                   >
-                    <UserCircleIcon className="w-4 h-4" />
+                    <UserCircle className="w-4 h-4" />
                     My Profile
                   </button>
                   <button
-                    onClick={() => {
-                      logout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-red-600 bg-red-50 hover:bg-red-100 text-sm font-medium rounded-lg transition border border-red-100"
+                    onClick={() => { logout(); setMobileOpen(false); }}
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-red-50 border border-red-200 text-red-600 text-sm font-semibold rounded-xl hover:bg-red-100 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     Logout
                   </button>
-                </div>
+                </>
               ) : (
-                <div className="space-y-2">
+                <>
                   <Link
                     to="/login"
-                    className="flex items-center justify-center gap-1 w-full px-4 py-2.5 text-stone-700 hover:text-amber-600 hover:bg-amber-50 text-sm font-medium rounded-lg transition"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center w-full py-3 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:border-amber-400 hover:text-amber-600 transition-colors"
                   >
-                    <User className="w-4 h-4" />
-                    Login
+                    Log in
                   </Link>
                   <Link
                     to="/register"
-                    className="block w-full px-4 py-2.5 bg-amber-600 text-white text-center text-sm font-medium rounded-lg hover:bg-amber-700 transition"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center w-full py-3 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-amber-600 transition-colors shadow-lg"
                   >
-                    Get Started
+                    Get Started Free
                   </Link>
-                </div>
+                </>
               )}
             </div>
-          </div>
-        </div>
-      )}
-    </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
