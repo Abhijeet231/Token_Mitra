@@ -3,7 +3,6 @@ import { Server } from "socket.io";
 import connectDB from "./db/index.js";
 import "./corn/cleanAvailableSlots.js";
 import "./corn/bookingCleanup.js";
-import socketInstance from "./socket/index.js";
 import app from "./app.js";
 
 const main = async () => {
@@ -12,7 +11,7 @@ const main = async () => {
     await connectDB();
 
     const server = http.createServer(app);
-    socketInstance(server);
+    
 
     server.listen(PORT, () => {
       console.log(`Server is running on ${PORT}`);
