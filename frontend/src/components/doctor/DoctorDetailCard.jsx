@@ -1,101 +1,104 @@
-import React from 'react'
-import { MessageSquareMore } from "lucide-react"
-import { toast } from 'react-toastify'
+import { motion } from 'framer-motion';
+import { Award, Briefcase, MapPin, Star } from 'lucide-react';
 
-const DoctorPlaceholder = ({ className }) => (
-  <div className={`flex flex-col items-center justify-center bg-linear-to-br from-amber-50 to-orange-100 rounded-xl ${className}`}>
-    <div className="w-16 h-16 rounded-full bg-amber-200/60 flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" className="w-12 h-12" fill="none">
-        {/* Body / coat */}
-        <ellipse cx="40" cy="72" rx="26" ry="14" fill="#f59e0b" opacity="0.25" />
-        <rect x="22" y="46" width="36" height="28" rx="10" fill="#fff7ed" />
-        <rect x="22" y="46" width="36" height="28" rx="10" fill="#f59e0b" opacity="0.15" />
-        {/* Coat lapels */}
-        <path d="M40 52 L33 46 L33 62" stroke="#f59e0b" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        <path d="M40 52 L47 46 L47 62" stroke="#f59e0b" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        {/* Stethoscope */}
-        <path d="M33 56 Q30 62 34 65 Q38 68 40 65 Q42 62 40 59" stroke="#ea580c" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <circle cx="40" cy="58.5" r="2" fill="#ea580c" />
-        {/* Head */}
-        <circle cx="40" cy="32" r="14" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" />
-        {/* Face */}
-        <circle cx="36" cy="30" r="1.2" fill="#d97706" />
-        <circle cx="44" cy="30" r="1.2" fill="#d97706" />
-        <path d="M36 36 Q40 39 44 36" stroke="#d97706" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-        {/* Hair */}
-        <path d="M26 30 Q27 18 40 18 Q53 18 54 30" fill="#d97706" opacity="0.5" />
-        {/* Cross on coat */}
-        <rect x="38.5" y="54" width="3" height="8" rx="1" fill="#ea580c" opacity="0.6" />
-        <rect x="36" y="56.5" width="8" height="3" rx="1" fill="#ea580c" opacity="0.6" />
-      </svg>
+const FadeUp = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 18 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}>
+    {children}
+  </motion.div>
+);
+
+const MonogramAvatar = ({ name }) => {
+  const initials = name
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase() || 'DR';
+  return (
+    <div className="w-full h-full rounded-2xl bg-gradient-to-br from-amber-300 to-orange-400 flex items-center justify-center text-white text-4xl font-black">
+      {initials}
     </div>
-    <p className="mt-2 text-xs font-medium text-amber-500/80 tracking-wide uppercase">No Photo</p>
+  );
+};
+
+const InfoPill = ({ icon: Icon, label, value }) => (
+  <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200/80">
+    <div className="w-7 h-7 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0">
+      <Icon className="w-3.5 h-3.5 text-amber-500" />
+    </div>
+    <div>
+      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">{label}</p>
+      <p className="text-sm font-semibold text-slate-800">{value}</p>
+    </div>
   </div>
-)
+);
 
 const DoctorDetailCard = ({ doctor }) => {
-  const hasImage = doctor?.profileImage?.url
-
-  const handleChatButton = () => {
-    toast.info("Chat Feature Is Not Live Yet!")
-  }
+  const hasImage = doctor?.profileImage?.url;
+  const fullName = doctor?.userId?.fullName || '';
 
   return (
-    <div className="w-full flex justify-center mt-6">
-      <div className="w-[80%] md:w-[80%] border border-amber-200/60 hover:shadow-2xl hover:border-amber-300 transition-all duration-300 hover:translate-y-1 rounded-2xl drop-shadow-lg p-6 flex flex-col md:flex-row gap-6 shadow-sm">
-        {/* Doctor Image */}
-        <div className="shrink-0">
-          {hasImage ? (
-            <img
-              src={doctor.profileImage.url}
-              alt="Doctor Profile"
-              className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl"
-            />
-          ) : (
-            <DoctorPlaceholder className="w-32 h-32 md:w-40 md:h-40" />
-          )}
-        </div>
-
-        {/* Doctor Info */}
-        <div className="flex-1 flex flex-col justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">
-              Dr. {doctor?.userId?.fullName}
-            </h2>
-
-            <p className="text-sm text-amber-600 font-medium mt-1">
-              {doctor?.specialization}
-            </p>
-
-            <hr className="my-3 border-gray-200" />
-
-            <p className="text-sm text-gray-700">
-              <span className="font-semibold">Experience:</span>{" "}
-              {doctor?.experience} Years
-            </p>
-
-            <p className="text-sm text-gray-700 mt-1">
-              <span className="font-semibold">Qualification:</span>{" "}
-              {doctor?.qualification}
-            </p>
+    <FadeUp delay={0.05}>
+      <div className="bg-white border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-100/60 overflow-hidden">
+        <div className="flex flex-col md:flex-row gap-0">
+          {/* Image column */}
+          <div className="md:w-56 shrink-0 relative">
+            <div className="w-full h-56 md:h-full">
+              {hasImage ? (
+                <img
+                  src={doctor.profileImage.url}
+                  alt={`Dr. ${fullName}`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <MonogramAvatar name={fullName} />
+              )}
+            </div>
+            {/* Specialization overlay badge */}
+            <div className="absolute bottom-3 left-3 right-3">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-xs font-semibold">
+                {doctor?.specialization}
+              </span>
+            </div>
           </div>
 
-          {/* Action Button */}
-          <div className="mt-4 md:mt-0 flex md:justify-end">
-            <button
-              onClick={handleChatButton}
-              className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 cursor-pointer
-                   text-white font-semibold px-5 py-2 rounded-lg 
-                   transition-all shadow-sm hover:shadow-md"
-            >
-              <MessageSquareMore size={18} />
-              Chat with Doctor
-            </button>
+          {/* Info column */}
+          <div className="flex-1 p-7 flex flex-col justify-between">
+            <div>
+              {/* Name + rating row */}
+              <div className="flex items-start justify-between gap-4 mb-1">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-amber-600 mb-1">Verified Doctor</p>
+                  <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+                    Dr. {fullName}
+                  </h2>
+                </div>
+                {/* Stars */}
+                <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-100 shrink-0">
+                  <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  <span className="text-xs font-bold text-amber-700">4.9</span>
+                </div>
+              </div>
+
+              <div className="h-px bg-slate-100 my-4" />
+
+              {/* Info pills */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <InfoPill icon={Briefcase} label="Experience" value={`${doctor?.experience} Years`} />
+                <InfoPill icon={Award} label="Qualification" value={doctor?.qualification} />
+                {doctor?.clinicAddress && (
+                  <InfoPill icon={MapPin} label="Clinic" value={doctor.clinicAddress} />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+    </FadeUp>
+  );
+};
 
-export default DoctorDetailCard
+export default DoctorDetailCard;

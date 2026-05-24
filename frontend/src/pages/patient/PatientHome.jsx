@@ -1,158 +1,109 @@
-import { Search, ChevronDown, ChevronUp, LoaderCircle } from 'lucide-react';
-import Footer from '@/components/Footer';
-import DoctorCard from '@/components/doctor/DoctorCard';
 import { useState, useEffect } from 'react';
-import { getAllDoctors } from '@/services/doctor.service';
+import { LoaderCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
-
+import { getAllDoctors } from '@/services/doctor.service';
+import HeroSearch from "@/components/doctor/HeroSearch.jsx";
+import DoctorGrid from '@/components/doctor/DoctorGrid.jsx';
 
 const PatientHomePage = () => {
-  const [doctor, setDoctor] = useState([])
+  const [doctor, setDoctor] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  
-  // Fetching all Doctors
+  // Fetch all doctors
   useEffect(() => {
-    const getAllDocs = async() => {
+    const getAllDocs = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const res = await getAllDoctors();
         setDoctor(res.data.data);
-        console.log("All Available Doctors:", res.data.data);
       } catch (error) {
-        toast.error("Error WHile Fetching all Doctors!");
-        console.log("Error While Fetching all Doctors:", error)
-      }finally{
-        setLoading(false)
+        toast.error('Error while fetching doctors!');
+        console.error('Error fetching doctors:', error);
+      } finally {
+        setLoading(false);
       }
-
-    }
+    };
     getAllDocs();
-  }, [])
+  }, []);
 
-  // search Input
-  const normalizedQuerry = searchQuery.toLocaleLowerCase().trim();
+  // Reset show all on new search
+  useEffect(() => {
+    setShowAll(false);
+  }, [searchQuery]);
 
-  // Filtering doctors array
+  const normalizedQuery = searchQuery.toLocaleLowerCase().trim();
+
   const filteredDoctors = doctor.filter((doc) => {
-    const name = doc?.userId?.fullName?.toLocaleLowerCase() || "";
-    const specialization = doc?.specialization?.toLocaleLowerCase()||"";
-    const address = doc?.clinicAddress?.toLocaleLowerCase() || "";
-
-    return(
-      name.includes(normalizedQuerry) || 
-      specialization.includes(normalizedQuerry) ||
-      address.includes(normalizedQuerry)
+    const name = doc?.userId?.fullName?.toLocaleLowerCase() || '';
+    const specialization = doc?.specialization?.toLocaleLowerCase() || '';
+    const address = doc?.clinicAddress?.toLocaleLowerCase() || '';
+    return (
+      name.includes(normalizedQuery) ||
+      specialization.includes(normalizedQuery) ||
+      address.includes(normalizedQuery)
     );
   });
 
- // for progressive disclosure feature (showMore> showLess)
-  const visibleDoctors = showAll ? filteredDoctors : filteredDoctors.slice(0,4);
+  const visibleDoctors = showAll ? filteredDoctors : filteredDoctors.slice(0, 4);
 
-  // for clean ux
-  useEffect(() => {
-    setShowAll(false);
-  },[searchQuery])
- 
-
-   if (loading) {
+  if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-  <h3 className="text-center font-semibold text-2xl text-gray-700 animate-pulse">
-    Loading...
-  </h3>
-
-  <LoaderCircle className="w-10 h-10 text-amber-500 animate-spin" />
-</div>
+      <div className="min-h-screen pt-16 bg-gradient-to-b from-amber-50/60 via-white to-white flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center gap-4"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-200 flex items-center justify-center">
+            <LoaderCircle className="w-6 h-6 text-white animate-spin" />
+          </div>
+          <p className="text-sm font-semibold text-slate-500 animate-pulse">Finding doctors near you…</p>
+        </motion.div>
+      </div>
     );
   }
 
-  
   return (
-    <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-amber-50">
+    <div className="min-h-screen pt-16 bg-gradient-to-b from-amber-50/60 via-white to-white relative overflow-hidden">
+      {/* Ambient glows */}
+      <div className="pointer-events-none absolute -top-20 -left-40 w-[500px] h-[500px] rounded-full bg-amber-300/10 blur-3xl" />
+      <div className="pointer-events-none absolute top-1/3 -right-20 w-[400px] h-[400px] rounded-full bg-orange-300/10 blur-3xl" />
 
-      {/* Hero Section with Search */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div
-          className="text-center mb-8"
-        >
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Find Your Perfect
-            <span className="bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent"> Doctor</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Connect with top-rated healthcare professionals in your area
-          </p>
-        </div>
+      {/* Subtle dot grid */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            'linear-gradient(#94a3b8 1px,transparent 1px),linear-gradient(90deg,#94a3b8 1px,transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
 
-        <div
-          className="max-w-3xl mx-auto mb-16"
-        >
-          <div className="relative">
-            <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
-            <input
-              type="text"
-              placeholder="Search by doctor name, specialty, or condition..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-14 pr-6 py-5 rounded-2xl border-2 border-amber-200 focus:border-amber-500 focus:outline-none text-lg shadow-lg bg-white"
-            />
-          </div>
-        </div>
+      {/* Hero + Search */}
+      <HeroSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        {/* Doctor Cards Grid */}
-        <div className="mb-8 ">
-         
-          {filteredDoctors.length === 0 ? (
-            <p className='text-center text-gray-500 mt-12 '>No Doctors found matching your search</p>
-          ) :
-          <div>
-             <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Doctors</h2>
-             
-            <div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-            {visibleDoctors.map((doc) => (
-              <DoctorCard key={doc._id} doctor={doc}  />
-            ))}
-            </div>
-          </div>
-          }
-        </div>
-
-        {/* Show More Button */}
-   {filteredDoctors.length >=1  &&
-          doctor.length > 4 && (
-  <div className="flex justify-center">
-    <button
-      onClick={() => setShowAll(!showAll)}
-      className="flex items-center gap-2 px-8 py-4 bg-white text-amber-600 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all border-2 border-amber-200"
-    >
-      {showAll ? (
-        <>
-          Show Less
-          <ChevronUp className="w-5 h-5" />
-        </>
-      ) : (
-        <>
-          Show More Doctors
-          <ChevronDown className="w-5 h-5" />
-        </>
-      )}
-    </button>
-  </div>
-)
-     
-   }
-
-      
+      {/* Divider */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
       </div>
 
-      {/* Footer */}
-     <Footer/>
+      {/* Doctor grid */}
+      <div className="pb-20">
+        <DoctorGrid
+          visibleDoctors={visibleDoctors}
+          filteredDoctors={filteredDoctors}
+          showAll={showAll}
+          setShowAll={setShowAll}
+          totalDoctors={doctor.length}
+          searchQuery={searchQuery}
+        />
+      </div>
+
+   
     </div>
   );
 };
