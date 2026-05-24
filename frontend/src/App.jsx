@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import { ToastContainer, Zoom } from "react-toastify";
 import ScrollToTop from "./routes/ScrollTop";
 import DisclaimerModal from "./components/common/DisclaimerModal.jsx";
+import Footer from "./components/Footer";
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
     <DisclaimerModal/>
       <Navbar />
       <Outlet />
+      <Footer/>
 
       <ToastContainer
         position="top-right"
