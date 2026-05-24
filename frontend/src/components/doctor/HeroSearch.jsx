@@ -69,7 +69,6 @@ const HeroSearch = ({ searchQuery, setSearchQuery }) => {
             {PILLS.map((pill) => (
               <button
                 key={pill}
-                onClick={() => setSearchQuery(pill)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
                   searchQuery === pill
                     ? 'bg-amber-400 border-amber-400 text-white shadow-md shadow-amber-200'
