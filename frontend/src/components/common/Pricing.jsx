@@ -99,7 +99,7 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
 
 const handlePlanClick = (planId) => {
   if (planId === "starter") {
-    toast.info("Redirecting to free signup…");
+    toast.info("Login or create an account to continue✨");
     return;
   }
   toast(
