@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Pricing from "@/components/common/Pricing.jsx";
 import {
   motion,
   useScroll,
@@ -1240,12 +1241,6 @@ const FinalCTA = ({ onNav }) => (
 );
 
 // ─────────────────────────────────────────────
-//  Footer
-// ─────────────────────────────────────────────
-
-
-
-// ─────────────────────────────────────────────
 //  Lenis smooth scroll initializer
 // ─────────────────────────────────────────────
 
@@ -1273,15 +1268,6 @@ const useLenis = () => {
 //  Main export
 // ─────────────────────────────────────────────
 
-/**
- * Usage (replace the real navigate / toast logic from your AuthContext):
- *
- *   import LandingPage from "@/pages/LandingPage";
- *
- * The component expects onNav to receive a path string (e.g. "/register").
- * If you drop it into your existing app you can swap `onNav` for the real
- * handleBtnClick from your AuthContext as shown below.
- */
 const LandingPage = () => {
   useLenis();
 
@@ -1299,6 +1285,8 @@ const LandingPage = () => {
       <ProductDemo />
       <HowItWorks />
       <WorkflowShowcase />
+
+      <Pricing />
       <Testimonials />
       <FAQ />
       <FinalCTA onNav={handleNav} />
