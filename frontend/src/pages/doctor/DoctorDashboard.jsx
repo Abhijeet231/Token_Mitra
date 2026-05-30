@@ -5,7 +5,7 @@ import DoctorBottomNav from "@/components/doctor/DoctorBottomNav.jsx";
 
 const DoctorDashboard = () => {
   return (
-    <div className="flex flex-row min-h-screen">
+    <div className="flex flex-row min-h-screen mt-9">
       {/* Sidebar - Desktop only (lg+) */}
       <aside className="hidden lg:block w-[30%] max-w-xs bg-white border-r">
         <DoctorSidebar />
