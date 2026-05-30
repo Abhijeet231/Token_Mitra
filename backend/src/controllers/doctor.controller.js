@@ -59,6 +59,10 @@ export const getLoggedInDoctor = asyncHandler(async (req, res) => {
 
 // CREATE DOCTOR PROFILE
 export const createDoctorProfile = asyncHandler(async (req, res) => {
+
+  console.log("req.body:", req.body);
+  console.log("req.file:", req.file);
+
   const {
     specialization,
     qualification,
