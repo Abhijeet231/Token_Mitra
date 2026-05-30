@@ -15,8 +15,8 @@ export const uploadOnCloudinary = async (loaclFilePath) => {
     const response = await cloudinary.uploader.upload(loaclFilePath, {
       resource_type: "auto",
     });
-    if (fs.existsSync(localFilePath)) {
-      fs.unlinkSync(localFilePath);
+    if (fs.existsSync(loaclFilePath)) {
+      fs.unlinkSync(loaclFilePath);
     }
     return response;
   } catch (error) {
@@ -30,7 +30,7 @@ export const deleteFromCloudinary = async (publicId) => {
   try {
     if (!publicId) return null;
     const response = await cloudinary.uploader.destroy(publicId, {
-        resource_type: "auto"
+      resource_type: "auto",
     });
     return response;
   } catch (error) {

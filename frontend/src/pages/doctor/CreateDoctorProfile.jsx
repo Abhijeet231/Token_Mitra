@@ -1,10 +1,26 @@
+
 import { useForm } from "react-hook-form";
 import { createDoctorProfile } from "@/validations/createDoctorProfile";
 import { createDocProfile } from "@/services/doctor.service";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { ArrowRight, UserCog } from "lucide-react";
+import DoctorProfileFormFields from "@/components/doctor/DoctorProfileFormFields";
 
+/* ── Animation helper ───────────────────────────────────────────── */
+const FadeUp = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 18 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+  >
+    {children}
+  </motion.div>
+);
+
+/* ── Page ───────────────────────────────────────────────────────── */
 const CreateDoctorProfile = () => {
   const navigate = useNavigate();
 
@@ -17,20 +33,17 @@ const CreateDoctorProfile = () => {
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-
       formData.append("specialization", data.specialization);
-    formData.append("qualification", data.qualification);
-    formData.append("experience", data.experience);
-    formData.append("clinicAddress", data.clinicAddress);
-    formData.append("slotDuration", data.slotDuration);
+      formData.append("qualification", data.qualification);
+      formData.append("experience", data.experience);
+      formData.append("clinicAddress", data.clinicAddress);
+      formData.append("slotDuration", data.slotDuration);
 
-    // Extracting File 
-    if(data.profileImage && data.profileImage.length > 0) {
-      formData.append("profileImage", data.profileImage[0]);
-    }
+      if (data.profileImage && data.profileImage.length > 0) {
+        formData.append("profileImage", data.profileImage[0]);
+      }
 
-    await createDocProfile(formData);
-
+      await createDocProfile(formData);
       toast.success("Doctor Profile Created Successfully");
       navigate("/doctors/profile");
     } catch (error) {
@@ -40,140 +53,117 @@ const CreateDoctorProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-amber-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg border border-stone-100 p-8">
-        <h2 className="text-2xl font-semibold text-stone-800 mb-6">
-          Create Your Porfile
-        </h2>
+    <div
+      className="min-h-screen pt-16 bg-gradient-to-b from-amber-50/60 via-white to-white 
+                 flex items-center justify-center px-4 py-12 relative overflow-hidden"
+    >
+      {/* ── Ambient glows ── */}
+      <div className="pointer-events-none absolute -top-20 -left-40 w-[500px] h-[500px] rounded-full bg-amber-300/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 -right-20 w-[400px] h-[400px] rounded-full bg-orange-300/10 blur-3xl" />
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Specialization*/}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="specialization"
-              className="text-sm font-medium text-stone-700"
-            >
-              Specialization
-            </label>
-            <input
-              type="text"
-              id="specialization"
-              className="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-              {...register("specialization")}
-            />
-            {errors.specialization && (
-              <p className="text-xs text-red-500 mt-1.5">
-                {errors.specialization.message}
+      {/* ── Subtle grid ── */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#94a3b8 1px,transparent 1px),linear-gradient(90deg,#94a3b8 1px,transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* ── Card ── */}
+      <div className="relative w-full max-w-2xl">
+        <FadeUp delay={0}>
+          <div className="bg-white border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-100/60 p-8 sm:p-10">
+
+            {/* ── Page header ── */}
+            <div className="text-center mb-8">
+              <div
+                className="inline-flex items-center justify-center w-12 h-12 rounded-2xl 
+                            bg-gradient-to-br from-amber-400 to-orange-500 
+                            shadow-lg shadow-amber-200 mb-5"
+              >
+                <UserCog className="w-6 h-6 text-white" strokeWidth={2.5} />
+              </div>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+                Create Your Profile
+              </h1>
+              <p className="mt-2 text-sm text-slate-500 font-medium">
+                Set up your doctor profile so patients can find and book you.
               </p>
-            )}
-          </div>
+            </div>
 
-          {/* Qualification */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="qualification"
-              className="text-sm font-medium text-stone-700"
-            >
-              Qualification
-            </label>
-            <input
-              type="text"
-              className="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-              {...register("qualification")}
-            />
-            {errors.experience && (
-              <p className="text-xs text-red-500 mt-1.5">
-                {" "}
-                {errors.experience.message}
-              </p>
-            )}
-          </div>
+            {/* ── Divider ── */}
+            <div className="flex items-center gap-3 mb-7">
+              <div className="flex-1 h-px bg-slate-100" />
+              <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                Practice Details
+              </span>
+              <div className="flex-1 h-px bg-slate-100" />
+            </div>
 
-          {/* Experience */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="experience"
-              className="text-sm font-medium text-stone-700"
-            >
-              Experience
-            </label>
-            <input
-              type="number"
-              className="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:bg-amber-50"
-              {...register("experience")}
-            />
-            {errors.experience && (
-              <p className="text-xs text-red-500 mt-1.5">
-                {errors.experience.message}
-              </p>
-            )}
-          </div>
+            {/* ── Form ── */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <FadeUp delay={0.08}>
+                <DoctorProfileFormFields register={register} errors={errors} />
+              </FadeUp>
 
-          {/* Profile IMage */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="profileImage"
-              className="text-sm font-medium text-stone-700"
-            >
-              ProfileImage
-            </label>
-            <input
-              type='file'
-              className="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:bg-amber-50"
-              {...register("profileImage")}
-            />
-            {errors.profileImage && (
-              <p className="text-xs text-red-500 mt-1.5">
-                {errors.profileImage.message}
-              </p>
-            )}
-          </div>
+              {/* ── Submit ── */}
+              <FadeUp delay={0.16}>
+                <div className="pt-2">
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full flex items-center justify-center gap-2.5 py-3.5 
+                               bg-slate-900 text-white text-sm font-bold rounded-xl 
+                               hover:bg-amber-500 transition-all duration-300 
+                               shadow-lg shadow-slate-900/20 hover:shadow-amber-400/30
+                               disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="w-4 h-4 animate-spin"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8H4z"
+                          />
+                        </svg>
+                        Saving Profile…
+                      </>
+                    ) : (
+                      <>
+                        Save & Continue
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </motion.button>
+                </div>
+              </FadeUp>
 
-          {/* Slot Duration */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-stone-700">
-              Slot Duration (minutes)
-            </label>
-            <input
-              type="number"
-              className="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-              {...register("slotDuration")}
-            />
-            {errors.slotDuration && (
-              <p className="text-xs text-red-500 mt-1.5">
-                {errors.slotDuration.message}
-              </p>
-            )}
+              {/* ── Footer note ── */}
+              <FadeUp delay={0.22}>
+                <p className="text-center text-xs text-slate-400 font-medium">
+                  You can edit these details anytime from your profile settings.
+                </p>
+              </FadeUp>
+            </form>
           </div>
-
-          {/* Clinic Address */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-stone-700">
-              Clinic Address
-            </label>
-            <input
-              type="text"
-              className="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-              {...register("clinicAddress")}
-            />
-            {errors.clinicAddress && (
-              <p className="text-xs text-red-500 mt-1.5">
-                {errors.clinicAddress.message}
-              </p>
-            )}
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700 disabled:opacity-60"
-            >
-              {isSubmitting ? "Saving..." : "Save Changes"}
-            </button>
-          </div>
-        </form>
+        </FadeUp>
       </div>
     </div>
   );
